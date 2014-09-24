@@ -9,13 +9,15 @@ namespace KingsAndQueensHat
 {
     public class Player
     {
-        public Player(string name, int skill)
+        public Player(string name, int skill, Gender gender)
         {
             Name = name;
             Skill = skill;
+            Gender = gender;
         }
         public string Name { get; set; }
         public int Skill { get; set; }
+        public Gender Gender { get; set; }
 
         public void LostGame()
         {

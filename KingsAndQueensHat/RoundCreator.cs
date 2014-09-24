@@ -9,7 +9,7 @@ namespace KingsAndQueensHat
 {
     public class RoundCreator
     {
-        public TeamSet CreateApproximatelyOptimalTeams(IList<IPenalty> penaltyScorers, PlayerProvider playerProvider)
+        public TeamSet CreateApproximatelyOptimalTeams(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider)
         {
             var allocator = new TeamAllocator(NumTeams);
             var allPossibleTeamSets = Enumerable.Range(0, NumberToTest).Select(x => allocator.CreateTeams(playerProvider)).ToList();

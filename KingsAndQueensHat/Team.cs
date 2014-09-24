@@ -36,6 +36,17 @@ namespace KingsAndQueensHat
             get { return Players.Count; }
         }
 
+        public int Men
+        {
+            get { return Players.Count(p => p.Gender == Gender.Male); }
+        }
+
+        public int Women
+        {
+            get { return Players.Count(p => p.Gender == Gender.Female); }
+        }
+
+
         public IEnumerable<PlayerPairing> PlayerPairings()
         {
             for (int i = 0; i < PlayerCount; ++i)
@@ -68,7 +79,7 @@ namespace KingsAndQueensHat
 
         public override string ToString()
         {
-            return string.Format("Skill: {0}; Undefeateds: {1}", TotalSkill, TotalUndefeateds);
+            return string.Format("{0} Men, {1} Women. Skill: {2}; Undefeateds: {3}", Men, Women, TotalSkill, TotalUndefeateds);
         }
     }
 }

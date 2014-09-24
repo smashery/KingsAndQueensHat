@@ -53,11 +53,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Gender.cs" />
+    <Compile Include="InvalidPlayerListException.cs" />
     <Compile Include="IPenalty.cs" />
+    <Compile Include="IPlayerProvider.cs" />
     <Compile Include="ListExtensions.cs" />
+    <Compile Include="PlayerFileReader.cs" />
     <Compile Include="PlayerPairing.cs" />
     <Compile Include="PlayerPairings.cs" />
-    <Compile Include="PlayerProvider.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="TeamAllocator.cs" />
     <Compile Include="RoundCreator.cs" />

@@ -2,3 +2,4 @@ bin/
 obj/
 *.suo
 TestData/
+TestData.csv

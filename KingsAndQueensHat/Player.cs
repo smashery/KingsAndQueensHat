@@ -19,16 +19,16 @@ namespace KingsAndQueensHat
         public int Skill { get; set; }
         public Gender Gender { get; set; }
 
-        public void LostGame()
+        public void WonGame()
         {
-            Losses++;
+            Wins++;
         }
 
-        public int Losses { get; set; }
+        public int Wins { get; private set; }
 
         public override string ToString()
         {
-            return string.Format("{0}: {1} (Lost {2})", Name, Skill, Losses);
+            return string.Format("{0}: {1} (Won {2})", Name, Skill, Wins);
         }
     }
 }

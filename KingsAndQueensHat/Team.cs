@@ -25,12 +25,7 @@ namespace KingsAndQueensHat
         {
             get { return Players.Sum(p => p.Skill); }
         }
-
-        public int TotalUndefeateds
-        {
-            get { return Players.Count(p => p.Losses == 0); }
-        }
-
+        
         public int PlayerCount
         {
             get { return Players.Count; }
@@ -69,17 +64,17 @@ namespace KingsAndQueensHat
             }
         }
 
-        public void Lost()
+        public void Won()
         {
             foreach (var player in Players)
             {
-                player.LostGame();
+                player.WonGame();
             }
         }
 
         public override string ToString()
         {
-            return string.Format("{0} Men, {1} Women. Skill: {2}; Undefeateds: {3}", Men, Women, TotalSkill, TotalUndefeateds);
+            return string.Format("{0} Men, {1} Women. Skill: {2}", Men, Women, TotalSkill);
         }
     }
 }

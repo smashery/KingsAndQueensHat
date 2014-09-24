@@ -13,7 +13,7 @@ namespace KingsAndQueensHat
 
         private const int FudgeFactor = 10;
 
-        public int ScorePenalty(TeamSet teamSet)
+        public double ScorePenalty(TeamSet teamSet)
         {
             var penalty = 0;
             var sum = 0;

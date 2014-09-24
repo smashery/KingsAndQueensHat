@@ -2,7 +2,7 @@
 {
     public interface IPenalty
     {
-        int ScorePenalty(TeamSet teamSet);
+        double ScorePenalty(TeamSet teamSet);
 
         /// <summary>
         /// How important this penalty category is

@@ -65,7 +65,7 @@
     <Compile Include="TeamAllocator.cs" />
     <Compile Include="RoundCreator.cs" />
     <Compile Include="TeamSet.cs" />
-    <Compile Include="UndefeatedsPenalty.cs" />
+    <Compile Include="TooManyWinnersPenalty.cs" />
     <Compile Include="UnevenSkillPenalty.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

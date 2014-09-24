@@ -5,7 +5,7 @@ namespace KingsAndQueensHat
 {
     public class UnevenSkillPenalty : IPenalty
     {
-        public int ScorePenalty(TeamSet teamSet)
+        public double ScorePenalty(TeamSet teamSet)
         {
             var teams = teamSet.Teams;
             var scores = teams.Select(team => team.TotalSkill).ToList();

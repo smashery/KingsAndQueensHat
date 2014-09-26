@@ -4,12 +4,14 @@ namespace KingsAndQueensHat.Model
 {
     public class Player
     {
-        public Player(string name, int skill, Gender gender)
+        private Func<Player, bool> _isWinning;
+        public Player(string name, int skill, Gender gender, Func<Player, bool> isWinning)
         {
             Name = name;
             Skill = skill;
             Gender = gender;
             GameScore = 0;
+            _isWinning = isWinning;
         }
 
         protected Player()
@@ -27,6 +29,15 @@ namespace KingsAndQueensHat.Model
 
         [XmlIgnore]
         public int GameScore { get; private set; }
+
+        [XmlIgnore]
+        public bool PotentialMonarch
+        {
+            get
+            {
+                return _isWinning(this);
+            }
+        }
 
         public override string ToString()
         {

@@ -15,6 +15,8 @@ namespace KingsAndQueensHat.View
             Tournament = new Tournament();
             Tournament.LoadExistingData();
             DataContext = Tournament;
+
+            
         }
 
         public Tournament Tournament { get; set; }

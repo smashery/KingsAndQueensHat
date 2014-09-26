@@ -10,7 +10,13 @@
         <ItemsControl ItemsSource="{Binding Teams}" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" ItemsSource="{Binding Players}"/>
+                    <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" ItemsSource="{Binding Players}" RowStyle="{StaticResource HighlightRow}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
+                            <DataGridTextColumn Header="GameScore" Binding="{Binding GameScore}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

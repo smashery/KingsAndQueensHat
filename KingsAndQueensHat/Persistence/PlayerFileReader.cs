@@ -38,8 +38,7 @@ namespace KingsAndQueensHat.Persistence
                         throw new InvalidPlayerListException(string.Format("Third entry on each line must be an integer ({0})", parts[2]));
                     }
 
-
-                    Players.Add(new Player(name, skill, gender));
+                    Players.Add(new Player(name, skill, gender, this.IsWinning));
                 }
             }
         }

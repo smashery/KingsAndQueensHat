@@ -27,6 +27,11 @@ namespace KingsAndQueensHat
             return playerProvider.Players.Where(p => p.Gender == gender).Max(p => p.GameScore);
         }
 
+        public static bool IsWinning(this IPlayerProvider playerProvider, Player player)
+        {
+            return player.GameScore > 0 && playerProvider.WinningPlayers(player.Gender).Contains(player);
+        }
+
         public static Player PlayerWithName(this IPlayerProvider playerProvider, string name)
         {
             return playerProvider.Players.SingleOrDefault(p => p.Name == name);

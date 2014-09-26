@@ -53,21 +53,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Gender.cs" />
-    <Compile Include="InvalidPlayerListException.cs" />
-    <Compile Include="IPenalty.cs" />
-    <Compile Include="IPlayerProvider.cs" />
-    <Compile Include="ListExtensions.cs" />
-    <Compile Include="PlayerFileReader.cs" />
-    <Compile Include="PlayerPairing.cs" />
-    <Compile Include="PlayerPairings.cs" />
-    <Compile Include="Team.cs" />
-    <Compile Include="TeamAllocator.cs" />
-    <Compile Include="RoundCreator.cs" />
-    <Compile Include="TeamSet.cs" />
-    <Compile Include="TooManyWinnersPenalty.cs" />
-    <Compile Include="UnevenSkillPenalty.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Model\GameResult.cs" />
+    <Compile Include="Model\Gender.cs" />
+    <Compile Include="Model\Tournament.cs" />
+    <Compile Include="Persistence\InvalidPlayerListException.cs" />
+    <Compile Include="TeamGeneration\IPenalty.cs" />
+    <Compile Include="Model\IPlayerProvider.cs" />
+    <Compile Include="Utils\ListExtensions.cs" />
+    <Compile Include="Persistence\PlayerFileReader.cs" />
+    <Compile Include="TeamGeneration\PlayerPairing.cs" />
+    <Compile Include="TeamGeneration\PlayerPairings.cs" />
+    <Compile Include="Model\Team.cs" />
+    <Compile Include="TeamGeneration\TeamAllocator.cs" />
+    <Compile Include="TeamGeneration\RoundCreator.cs" />
+    <Compile Include="Model\TeamSet.cs" />
+    <Compile Include="TeamGeneration\TooManyWinnersPenalty.cs" />
+    <Compile Include="TeamGeneration\UnevenSkillPenalty.cs" />
+    <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -75,13 +77,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Player.cs" />
+    <Compile Include="Model\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -108,6 +110,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

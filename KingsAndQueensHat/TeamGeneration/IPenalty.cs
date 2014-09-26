@@ -1,4 +1,6 @@
-﻿namespace KingsAndQueensHat
+﻿using KingsAndQueensHat.Model;
+
+namespace KingsAndQueensHat.TeamGeneration
 {
     public interface IPenalty
     {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using KingsAndQueensHat.Model;
 
 namespace KingsAndQueensHat
 {
@@ -17,12 +18,12 @@ namespace KingsAndQueensHat
 
         public static IEnumerable<Player> WinningPlayers(this IPlayerProvider playerProvider, Gender gender)
         {
-            return playerProvider.Players.Where(p => p.Gender == gender && p.Wins == playerProvider.MaxWins(gender));
+            return playerProvider.Players.Where(p => p.Gender == gender && p.GameScore == playerProvider.MaxGameScore(gender));
         }
 
-        public static int MaxWins(this IPlayerProvider playerProvider, Gender gender)
+        public static int MaxGameScore(this IPlayerProvider playerProvider, Gender gender)
         {
-            return playerProvider.Players.Where(p => p.Gender == gender).Max(p => p.Wins);
+            return playerProvider.Players.Where(p => p.Gender == gender).Max(p => p.GameScore);
         }
     }
 }

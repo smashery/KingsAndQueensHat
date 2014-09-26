@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using KingsAndQueensHat.Model;
 
-namespace KingsAndQueensHat
+namespace KingsAndQueensHat.TeamGeneration
 {
     public class TooManyWinnersPenalty : IPenalty
     {
@@ -20,9 +21,9 @@ namespace KingsAndQueensHat
 
         public double ScorePenaltyForGender(TeamSet teamSet, Gender gender)
         {
-            var maxWins = _players.MaxWins(gender);
+            var maxScore = _players.MaxGameScore(gender);
 
-            var winningPerTeam = teamSet.Teams.Select(t => t.Players.Count(p => p.Wins == maxWins)).ToList();
+            var winningPerTeam = teamSet.Teams.Select(t => t.Players.Count(p => p.GameScore == maxScore)).ToList();
 
             var totalWinning = winningPerTeam.Sum();
             var expectedWinnersPerTeam = totalWinning / (double)teamSet.TeamCount;

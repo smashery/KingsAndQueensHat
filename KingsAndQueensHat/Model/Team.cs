@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using KingsAndQueensHat.TeamGeneration;
 
-namespace KingsAndQueensHat
+namespace KingsAndQueensHat.Model
 {
     public class Team
     {
         public Team()
         {
             Players = new List<Player>();
+            GameResult = GameResult.NoneYet;
         }
 
         public List<Player> Players { get; private set; }
+
+        public GameResult GameResult { get; private set; }
 
         public void AddPlayer(Player player)
         {
@@ -64,11 +65,13 @@ namespace KingsAndQueensHat
             }
         }
 
-        public void Won()
+        public void GameDone(GameResult gameResult)
         {
+            Trace.Assert(GameResult == GameResult.NoneYet);
+            GameResult = gameResult;
             foreach (var player in Players)
             {
-                player.WonGame();
+                player.GameDone(gameResult);
             }
         }
 

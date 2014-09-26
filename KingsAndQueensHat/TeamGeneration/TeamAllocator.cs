@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using KingsAndQueensHat.Model;
+using KingsAndQueensHat.Utils;
 
-namespace KingsAndQueensHat
+namespace KingsAndQueensHat.TeamGeneration
 {
     /// <summary>
     /// Allocates a set of players to a set of teams

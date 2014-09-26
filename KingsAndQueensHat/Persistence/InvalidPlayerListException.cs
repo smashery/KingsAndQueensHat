@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KingsAndQueensHat
+namespace KingsAndQueensHat.Persistence
 {
     public class InvalidPlayerListException : Exception
     {

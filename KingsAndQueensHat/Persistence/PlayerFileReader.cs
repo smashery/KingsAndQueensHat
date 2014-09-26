@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using KingsAndQueensHat.Model;
 
-namespace KingsAndQueensHat
+namespace KingsAndQueensHat.Persistence
 {
     public class PlayerFileReader : IPlayerProvider
     {

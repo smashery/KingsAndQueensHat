@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using KingsAndQueensHat.Model;
 
-namespace KingsAndQueensHat
+namespace KingsAndQueensHat.TeamGeneration
 {
     /// <summary>
     /// Records numbers of games that a pair of players have played together previously

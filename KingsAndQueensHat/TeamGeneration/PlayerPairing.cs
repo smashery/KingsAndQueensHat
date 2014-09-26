@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Diagnostics;
+using KingsAndQueensHat.Model;
 
-namespace KingsAndQueensHat
+namespace KingsAndQueensHat.TeamGeneration
 {
     public class PlayerPairing : IEquatable<PlayerPairing>
     {

@@ -1,4 +1,4 @@
-﻿namespace KingsAndQueensHat
+﻿namespace KingsAndQueensHat.Model
 {
     public enum Gender
     {

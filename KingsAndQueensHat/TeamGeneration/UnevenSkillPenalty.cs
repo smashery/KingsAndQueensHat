@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using KingsAndQueensHat.Model;
 
-namespace KingsAndQueensHat
+namespace KingsAndQueensHat.TeamGeneration
 {
     public class UnevenSkillPenalty : IPenalty
     {

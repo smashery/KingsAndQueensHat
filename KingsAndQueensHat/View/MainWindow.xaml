@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Button Content="Generate" HorizontalAlignment="Left" Margin="14,47,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button Content="Generate" HorizontalAlignment="Left" Margin="201,20,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
         <Label Content="Faster" HorizontalAlignment="Left" Margin="14,16,0,0" VerticalAlignment="Top"/>
         <Label Content="Better" HorizontalAlignment="Left" Margin="141,16,0,0" VerticalAlignment="Top"/>
-        <Slider HorizontalAlignment="Left" Margin="61,20,0,0" VerticalAlignment="Top" Width="75"/>
-        <ItemsControl ItemsSource="{Binding Teams}" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top">
+        <Slider Name="SpeedSlider" HorizontalAlignment="Left" Margin="61,20,0,0" VerticalAlignment="Top" Width="75" Minimum="0" Maximum="100" Value="20"/>
+        <ItemsControl ItemsSource="{Binding Teams}" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" ItemsSource="{Binding Players}"/>

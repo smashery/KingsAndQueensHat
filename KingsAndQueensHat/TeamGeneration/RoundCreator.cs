@@ -6,10 +6,10 @@ namespace KingsAndQueensHat.TeamGeneration
 {
     public class RoundCreator
     {
-        public TeamSet CreateApproximatelyOptimalTeams(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider)
+        public TeamSet CreateApproximatelyOptimalTeams(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider, int numTeamGens, int numTeams)
         {
-            var allocator = new TeamAllocator(NumTeams);
-            var allPossibleTeamSets = Enumerable.Range(0, NumberToTest).Select(x => allocator.CreateTeams(playerProvider)).ToList();
+            var allocator = new TeamAllocator(numTeams);
+            var allPossibleTeamSets = Enumerable.Range(0, numTeamGens).Select(x => allocator.CreateTeams(playerProvider)).ToList();
 
             var totalProportionateScores = allPossibleTeamSets.ToDictionary(teamSet => teamSet, teamSet => 0.0);
 
@@ -35,8 +35,5 @@ namespace KingsAndQueensHat.TeamGeneration
             var smallestValue = totalProportionateScores.Min(tps => tps.Value);
             return totalProportionateScores.First(x => x.Value == smallestValue).Key;
         }
-
-        public const int NumberToTest = 30000;
-        const int NumTeams = 4;
     }
 }

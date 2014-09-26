@@ -29,16 +29,23 @@ namespace KingsAndQueensHat.Model
         public ObservableCollection<Team> Teams { get; private set; }
 
 
-
-        public void CreateNewRound()
+        /// <summary>
+        /// Create a new set of teams
+        /// </summary>
+        /// <param name="speed">Optimisation hint (0..100)</param>
+        public void CreateNewRound(double speed)
         {
+            // Run between 5000 and ~1 million
+
+            var numTeamGens = (int)(speed * 10000 + 5000);
+
             var teamCreator = new RoundCreator();
             var penalty1 = new UnevenSkillPenalty();
             var penalty2 = new PlayerPairings();
             var penalty3 = new TooManyWinnersPenalty(PlayerProvider);
             var penalties = new IPenalty[] { penalty1, penalty2, penalty3 };
 
-            var teams = teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider);
+            var teams = teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, 4);
             teams.AddRoundToPairingCount(penalty2);
             Rounds.Add(teams);
 

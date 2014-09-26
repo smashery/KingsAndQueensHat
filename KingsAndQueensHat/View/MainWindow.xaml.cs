@@ -25,7 +25,7 @@ namespace KingsAndQueensHat.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Tournament.CreateNewRound();
+            Tournament.CreateNewRound(SpeedSlider.Value);
         }
     }
 }

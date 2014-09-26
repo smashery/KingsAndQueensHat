@@ -56,5 +56,10 @@ namespace KingsAndQueensHat.TeamGeneration
 
         public double Weighting { get { return 1.0; } }
         public int NumberOfRepairings { get { return _roundsPlayedTogether.Sum(r => r.Value - 1); } }
+
+        public void Clear()
+        {
+            _roundsPlayedTogether.Clear();
+        }
     }
 }

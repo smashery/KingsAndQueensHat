@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using KingsAndQueensHat.TeamGeneration;
+using System.Xml.Serialization;
 
 namespace KingsAndQueensHat.Model
 {
@@ -15,28 +16,32 @@ namespace KingsAndQueensHat.Model
 
         public List<Player> Players { get; private set; }
 
-        public GameResult GameResult { get; private set; }
+        public GameResult GameResult { get; set; }
 
         public void AddPlayer(Player player)
         {
             Players.Add(player);
         }
 
+        [XmlIgnore]
         public int TotalSkill
         {
             get { return Players.Sum(p => p.Skill); }
         }
-        
+
+        [XmlIgnore]
         public int PlayerCount
         {
             get { return Players.Count; }
         }
 
+        [XmlIgnore]
         public int Men
         {
             get { return Players.Count(p => p.Gender == Gender.Male); }
         }
 
+        [XmlIgnore]
         public int Women
         {
             get { return Players.Count(p => p.Gender == Gender.Female); }

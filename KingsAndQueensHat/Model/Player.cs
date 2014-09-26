@@ -1,4 +1,6 @@
-﻿namespace KingsAndQueensHat.Model
+﻿using System;
+using System.Xml.Serialization;
+namespace KingsAndQueensHat.Model
 {
     public class Player
     {
@@ -9,12 +11,21 @@
             Gender = gender;
             GameScore = 0;
         }
+
+        protected Player()
+        {
+
+        }
+        
         public string Name { get; set; }
-        public int Skill { get; set; }
+
+        [XmlIgnore]
         public Gender Gender { get; set; }
 
+        [XmlIgnore]
+        public int Skill { get; set; }
 
-
+        [XmlIgnore]
         public int GameScore { get; private set; }
 
         public override string ToString()

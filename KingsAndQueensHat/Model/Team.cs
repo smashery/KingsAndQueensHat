@@ -1,14 +1,26 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Input;
+using KingsAndQueensHat.Annotations;
 using KingsAndQueensHat.TeamGeneration;
+using KingsAndQueensHat.Utils;
 
 namespace KingsAndQueensHat.Model
 {
-    public class Team
+    public class Team : INotifyPropertyChanged
     {
-        public Team()
+        public string Name { get; set; }
+        private CommandHandler _wonCommand;
+        private CommandHandler _lostCommand;
+        private CommandHandler _drewCommand;
+
+        public Team(string name)
         {
+            Name = name;
             Players = new List<Player>();
             GameResult = GameResult.NoneYet;
         }
@@ -17,6 +29,18 @@ namespace KingsAndQueensHat.Model
 
         public GameResult GameResult { get; private set; }
 
+        public string GameResultStr
+        {
+            get 
+            {
+                if (GameResult == GameResult.NoneYet)
+                {
+                    return string.Empty;
+                }
+                return GameResult.ToString();
+            }
+        }
+
         public void AddPlayer(Player player)
         {
             Players.Add(player);
@@ -24,7 +48,7 @@ namespace KingsAndQueensHat.Model
 
         public int TotalSkill
         {
-            get { return Players.Sum(p => p.Skill); }
+            get { return Players.Sum(p => p.GetSkill()); }
         }
         
         public int PlayerCount
@@ -65,19 +89,57 @@ namespace KingsAndQueensHat.Model
             }
         }
 
-        public void GameDone(GameResult gameResult)
+        private void GameDone(GameResult gameResult)
         {
-            Trace.Assert(GameResult == GameResult.NoneYet);
+            //Trace.Assert(GameResult == GameResult.NoneYet);
             GameResult = gameResult;
             foreach (var player in Players)
             {
                 player.GameDone(gameResult);
+            }
+
+            OnPropertyChanged("GameResultStr");
+            _wonCommand.RaiseCanExecuteChanged();
+            _drewCommand.RaiseCanExecuteChanged();
+            _lostCommand.RaiseCanExecuteChanged();
+        }
+
+        public ICommand Won
+        {
+            get
+            {
+                return _wonCommand ?? (_wonCommand = new CommandHandler(() => GameDone(GameResult.Won), () => GameResult == GameResult.NoneYet));
+            }
+        }
+
+        public ICommand Drew
+        {
+            get
+            {
+                return _drewCommand ?? (_drewCommand = new CommandHandler(() => GameDone(GameResult.Draw), () => GameResult == GameResult.NoneYet));
+            }
+        }
+
+        public ICommand Lost
+        {
+            get
+            {
+                return _lostCommand ?? (_lostCommand = new CommandHandler(() => GameDone(GameResult.Lost), () => GameResult == GameResult.NoneYet));
             }
         }
 
         public override string ToString()
         {
             return string.Format("{0} Men, {1} Women. Skill: {2}", Men, Women, TotalSkill);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

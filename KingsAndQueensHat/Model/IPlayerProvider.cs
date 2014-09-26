@@ -13,7 +13,7 @@ namespace KingsAndQueensHat
     {
         public static int TotalSkill(this IPlayerProvider playerProvider)
         {
-            return playerProvider.Players.Sum(p => p.Skill);
+            return playerProvider.Players.Sum(p => p.GetSkill());
         }
 
         public static IEnumerable<Player> WinningPlayers(this IPlayerProvider playerProvider, Gender gender)

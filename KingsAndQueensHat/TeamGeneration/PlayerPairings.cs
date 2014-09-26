@@ -12,8 +12,6 @@ namespace KingsAndQueensHat.TeamGeneration
     {
         private readonly Dictionary<PlayerPairing, int> _roundsPlayedTogether = new Dictionary<PlayerPairing, int>();
 
-        private const int FudgeFactor = 10;
-
         public double ScorePenalty(TeamSet teamSet)
         {
             var penalty = 0;
@@ -35,14 +33,14 @@ namespace KingsAndQueensHat.TeamGeneration
 
         private int ScorePenaltyFor(int gamesTogether)
         {
-            if (gamesTogether < 1)
+            if (gamesTogether == 0)
             {
                 return 0;
             }
 
-            // This formula is set up such that one pair playing together three times is worse than 
-            // two playing together twice.
-            return FudgeFactor * (int)Math.Pow(2, (gamesTogether)) - FudgeFactor / 2;
+            // Playing with the same people 3 or 4 times is really bad in a short hat tournament
+            // So make the penalty for each successive game together 3 times higher than the last
+            return (int)Math.Pow(3, (gamesTogether));
         }
 
         public void PlayedTogether(PlayerPairing playerPairing)

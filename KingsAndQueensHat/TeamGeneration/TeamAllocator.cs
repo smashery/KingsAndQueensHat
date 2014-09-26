@@ -16,9 +16,7 @@ namespace KingsAndQueensHat.TeamGeneration
 
         public TeamSet CreateTeams(IPlayerProvider playerProvider)
         {
-            var teams = Enumerable.Range(0, NumTeams).Select(i => new Team()).ToList();
-
-            var totalSkill = playerProvider.TotalSkill();
+            var teams = Enumerable.Range(0, NumTeams).Select(i => new Team(string.Format("Team {0}", i + 1))).ToList();
 
             var males = playerProvider.Players.Where(p => p.Gender == Gender.Male).ToList().Shuffle();
             var females = playerProvider.Players.Where(p => p.Gender == Gender.Female).ToList().Shuffle();

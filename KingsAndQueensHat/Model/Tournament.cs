@@ -15,7 +15,7 @@ namespace KingsAndQueensHat.Model
         public Tournament()
         {
             PlayerProvider = new PlayerFileReader(@"TestData.csv");
-            Players = new ObservableCollection<Player>(PlayerProvider.Players.OrderByDescending(p => p.Skill));
+            Players = new ObservableCollection<Player>(PlayerProvider.Players.OrderByDescending(p => p.GetSkill()));
             Rounds = new ObservableCollection<TeamSet>();
             Teams = new ObservableCollection<Team>();
         }
@@ -36,9 +36,9 @@ namespace KingsAndQueensHat.Model
         /// <param name="teamCount">The number of teams to generate</param>
         public void CreateNewRound(double speed, int teamCount)
         {
-            // Run between 5000 and 100000
+            // Run between 5000 and ~300000 attempts
 
-            var numTeamGens = (int)(speed * 1000 + 5000);
+            var numTeamGens = (int)(speed * 3000 + 5000);
 
             var teamCreator = new RoundCreator();
             var penalty1 = new UnevenSkillPenalty();

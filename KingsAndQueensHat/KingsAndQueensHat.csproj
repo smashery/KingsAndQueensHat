@@ -53,6 +53,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Utils\CommandHandler.cs" />
     <Compile Include="Model\GameResult.cs" />
     <Compile Include="Model\Gender.cs" />
     <Compile Include="Model\Tournament.cs" />

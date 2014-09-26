@@ -25,7 +25,11 @@ namespace KingsAndQueensHat.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Tournament.CreateNewRound(SpeedSlider.Value);
+            int teamCount;
+            if (int.TryParse(TeamCountBox.Text, out teamCount))
+            {
+                Tournament.CreateNewRound(SpeedSlider.Value, teamCount);
+            }
         }
     }
 }

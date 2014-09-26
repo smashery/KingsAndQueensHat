@@ -33,11 +33,12 @@ namespace KingsAndQueensHat.Model
         /// Create a new set of teams
         /// </summary>
         /// <param name="speed">Optimisation hint (0..100)</param>
-        public void CreateNewRound(double speed)
+        /// <param name="teamCount">The number of teams to generate</param>
+        public void CreateNewRound(double speed, int teamCount)
         {
-            // Run between 5000 and ~1 million
+            // Run between 5000 and 100000
 
-            var numTeamGens = (int)(speed * 10000 + 5000);
+            var numTeamGens = (int)(speed * 1000 + 5000);
 
             var teamCreator = new RoundCreator();
             var penalty1 = new UnevenSkillPenalty();
@@ -45,7 +46,7 @@ namespace KingsAndQueensHat.Model
             var penalty3 = new TooManyWinnersPenalty(PlayerProvider);
             var penalties = new IPenalty[] { penalty1, penalty2, penalty3 };
 
-            var teams = teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, 4);
+            var teams = teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, teamCount);
             teams.AddRoundToPairingCount(penalty2);
             Rounds.Add(teams);
 

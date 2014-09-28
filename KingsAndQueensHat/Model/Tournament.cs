@@ -47,6 +47,7 @@ namespace KingsAndQueensHat.Model
                     }
                     var teams = doc.SelectNodes("/TeamSet/Teams/Team");
                     var teamList = new List<Team>();
+                    bool allGamesScored = true;
                     foreach (XmlNode team in teams)
                     {
                         var teamName = team.SelectSingleNode("Name").InnerText;
@@ -68,6 +69,10 @@ namespace KingsAndQueensHat.Model
                             {
                                 t.GameDone(gameResult);
                             }
+                            else
+                            {
+                                allGamesScored = false;
+                            }
                         }
 
                         teamList.Add(t);
@@ -75,11 +80,25 @@ namespace KingsAndQueensHat.Model
                     var round = new TeamSet(teamList);
                     Rounds.Add(round);
                     round.AddRoundToPairingCount(_playerPairings);
+
+                    if (!allGamesScored)
+                    {
+                        UpdateTeams(round);
+                    }
                 }
                 catch (Exception)
                 {
                     // Let's just be overly lenient here
                 }
+            }
+        }
+
+        private void UpdateTeams(TeamSet round)
+        {
+            Teams.Clear();
+            foreach (Team team in round.Teams)
+            {
+                Teams.Add(team);
             }
         }
 
@@ -121,11 +140,7 @@ namespace KingsAndQueensHat.Model
                 teams.SaveToFile(stream);
             }
 
-            Teams.Clear();
-            foreach (Team team in teams.Teams)
-            {
-                Teams.Add(team);
-            }
+            UpdateTeams(teams);
         }
     }
 }

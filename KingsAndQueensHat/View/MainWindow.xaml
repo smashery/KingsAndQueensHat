@@ -19,7 +19,13 @@
                         <Label Content="{Binding Name}"/>
                         <Label Content="{Binding GameResultStr}"/>
                         <StackPanel Orientation="Horizontal">
-                            <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" ItemsSource="{Binding Players}"/>
+	                    <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" ItemsSource="{Binding Players}" RowStyle="{StaticResource HighlightRow}">
+	                        <DataGrid.Columns>
+	                            <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+	                            <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
+	                            <DataGridTextColumn Header="GameScore" Binding="{Binding GameScore}"/>
+	                        </DataGrid.Columns>
+	                    </DataGrid>
                             <StackPanel Orientation="Vertical">
                                 <Button Content="Won!" Margin="5" Width="75" Command="{Binding Path=Won}"/>
                                 <Button Content="Lost!" Margin="5" Width="75" Command="{Binding Path=Lost}"/>

@@ -13,7 +13,10 @@ namespace KingsAndQueensHat.View
         {
             InitializeComponent();
             Tournament = new Tournament();
+            Tournament.LoadExistingData();
             DataContext = Tournament;
+
+            
         }
 
         public Tournament Tournament { get; set; }

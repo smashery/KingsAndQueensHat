@@ -8,6 +8,7 @@ using System.Windows.Input;
 using KingsAndQueensHat.Annotations;
 using KingsAndQueensHat.TeamGeneration;
 using KingsAndQueensHat.Utils;
+using System.Xml.Serialization;
 
 namespace KingsAndQueensHat.Model
 {
@@ -25,9 +26,16 @@ namespace KingsAndQueensHat.Model
             GameResult = GameResult.NoneYet;
         }
 
+        /// <summary>
+        /// For serialisation
+        /// </summary>
+        protected Team()
+        {
+        }
+
         public List<Player> Players { get; private set; }
 
-        public GameResult GameResult { get; private set; }
+        public GameResult GameResult { get; set; }
 
         public string GameResultStr
         {
@@ -46,21 +54,25 @@ namespace KingsAndQueensHat.Model
             Players.Add(player);
         }
 
+        [XmlIgnore]
         public int TotalSkill
         {
             get { return Players.Sum(p => p.GetSkill()); }
         }
-        
+
+        [XmlIgnore]
         public int PlayerCount
         {
             get { return Players.Count; }
         }
 
+        [XmlIgnore]
         public int Men
         {
             get { return Players.Count(p => p.Gender == Gender.Male); }
         }
 
+        [XmlIgnore]
         public int Women
         {
             get { return Players.Count(p => p.Gender == Gender.Female); }
@@ -89,7 +101,7 @@ namespace KingsAndQueensHat.Model
             }
         }
 
-        private void GameDone(GameResult gameResult)
+        public void GameDone(GameResult gameResult)
         {
             //Trace.Assert(GameResult == GameResult.NoneYet);
             GameResult = gameResult;

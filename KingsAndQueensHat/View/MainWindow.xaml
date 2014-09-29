@@ -23,9 +23,9 @@
                         <StackPanel Orientation="Horizontal">
                             <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" ItemsSource="{Binding Players}" RowStyle="{StaticResource HighlightRow}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                                    <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
-                                    <DataGridTextColumn Header="GameScore" Binding="{Binding GameScore}"/>
+                                    <DataGridTextColumn Header="Name" Width="140" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Header="Gender" Width="55" Binding="{Binding Gender}"/>
+                                    <DataGridTextColumn Header="GameScore" Width="72" Binding="{Binding GameScore}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <StackPanel Orientation="Vertical">

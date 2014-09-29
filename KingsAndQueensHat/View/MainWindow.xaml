@@ -1,8 +1,9 @@
 ﻿<Window x:Class="KingsAndQueensHat.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Thrustfest Team Generator 0.4" Height="724" Width="800" Background="Silver">
+        Title="Thrustfest Team Generator 0.5" Height="724" Width="800" Background="Silver" MinWidth="600" MinHeight="500">
     <Grid>
+        <Label Content="© Ashley Donaldson 2014" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom"/>
         <Rectangle Fill="SteelBlue" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="97"/>
         <Rectangle Fill="Black" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,97,0,0" Height="2"/>
         <Button Content="Generate New Teams" HorizontalAlignment="Right" Margin="0,68,10,0" VerticalAlignment="Top"  Click="Button_Click"/>
@@ -24,15 +25,15 @@
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="{Binding Name}"/>
-                            <Label Content="{Binding GameResultStr}"/>
+                            <Label Content="{Binding Name}" FontSize="18"/>
+                            <Label Content="{Binding GameResultStr}" FontSize="18"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" ItemsSource="{Binding Players}" RowStyle="{StaticResource HighlightRow}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Name" Width="140" Binding="{Binding Name}"/>
                                     <DataGridTextColumn Header="Gender" Width="55" Binding="{Binding Gender}"/>
-                                    <DataGridTextColumn Header="GameScore" Width="72" Binding="{Binding GameScore}"/>
+                                    <DataGridTextColumn Header="Points" Width="72" Binding="{Binding GameScore}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <StackPanel Orientation="Vertical">

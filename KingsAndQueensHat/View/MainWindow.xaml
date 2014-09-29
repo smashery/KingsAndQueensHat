@@ -1,13 +1,20 @@
 ﻿<Window x:Class="KingsAndQueensHat.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Thrustfest Team Generator 0.4" Height="724" Width="800">
+        Title="Thrustfest Team Generator 0.4" Height="724" Width="800" Background="Silver">
     <Grid>
-        <Button Content="Generate New Teams" HorizontalAlignment="Left" Margin="373,22,0,0" VerticalAlignment="Top"  Click="Button_Click"/>
-        <Label Content="Faster" HorizontalAlignment="Left" Margin="187,20,0,0" VerticalAlignment="Top"/>
-        <Label Content="Better" HorizontalAlignment="Left" Margin="314,20,0,0" VerticalAlignment="Top"/>
-        <Slider Name="SpeedSlider" HorizontalAlignment="Left" Margin="234,22,0,0" VerticalAlignment="Top" Width="75" Minimum="0" Maximum="100" Value="20"/>
-        <ItemsControl ItemsSource="{Binding Teams}" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top">
+        <Rectangle Fill="SteelBlue" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="97"/>
+        <Rectangle Fill="Black" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,97,0,0" Height="2"/>
+        <Button Content="Generate New Teams" HorizontalAlignment="Right" Margin="0,68,10,0" VerticalAlignment="Top"  Click="Button_Click"/>
+        <Label Content="Faster" HorizontalAlignment="Right" Margin="0,39,129,0" VerticalAlignment="Top"/>
+        <Label Content="Better" HorizontalAlignment="Right" Margin="0,39,10,0" VerticalAlignment="Top"/>
+        <Slider x:Name="SpeedSlider" HorizontalAlignment="Right" Margin="0,41,54,0" VerticalAlignment="Top" Width="75" Minimum="0" Maximum="100" Value="20"/>
+        <Label Content="Number of Teams:" HorizontalAlignment="Right" Margin="0,10,52,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="TeamCountBox" HorizontalAlignment="Right" Height="23" Margin="0,10,10,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="37"/>
+        <Label Content="Festivale dü Thrusté 2014" FontFamily="Old English Text MT" FontSize="36" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top"/>
+        <Label Content="Round:" FontSize="20" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top"/>
+        <Label Content="{Binding NumRounds}" FontSize="20" HorizontalAlignment="Left" Margin="77,51,0,0" VerticalAlignment="Top"/>
+        <ItemsControl ItemsSource="{Binding Teams}" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -29,18 +36,14 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                             <StackPanel Orientation="Vertical">
-                                <Button Content="Won!" Margin="5" Width="75" Command="{Binding Path=Won}"/>
-                                <Button Content="Lost!" Margin="5" Width="75" Command="{Binding Path=Lost}"/>
-                                <Button Content="Drew!" Margin="5" Width="75" Command="{Binding Path=Drew}"/>
+                                <Button Content="Won!" Margin="5" Width="75" Command="{Binding Won}"/>
+                                <Button Content="Lost!" Margin="5" Width="75" Command="{Binding Lost}"/>
+                                <Button Content="Drew!" Margin="5" Width="75" Command="{Binding Drew}"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Label Content="Number of Teams:" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="TeamCountBox" HorizontalAlignment="Left" Height="23" Margin="123,22,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="37"/>
-        <Label Content="Round:" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top"/>
-        <Label Content="{Binding NumRounds}" HorizontalAlignment="Left" Margin="57,51,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

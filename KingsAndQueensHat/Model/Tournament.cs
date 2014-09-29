@@ -111,9 +111,9 @@ namespace KingsAndQueensHat.Model
         /// <param name="teamCount">The number of teams to generate</param>
         public void CreateNewRound(double speed, int teamCount)
         {
-            // Run between 5000 and ~300000 attempts
+            // Run between 5000 and ~1000000 attempts
 
-            var numTeamGens = (int)(speed * 3000 + 5000);
+            var numTeamGens = (int)(speed * 10000 + 5000);
 
             var teamCreator = new RoundCreator();
             var penalty1 = new UnevenSkillPenalty();

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using KingsAndQueensHat.Model;
 
@@ -6,9 +8,8 @@ namespace KingsAndQueensHat.TeamGeneration
 {
     public class UnevenSkillPenalty : IPenalty
     {
-        public double ScorePenalty(TeamSet teamSet)
+        public double ScorePenalty(List<Team> teams)
         {
-            var teams = teamSet.Teams;
             var scores = teams.Select(team => team.TotalSkill).ToList();
             var total = scores.Sum();
             var teamCount = teams.Count;

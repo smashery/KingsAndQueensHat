@@ -6,7 +6,7 @@ namespace KingsAndQueensHat.TeamGeneration
 {
     public class RoundCreator
     {
-        public TeamSet CreateApproximatelyOptimalTeams(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider, int numTeamGens, int numTeams)
+        public List<Team> CreateApproximatelyOptimalTeams(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider, int numTeamGens, int numTeams)
         {
             var allocator = new TeamAllocator(numTeams);
             var allPossibleTeamSets = Enumerable.Range(0, numTeamGens).Select(x => allocator.CreateTeams(playerProvider)).ToList();

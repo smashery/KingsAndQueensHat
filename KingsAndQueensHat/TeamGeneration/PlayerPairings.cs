@@ -12,11 +12,11 @@ namespace KingsAndQueensHat.TeamGeneration
     {
         private readonly Dictionary<PlayerPairing, int> _roundsPlayedTogether = new Dictionary<PlayerPairing, int>();
 
-        public double ScorePenalty(TeamSet teamSet)
+        public double ScorePenalty(List<Team> teamSet)
         {
             var penalty = 0;
             var sum = 0;
-            foreach (var team in teamSet.Teams)
+            foreach (var team in teamSet)
             {
                 foreach (var playerPairing in team.PlayerPairings())
                 {

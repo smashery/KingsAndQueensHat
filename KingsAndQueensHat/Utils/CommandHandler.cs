@@ -21,7 +21,11 @@ namespace KingsAndQueensHat.Utils
 
         public void RaiseCanExecuteChanged()
         {
-            CanExecuteChanged(this, new EventArgs());
+            var @event = CanExecuteChanged;
+            if (@event != null)
+            {
+                @event(this, new EventArgs());
+            }
         }
 
         public event EventHandler CanExecuteChanged;

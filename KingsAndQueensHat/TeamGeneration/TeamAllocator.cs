@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using KingsAndQueensHat.Model;
 using KingsAndQueensHat.Utils;
 
@@ -14,7 +16,7 @@ namespace KingsAndQueensHat.TeamGeneration
             NumTeams = numTeams;
         }
 
-        public TeamSet CreateTeams(IPlayerProvider playerProvider)
+        public List<Team> CreateTeams(IPlayerProvider playerProvider)
         {
             var teams = Enumerable.Range(0, NumTeams).Select(i => new Team(string.Format("Team {0}", i + 1))).ToList();
 
@@ -30,7 +32,7 @@ namespace KingsAndQueensHat.TeamGeneration
                 teamLoop.MoveNext();
                 teamLoop.Current.AddPlayer(player);
             }
-            return new TeamSet(teams);
+            return teams;
         }
 
         public int NumTeams { get; set; }

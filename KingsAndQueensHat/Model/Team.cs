@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -32,6 +33,8 @@ namespace KingsAndQueensHat.Model
         protected Team()
         {
         }
+
+        public event EventHandler OnGameDone;
 
         public List<Player> Players { get; private set; }
 
@@ -103,7 +106,7 @@ namespace KingsAndQueensHat.Model
 
         public void GameDone(GameResult gameResult)
         {
-            //Trace.Assert(GameResult == GameResult.NoneYet);
+            Trace.Assert(GameResult == GameResult.NoneYet);
             GameResult = gameResult;
             foreach (var player in Players)
             {
@@ -111,12 +114,17 @@ namespace KingsAndQueensHat.Model
             }
 
             OnPropertyChanged("GameResultStr");
-            _wonCommand.RaiseCanExecuteChanged();
-            _drewCommand.RaiseCanExecuteChanged();
-            _lostCommand.RaiseCanExecuteChanged();
+            Won.RaiseCanExecuteChanged();
+            Drew.RaiseCanExecuteChanged();
+            Lost.RaiseCanExecuteChanged();
+            var @event = OnGameDone;
+            if (@event != null)
+            {
+                @event(this, new EventArgs());
+            }
         }
 
-        public ICommand Won
+        public CommandHandler Won
         {
             get
             {
@@ -124,7 +132,7 @@ namespace KingsAndQueensHat.Model
             }
         }
 
-        public ICommand Drew
+        public CommandHandler Drew
         {
             get
             {
@@ -132,7 +140,7 @@ namespace KingsAndQueensHat.Model
             }
         }
 
-        public ICommand Lost
+        public CommandHandler Lost
         {
             get
             {

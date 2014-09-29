@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Documents;
+using KingsAndQueensHat.Annotations;
 using KingsAndQueensHat.Persistence;
 using KingsAndQueensHat.TeamGeneration;
 using System.IO;
@@ -13,7 +16,7 @@ namespace KingsAndQueensHat.Model
     /// <summary>
     /// Root of the model
     /// </summary>
-    public class Tournament
+    public class Tournament : INotifyPropertyChanged
     {
         public Tournament()
         {
@@ -29,6 +32,8 @@ namespace KingsAndQueensHat.Model
 
         public ObservableCollection<TeamSet> Rounds { get; private set; }
         public ObservableCollection<Team> Teams { get; private set; }
+
+        public int NumRounds { get { return Rounds.Count; }}
 
         public void LoadExistingData()
         {
@@ -47,7 +52,6 @@ namespace KingsAndQueensHat.Model
                     }
                     var teams = doc.SelectNodes("/TeamSet/Teams/Team");
                     var teamList = new List<Team>();
-                    bool allGamesScored = true;
                     foreach (XmlNode team in teams)
                     {
                         var teamName = team.SelectSingleNode("Name").InnerText;
@@ -69,22 +73,12 @@ namespace KingsAndQueensHat.Model
                             {
                                 t.GameDone(gameResult);
                             }
-                            else
-                            {
-                                allGamesScored = false;
-                            }
                         }
 
                         teamList.Add(t);
                     }
-                    var round = new TeamSet(teamList);
-                    Rounds.Add(round);
-                    round.AddRoundToPairingCount(_playerPairings);
-
-                    if (!allGamesScored)
-                    {
-                        UpdateTeams(round);
-                    }
+                    var round = new TeamSet(teamList, file);
+                    AddRound(round);
                 }
                 catch (Exception)
                 {
@@ -93,13 +87,16 @@ namespace KingsAndQueensHat.Model
             }
         }
 
-        private void UpdateTeams(TeamSet round)
+        private void AddRound(TeamSet round)
         {
             Teams.Clear();
             foreach (Team team in round.Teams)
             {
                 Teams.Add(team);
             }
+            Rounds.Add(round);
+            round.AddRoundToPairingCount(_playerPairings);
+            OnPropertyChanged("NumRounds");
         }
 
         /// <summary>
@@ -125,8 +122,6 @@ namespace KingsAndQueensHat.Model
 
             var teams = teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, teamCount);
             
-            Rounds.Add(teams);
-            teams.AddRoundToPairingCount(_playerPairings);
             string filename;
             int i = 1;
             do
@@ -135,12 +130,19 @@ namespace KingsAndQueensHat.Model
                 i++;
             } while (File.Exists(filename));
 
-            using (var stream = new FileStream(filename, FileMode.Create))
-            {
-                teams.SaveToFile(stream);
-            }
+            var round = new TeamSet(teams, filename);
+            round.SaveToFile();
 
-            UpdateTeams(teams);
+            AddRound(round);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -50,18 +50,28 @@ namespace KingsAndQueensHat.Model
             return string.Format("{0}: {1} (Score {2})", Name, Skill, GameScore);
         }
 
-        public void GameDone(GameResult gameResult)
+        public void GameDone(GameResult gameResult, GameResult oldGameResult)
         {
-            switch (gameResult)
+            // Undo the old game result
+            GameScore -= ScoreFor(oldGameResult);
+
+            // Apply the new game result
+            GameScore += ScoreFor(gameResult);
+
+            OnPropertyChanged("GameScore");
+        }
+
+        private int ScoreFor(GameResult result)
+        {
+            switch (result)
             {
                 case GameResult.Won:
-                    GameScore += 2;
-                    break;
+                    return 2;
                 case GameResult.Draw:
-                    GameScore += 1;
-                    break;
+                    return 1;
+                default:
+                    return 0;
             }
-            OnPropertyChanged("GameScore");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

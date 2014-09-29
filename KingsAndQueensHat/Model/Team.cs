@@ -106,11 +106,11 @@ namespace KingsAndQueensHat.Model
 
         public void GameDone(GameResult gameResult)
         {
-            Trace.Assert(GameResult == GameResult.NoneYet);
+            var oldGameResult = GameResult;
             GameResult = gameResult;
             foreach (var player in Players)
             {
-                player.GameDone(gameResult);
+                player.GameDone(gameResult, oldGameResult);
             }
 
             OnPropertyChanged("GameResultStr");
@@ -128,7 +128,7 @@ namespace KingsAndQueensHat.Model
         {
             get
             {
-                return _wonCommand ?? (_wonCommand = new CommandHandler(() => GameDone(GameResult.Won), () => GameResult == GameResult.NoneYet));
+                return _wonCommand ?? (_wonCommand = new CommandHandler(() => GameDone(GameResult.Won), () => GameResult != GameResult.Won));
             }
         }
 
@@ -136,7 +136,7 @@ namespace KingsAndQueensHat.Model
         {
             get
             {
-                return _drewCommand ?? (_drewCommand = new CommandHandler(() => GameDone(GameResult.Draw), () => GameResult == GameResult.NoneYet));
+                return _drewCommand ?? (_drewCommand = new CommandHandler(() => GameDone(GameResult.Draw), () => GameResult != GameResult.Draw));
             }
         }
 
@@ -144,7 +144,7 @@ namespace KingsAndQueensHat.Model
         {
             get
             {
-                return _lostCommand ?? (_lostCommand = new CommandHandler(() => GameDone(GameResult.Lost), () => GameResult == GameResult.NoneYet));
+                return _lostCommand ?? (_lostCommand = new CommandHandler(() => GameDone(GameResult.Lost), () => GameResult != GameResult.Lost));
             }
         }
 

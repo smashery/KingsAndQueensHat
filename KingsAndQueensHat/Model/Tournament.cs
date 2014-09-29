@@ -25,7 +25,7 @@ namespace KingsAndQueensHat.Model
         public Tournament(IPlayerProvider playerProvider)
         {
             PlayerProvider = playerProvider;
-            ActivePlayers = new ObservableCollection<Player>(PlayerProvider.ActivePlayers);
+            PlayerProvider = new PlayerFileReader(@"TestData.csv");
             AllPlayers = new ObservableCollection<Player>(PlayerProvider.AllPlayers);
             Rounds = new ObservableCollection<HatRound>();
         }
@@ -44,7 +44,7 @@ namespace KingsAndQueensHat.Model
             Rounds.Clear();
             _playerPairings.Clear();
 
-            var files = Directory.EnumerateFiles(".", "*.hatround");
+            var files = Directory.EnumerateFiles(".", string.Format("*{0}", Constants.DataFileExtension));
             foreach (var file in files)
             {
                 try
@@ -158,7 +158,7 @@ namespace KingsAndQueensHat.Model
             int i = 1;
             do
             {
-                filename = string.Format("{0}.hatround", i);
+                filename = string.Format("{0}{1}", i, Constants.DataFileExtension);
                 i++;
             } while (File.Exists(filename));
 

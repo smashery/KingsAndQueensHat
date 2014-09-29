@@ -68,6 +68,7 @@
     <Compile Include="TeamGeneration\IPenalty.cs" />
     <Compile Include="Model\IPlayerProvider.cs" />
     <Compile Include="Utils\ICancelDialog.cs" />
+    <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\ListExtensions.cs" />
     <Compile Include="Persistence\PlayerFileReader.cs" />
     <Compile Include="TeamGeneration\PlayerPairing.cs" />

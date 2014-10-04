@@ -59,5 +59,10 @@ namespace KingsAndQueensHat.Model
                 team.AddToPairingsCount(pairings);
             }
         }
+
+        internal void DeleteFile()
+        {
+            File.Delete(_filename);
+        }
     }
 }

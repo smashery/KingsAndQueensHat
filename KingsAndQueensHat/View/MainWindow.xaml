@@ -15,6 +15,8 @@
         <Label Content="Festivale dü Thrusté 2014" FontFamily="Old English Text MT" FontSize="36" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top"/>
         <Label Content="Round:" FontSize="20" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top"/>
         <Label Content="{Binding NumRounds}" FontSize="20" HorizontalAlignment="Left" Margin="77,51,0,0" VerticalAlignment="Top"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="120,63,0,0" VerticalAlignment="Top" Width="47" Name="DeleteButton" IsEnabled="{Binding CanDeleteRound}" Click="DeleteButton_Click"/>
+        <Button Content="Delete All" Name="DeleteAllButton" HorizontalAlignment="Left" Margin="182,63,0,0" VerticalAlignment="Top" Width="75" IsEnabled="{Binding CanDeleteRound}" Click="DeleteAllButton_Click"/>
         <ItemsControl ItemsSource="{Binding Teams}" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>

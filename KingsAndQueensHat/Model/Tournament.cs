@@ -12,6 +12,7 @@ using System.Xml;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using KingsAndQueensHat.Utils;
 
 namespace KingsAndQueensHat.Model
 {
@@ -91,14 +92,26 @@ namespace KingsAndQueensHat.Model
 
         private void AddRound(TeamSet round)
         {
-            Teams.Clear();
-            foreach (Team team in round.Teams)
-            {
-                Teams.Add(team);
-            }
+            SetCurrentRound(round);
             Rounds.Add(round);
             round.AddRoundToPairingCount(_playerPairings);
             OnPropertyChanged("NumRounds");
+            OnPropertyChanged("CanDeleteRound");
+        }
+
+        /// <summary>
+        /// Set the UI to the current set of teams
+        /// </summary>
+        private void SetCurrentRound(TeamSet round)
+        {
+            Teams.Clear();
+            if (round != null)
+            {
+                foreach (Team team in round.Teams)
+                {
+                    Teams.Add(team);
+                }
+            }
         }
 
         /// <summary>
@@ -145,6 +158,46 @@ namespace KingsAndQueensHat.Model
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public bool CanDeleteRound
+        {
+            get { return NumRounds > 0; }
+        }
+
+        internal void DeleteLastRound()
+        {
+            var lastRound = Rounds.LastOrDefault();
+            if (lastRound == null)
+            {
+                return;
+            }
+
+            lastRound.DeleteFile();
+            Rounds.Remove(lastRound);
+            var newTeams = Rounds.LastOrDefault();
+            SetCurrentRound(newTeams);
+            OnPropertyChanged("NumRounds");
+            OnPropertyChanged("CanDeleteRound");
+        }
+
+        internal void DeleteAllData()
+        {
+            while (Rounds.Count > 0)
+            {
+                var lastRound = Rounds.Last();
+                lastRound.DeleteFile();
+                Rounds.Remove(lastRound);
+            }
+            SetCurrentRound(null);
+            OnPropertyChanged("NumRounds");
+            OnPropertyChanged("CanDeleteRound");
+        }
+
+        internal bool AllTeamsHaveResults()
+        {
+            return Teams == null ||
+                   Teams.All(t => t.GameResult != GameResult.NoneYet);
         }
     }
 }

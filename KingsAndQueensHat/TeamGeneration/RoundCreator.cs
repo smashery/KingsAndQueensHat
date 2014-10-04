@@ -1,39 +1,86 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using KingsAndQueensHat.Model;
+using System;
 
 namespace KingsAndQueensHat.TeamGeneration
 {
     public class RoundCreator
     {
+        /// <summary>
+        /// Temporary, "working" result for team set selection
+        /// </summary>
+        private class PossibleTeamSet
+        {
+            public PossibleTeamSet(List<Team> teams, List<double> scores)
+            {
+                Teams = teams;
+                Scores = scores;
+            }
+            public List<Team> Teams;
+            public List<double> Scores;
+
+            public double NormalisedScore;
+        }
+
         public List<Team> CreateApproximatelyOptimalTeams(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider, int numTeamGens, int numTeams)
         {
-            var allocator = new TeamAllocator(numTeams);
-            var allPossibleTeamSets = Enumerable.Range(0, numTeamGens).Select(x => allocator.CreateTeams(playerProvider)).ToList();
+            List<PossibleTeamSet> teamsAndScores = GeneratePossibleTeamSets(penaltyScorers, playerProvider, numTeamGens, numTeams);
 
-            var totalProportionateScores = allPossibleTeamSets.ToDictionary(teamSet => teamSet, teamSet => 0.0);
+            SetNormalisedScores(teamsAndScores, penaltyScorers);
 
-            foreach (var penaltyScorer in penaltyScorers)
+            // Return the smallest one
+            var smallestValue = teamsAndScores.Min(tps => tps.NormalisedScore);
+            var result = teamsAndScores.First(x => x.NormalisedScore == smallestValue);
+            return result.Teams;
+        }
+
+        /// <summary>
+        /// Determine the dynamic range for each penalty (0..1) and add that to the normalised score for each
+        /// </summary>
+        /// <remarks>
+        /// This step is a lot faster
+        /// </remarks>
+        private static void SetNormalisedScores(List<PossibleTeamSet> teamsAndScores, IList<IPenalty> penaltyScorers)
+        {
+            for (int penaltyIndex = 0; penaltyIndex < penaltyScorers.Count; penaltyIndex++)
             {
-                var scores = allPossibleTeamSets.Select(teamSet => new {teamSet, score= penaltyScorer.ScorePenalty(teamSet)}).ToList();
-                var min = scores.Min(x => x.score);
-                var range = scores.Max(x => x.score) - min;
+                var weighting = penaltyScorers[penaltyIndex].Weighting;
+                var min = teamsAndScores.Min(x => x.Scores[penaltyIndex]);
+                double range = teamsAndScores.Max(x => x.Scores[penaltyIndex]) - min;
                 if (range == 0)
                 {
                     continue;
                 }
 
-                // Represent the score as a value from 0 to 1, based on how far across the range of values it was.
-                var scoresWithinRange = scores.Select(x => new {x.teamSet, proportion=(x.score - min) / (double)range});
-                foreach (var teamSetAndProportion in scoresWithinRange)
+                foreach (var possibleResult in teamsAndScores)
                 {
-                    totalProportionateScores[teamSetAndProportion.teamSet] += teamSetAndProportion.proportion * penaltyScorer.Weighting;
+                    var normalisedScore = (possibleResult.Scores[penaltyIndex] - min) / range;
+                    possibleResult.NormalisedScore += normalisedScore * weighting;
                 }
             }
+        }
 
-            // Return the smallest one
-            var smallestValue = totalProportionateScores.Min(tps => tps.Value);
-            return totalProportionateScores.First(x => x.Value == smallestValue).Key;
+        /// <summary>
+        /// Generate a lot of possible team sets.
+        /// </summary>
+        /// <remarks>
+        /// This step can take a while
+        /// </remarks>
+        private static List<PossibleTeamSet> GeneratePossibleTeamSets(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider, int numTeamGens, int numTeams)
+        {
+            var allocator = new TeamAllocator(numTeams);
+
+            List<PossibleTeamSet> teamsAndScores = new List<PossibleTeamSet>();
+
+            // Do all the heavy lifting up front
+            foreach (var i in Enumerable.Range(0, numTeamGens))
+            {
+                var teams = allocator.CreateTeams(playerProvider);
+                var scores = penaltyScorers.Select(pS => pS.ScorePenalty(teams)).ToList();
+                teamsAndScores.Add(new PossibleTeamSet(teams, scores));
+            }
+            return teamsAndScores;
         }
     }
 }

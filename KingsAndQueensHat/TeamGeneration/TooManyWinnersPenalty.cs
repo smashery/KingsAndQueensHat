@@ -35,9 +35,6 @@ namespace KingsAndQueensHat.TeamGeneration
             return result;
         }
 
-        /// <summary>
-        /// Having too many winners is less important than other factors
-        /// </summary>
-        public double Weighting { get { return 0.5; } }
+        public double Weighting { get { return 1.0; } }
     }
 }

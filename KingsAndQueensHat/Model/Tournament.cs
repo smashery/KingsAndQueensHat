@@ -138,19 +138,6 @@ namespace KingsAndQueensHat.Model
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        internal void DeleteLastRound()
-        {
-            var lastRound = Rounds.LastOrDefault();
-            if (lastRound == null)
-            {
-                return;
-            }
-
-            lastRound.DeleteFile();
-            Rounds.Remove(lastRound);
-            var newTeams = Rounds.LastOrDefault();
-        }
-
         internal void DeleteAllData()
         {
             while (Rounds.Count > 0)
@@ -159,6 +146,14 @@ namespace KingsAndQueensHat.Model
                 lastRound.DeleteFile();
                 Rounds.Remove(lastRound);
             }
+        }
+
+        internal void DeleteRound(int roundNum)
+        {
+            var round = Rounds[roundNum];
+            round.DeleteFile();
+            Rounds.RemoveAt(roundNum);
+
         }
     }
 }

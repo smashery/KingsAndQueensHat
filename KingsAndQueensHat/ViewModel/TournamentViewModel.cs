@@ -26,6 +26,7 @@ namespace KingsAndQueensHat.ViewModel
             Tournament = new Tournament(playerProvider);
             Tournament.LoadExistingData();
             TeamsThisRound = new ObservableCollection<Team>();
+            SetCurrentRound(NumRounds);
         }
 
         public Tournament Tournament { get; private set; }
@@ -51,13 +52,13 @@ namespace KingsAndQueensHat.ViewModel
             OnPropertyChanged("NumRounds");
             OnPropertyChanged("CanDeleteRound");
 
-            // Update UI
+            // Update UI with teams for this round
             SetCurrentRound(NumRounds);
         }
 
-        internal void DeleteLastRound()
+        internal void DeleteThisRound()
         {
-            Tournament.DeleteLastRound();
+            Tournament.DeleteRound(CurrentRound - 1);
             SetCurrentRound(NumRounds);
             OnPropertyChanged("NumRounds");
             OnPropertyChanged("CanDeleteRound");
@@ -80,7 +81,7 @@ namespace KingsAndQueensHat.ViewModel
         /// Set the current round to the 1-based round number within Tournament.Rounds.
         /// Set to 0 for "No current round"
         /// </summary>
-        private void SetCurrentRound(int roundNumber)
+        public void SetCurrentRound(int roundNumber)
         {
             CurrentRound = roundNumber;
 

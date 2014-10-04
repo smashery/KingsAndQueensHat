@@ -53,7 +53,7 @@ namespace KingsAndQueensHat.View
         {
             if (MessageBox.Show("Are you sure you want to permanently delete\r\nthese teams and their results?", "Confirm", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
             {
-                ViewModel.DeleteLastRound();
+                ViewModel.DeleteThisRound();
             }
         }
 

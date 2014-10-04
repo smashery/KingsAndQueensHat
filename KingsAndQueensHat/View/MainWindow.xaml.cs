@@ -35,19 +35,38 @@ namespace KingsAndQueensHat.View
         /// </summary>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (ViewModel.ProblematicResults)
+            {
+                if (MessageBox.Show("Results recorded are invalid.\r\nAre you sure you want to generate new rounds?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.No)
+                {
+                    return;
+                }
+            }
             // Warn the user if they're looking at the last round and haven't recorded results
             // (they will already have been warned for previous rounds)
-            if (ViewModel.CurrentRoundNumber == ViewModel.NumRounds && !ViewModel.AllTeamsHaveResults())
+            else if (ViewModel.CurrentRoundNumber == ViewModel.NumRounds && !ViewModel.AllTeamsHaveResults())
             {
                 if (MessageBox.Show("Not all teams have results recorded.\r\nAre you sure you want to generate new rounds?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.No)
                 {
                     return;
                 }
             }
+
             int teamCount;
             if (int.TryParse(TeamCountBox.Text, out teamCount))
             {
-                ViewModel.CreateNewTeam(teamCount, SpeedSlider.Value, (t, s) => new CancelDialog(t, s));
+                if (teamCount % 2 != 0)
+                {
+                    MessageBox.Show("Please enter an even number of teams", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    ViewModel.CreateNewRound(teamCount, SpeedSlider.Value, (t, s) => new CancelDialog(t, s));
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid number of teams", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

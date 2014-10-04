@@ -70,9 +70,14 @@ namespace KingsAndQueensHat.Model
             }
         }
 
-        internal void DeleteFile()
+        internal void Delete()
         {
             File.Delete(_filename);
+            foreach (var team in Teams)
+            {
+                // Undo all the players' scores
+                team.GameDone(GameResult.NoneYet);
+            }
         }
 
         public bool ProblematicResults
@@ -87,11 +92,11 @@ namespace KingsAndQueensHat.Model
                 // More than half the teams can't win or lose
                 if (numWins > numTeams / 2)
                 {
-                    return false;
+                    return true;
                 }
                 if (numLosses > numTeams / 2)
                 {
-                    return false;
+                    return true;
                 }
 
                 // Furthermore, if all games have been completed
@@ -100,15 +105,17 @@ namespace KingsAndQueensHat.Model
                     // Number of wins must equal number of losses
                     if (numWins != numLosses)
                     {
-                        return false;
+                        return true;
                     }
                     // And must be an even number of draws
                     if (numDraws % 2 != 0)
                     {
-                        return false;
+                        return true;
                     }
                 }
-                return true;
+
+                // Everything shiny, captain
+                return false;
             }
         }
     }

@@ -43,12 +43,16 @@ namespace KingsAndQueensHat.ViewModel
 
         public int CurrentRoundNumber { get; private set; }
 
-        private TeamSet CurrentRound { get { return CurrentRoundNumber == -1 ? null : Tournament.Rounds[CurrentRoundNumber - 1]; } }
+        private TeamSet CurrentRound { get { return CurrentRoundNumber == 0 ? null : Tournament.Rounds[CurrentRoundNumber - 1]; } }
 
         public ObservableCollection<Team> TeamsThisRound { get; private set; }
 
-        internal void CreateNewTeam(int teamCount, double speed, Func<Task, CancellationTokenSource, ICancelDialog> cancelDialogFactory)
+        internal void CreateNewRound(int teamCount, double speed, Func<Task, CancellationTokenSource, ICancelDialog> cancelDialogFactory)
         {
+            if (teamCount % 2 != 0)
+            {
+                throw new ArgumentException("teamCount must be even");
+            }
             var source = new CancellationTokenSource();
             var task = Tournament.CreateNewRound(speed, teamCount, source.Token);
             var cancelDialog = cancelDialogFactory(task, source);
@@ -92,10 +96,11 @@ namespace KingsAndQueensHat.ViewModel
         {
             CurrentRoundNumber = roundNumber;
 
-            OnPropertyChanged("CurrentRound");
+            OnPropertyChanged("CurrentRoundNumber");
             OnPropertyChanged("CanNavigateBackwards");
             OnPropertyChanged("CanNavigateForwards");
             OnPropertyChanged("ProblematicResults");
+            OnPropertyChanged("ProblematicText");
 
             // roundNumber is 1-based
             var roundIndex = roundNumber - 1;
@@ -163,6 +168,7 @@ namespace KingsAndQueensHat.ViewModel
         internal void WonLossChanged()
         {
             OnPropertyChanged("ProblematicResults");
+            OnPropertyChanged("ProblematicText");
             foreach (var player in Players)
             {
                 player.ForceUpdate();
@@ -170,5 +176,23 @@ namespace KingsAndQueensHat.ViewModel
         }
 
         public bool ProblematicResults { get { return CurrentRound == null ? false : CurrentRound.ProblematicResults; } }
+
+        public string ProblematicText
+        {
+            get
+            {
+                var teamsWon = TeamsThisRound.Count(t => t.GameResult == GameResult.Won);
+                var teamsLost = TeamsThisRound.Count(t => t.GameResult == GameResult.Lost);
+                var teamsDrawn = TeamsThisRound.Count(t => t.GameResult == GameResult.Draw);
+
+                var singular = "team has";
+                var plural = "teams have";
+
+                var wonText = teamsWon == 1 ? singular : plural;
+                var lostText = teamsLost == 1 ? singular : plural;
+                var drawText = teamsDrawn == 1 ? singular : plural;
+                return string.Format("These results are invalid. {0} {1} won. {2} {3} lost. {4} {5} drawn", teamsWon, wonText, teamsLost, lostText, teamsDrawn, drawText);
+            }
+        }
     }
 }

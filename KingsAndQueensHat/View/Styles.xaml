@@ -1,12 +1,22 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
-    <SolidColorBrush x:Key="BgBrush" Color="LawnGreen"/>
+
+    <SolidColorBrush x:Key="MonarchBrush" Color="LawnGreen"/>
+    <SolidColorBrush x:Key="BgBrushProblem" Color="Red"/>
+    <SolidColorBrush x:Key="BgBrush" Color="Silver"/>
 
     <Style x:Key="HighlightRow" TargetType="{x:Type DataGridRow}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding PotentialMonarch}" Value="True">
-                <Setter Property="Background" Value="{StaticResource BgBrush}" />
+                <Setter Property="Background" Value="{StaticResource MonarchBrush}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ProblematicBackground" TargetType="{x:Type Window}">
+        <Setter Property="Background" Value="{StaticResource BgBrush}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ProblematicResults}" Value="True">
+                <Setter Property="Background" Value="{StaticResource BgBrushProblem}"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>

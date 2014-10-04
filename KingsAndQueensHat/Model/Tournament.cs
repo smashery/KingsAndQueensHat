@@ -155,7 +155,7 @@ namespace KingsAndQueensHat.Model
             while (Rounds.Count > 0)
             {
                 var lastRound = Rounds.Last();
-                lastRound.DeleteFile();
+                lastRound.Delete();
                 Rounds.Remove(lastRound);
             }
         }
@@ -163,7 +163,7 @@ namespace KingsAndQueensHat.Model
         internal void DeleteRound(int roundNum)
         {
             var round = Rounds[roundNum];
-            round.DeleteFile();
+            round.Delete();
             Rounds.RemoveAt(roundNum);
 
         }

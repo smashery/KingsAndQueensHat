@@ -34,6 +34,8 @@ namespace KingsAndQueensHat.Model
 
         public ObservableCollection<TeamSet> Rounds { get; private set; }
 
+        public event EventHandler GameDone;
+
         public void LoadExistingData()
         {
             Rounds.Clear();
@@ -90,6 +92,16 @@ namespace KingsAndQueensHat.Model
         {
             Rounds.Add(round);
             round.AddRoundToPairingCount(_playerPairings);
+
+            round.GameDone += (sender, args) =>
+                {
+                    // Guard against race conditions
+                    var gameDone = GameDone;
+                    if (gameDone != null)
+                    {
+                        gameDone(sender, args);
+                    }
+                };
         }
 
         /// <summary>

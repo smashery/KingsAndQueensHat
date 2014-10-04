@@ -25,6 +25,9 @@ namespace KingsAndQueensHat.ViewModel
 
             Tournament = new Tournament(playerProvider);
             Tournament.LoadExistingData();
+
+            Tournament.GameDone += (sender, args) => WonLossChanged();
+
             TeamsThisRound = new ObservableCollection<Team>();
             SetCurrentRound(NumRounds);
         }
@@ -38,7 +41,9 @@ namespace KingsAndQueensHat.ViewModel
 
         public int NumRounds { get { return Tournament.Rounds.Count; } }
 
-        public int CurrentRound { get; private set; }
+        public int CurrentRoundNumber { get; private set; }
+
+        private TeamSet CurrentRound { get { return CurrentRoundNumber == -1 ? null : Tournament.Rounds[CurrentRoundNumber - 1]; } }
 
         public ObservableCollection<Team> TeamsThisRound { get; private set; }
 
@@ -58,8 +63,10 @@ namespace KingsAndQueensHat.ViewModel
 
         internal void DeleteThisRound()
         {
-            Tournament.DeleteRound(CurrentRound - 1);
-            SetCurrentRound(NumRounds);
+            Tournament.DeleteRound(CurrentRoundNumber - 1);
+
+            // Keep the same current round number (force UI update)
+            SetCurrentRound(Math.Min(CurrentRoundNumber, NumRounds));
             OnPropertyChanged("NumRounds");
             OnPropertyChanged("CanDeleteRound");
         }
@@ -83,9 +90,12 @@ namespace KingsAndQueensHat.ViewModel
         /// </summary>
         public void SetCurrentRound(int roundNumber)
         {
-            CurrentRound = roundNumber;
+            CurrentRoundNumber = roundNumber;
 
             OnPropertyChanged("CurrentRound");
+            OnPropertyChanged("CanNavigateBackwards");
+            OnPropertyChanged("CanNavigateForwards");
+            OnPropertyChanged("ProblematicResults");
 
             // roundNumber is 1-based
             var roundIndex = roundNumber - 1;
@@ -123,5 +133,42 @@ namespace KingsAndQueensHat.ViewModel
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        internal void PreviousRound()
+        {
+            if (CanNavigateBackwards)
+            {
+                SetCurrentRound(Math.Max(1, CurrentRoundNumber - 1));
+            }
+        }
+
+        internal void NextRound()
+        {
+            if (CanNavigateForwards)
+            {
+                SetCurrentRound(Math.Min(NumRounds, CurrentRoundNumber + 1));
+            }
+        }
+
+        public bool CanNavigateBackwards
+        {
+            get { return CurrentRoundNumber > 1; }
+        }
+
+        public bool CanNavigateForwards
+        {
+            get { return CurrentRoundNumber < NumRounds; }
+        }
+
+        internal void WonLossChanged()
+        {
+            OnPropertyChanged("ProblematicResults");
+            foreach (var player in Players)
+            {
+                player.ForceUpdate();
+            }
+        }
+
+        public bool ProblematicResults { get { return CurrentRound == null ? false : CurrentRound.ProblematicResults; } }
     }
 }

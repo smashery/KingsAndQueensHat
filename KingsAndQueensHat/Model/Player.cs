@@ -82,5 +82,13 @@ namespace KingsAndQueensHat.Model
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        /// <summary>
+        /// Hacky solution to the problem of updating our potential monarchitude
+        /// </summary>
+        internal void ForceUpdate()
+        {
+            OnPropertyChanged("PotentialMonarch");
+        }
     }
 }

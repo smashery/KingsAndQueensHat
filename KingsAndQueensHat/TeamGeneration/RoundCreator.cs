@@ -2,6 +2,8 @@
 using System.Linq;
 using KingsAndQueensHat.Model;
 using System;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace KingsAndQueensHat.TeamGeneration
 {
@@ -23,9 +25,9 @@ namespace KingsAndQueensHat.TeamGeneration
             public double NormalisedScore;
         }
 
-        public List<Team> CreateApproximatelyOptimalTeams(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider, int numTeamGens, int numTeams)
+        public async Task<List<Team>> CreateApproximatelyOptimalTeams(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider, int numTeamGens, int numTeams, CancellationToken cancel)
         {
-            List<PossibleTeamSet> teamsAndScores = GeneratePossibleTeamSets(penaltyScorers, playerProvider, numTeamGens, numTeams);
+            List<PossibleTeamSet> teamsAndScores = await GeneratePossibleTeamSets(penaltyScorers, playerProvider, numTeamGens, numTeams, cancel);
 
             SetNormalisedScores(teamsAndScores, penaltyScorers);
 
@@ -67,20 +69,24 @@ namespace KingsAndQueensHat.TeamGeneration
         /// <remarks>
         /// This step can take a while
         /// </remarks>
-        private static List<PossibleTeamSet> GeneratePossibleTeamSets(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider, int numTeamGens, int numTeams)
+        private static Task<List<PossibleTeamSet>> GeneratePossibleTeamSets(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider, int numTeamGens, int numTeams, CancellationToken cancel)
         {
-            var allocator = new TeamAllocator(numTeams);
+            return Task.Run(() =>
+                {
+                    var allocator = new TeamAllocator(numTeams);
 
-            List<PossibleTeamSet> teamsAndScores = new List<PossibleTeamSet>();
+                    List<PossibleTeamSet> teamsAndScores = new List<PossibleTeamSet>();
 
-            // Do all the heavy lifting up front
-            foreach (var i in Enumerable.Range(0, numTeamGens))
-            {
-                var teams = allocator.CreateTeams(playerProvider);
-                var scores = penaltyScorers.Select(pS => pS.ScorePenalty(teams)).ToList();
-                teamsAndScores.Add(new PossibleTeamSet(teams, scores));
-            }
-            return teamsAndScores;
+                    // Do all the heavy lifting up front
+                    while (!cancel.IsCancellationRequested && teamsAndScores.Count < numTeamGens)
+                    {
+                        var teams = allocator.CreateTeams(playerProvider);
+                        var scores = penaltyScorers.Select(pS => pS.ScorePenalty(teams)).ToList();
+                        teamsAndScores.Add(new PossibleTeamSet(teams, scores));
+
+                    }
+                    return teamsAndScores;
+                });
         }
     }
 }

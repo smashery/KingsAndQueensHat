@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using KingsAndQueensHat.Model;
+using System.Threading;
 
 namespace KingsAndQueensHat.View
 {
@@ -31,7 +32,10 @@ namespace KingsAndQueensHat.View
             int teamCount;
             if (int.TryParse(TeamCountBox.Text, out teamCount))
             {
-                Tournament.CreateNewRound(SpeedSlider.Value, teamCount);
+                var source = new CancellationTokenSource();
+                var task = Tournament.CreateNewRound(SpeedSlider.Value, teamCount, source.Token);
+                var cancelDialog = new CancelDialog(task, source);
+                cancelDialog.ShowDialog();
             }
         }
     }

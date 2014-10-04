@@ -10,6 +10,8 @@ using KingsAndQueensHat.TeamGeneration;
 using System.IO;
 using System.Xml;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KingsAndQueensHat.Model
 {
@@ -109,7 +111,7 @@ namespace KingsAndQueensHat.Model
         /// </summary>
         /// <param name="speed">Optimisation hint (0..100)</param>
         /// <param name="teamCount">The number of teams to generate</param>
-        public void CreateNewRound(double speed, int teamCount)
+        public async Task CreateNewRound(double speed, int teamCount, CancellationToken cancel)
         {
             // Run between 5000 and ~1000000 attempts
 
@@ -120,7 +122,7 @@ namespace KingsAndQueensHat.Model
             var penalty3 = new TooManyWinnersPenalty(PlayerProvider);
             var penalties = new IPenalty[] { penalty1, _playerPairings, penalty3 };
 
-            var teams = teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, teamCount);
+            var teams = await teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, teamCount, cancel);
             
             string filename;
             int i = 1;

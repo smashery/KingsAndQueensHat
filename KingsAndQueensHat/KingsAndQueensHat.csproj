@@ -74,6 +74,10 @@
     <Compile Include="Model\TeamSet.cs" />
     <Compile Include="TeamGeneration\TooManyWinnersPenalty.cs" />
     <Compile Include="TeamGeneration\UnevenSkillPenalty.cs" />
+    <Page Include="View\CancelDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -81,6 +85,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View\CancelDialog.xaml.cs">
+      <DependentUpon>CancelDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

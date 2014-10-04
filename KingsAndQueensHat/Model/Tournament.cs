@@ -21,9 +21,9 @@ namespace KingsAndQueensHat.Model
     /// </summary>
     public class Tournament : INotifyPropertyChanged
     {
-        public Tournament()
+        public Tournament(IPlayerProvider playerProvider)
         {
-            PlayerProvider = new PlayerFileReader(@"TestData.csv");
+            PlayerProvider = playerProvider;
             Players = new ObservableCollection<Player>(PlayerProvider.Players.OrderByDescending(p => p.GetSkill()));
             Rounds = new ObservableCollection<TeamSet>();
             Teams = new ObservableCollection<Team>();

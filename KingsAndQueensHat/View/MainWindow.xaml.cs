@@ -1,7 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
-using KingsAndQueensHat.Model;
 using System.Threading;
+using KingsAndQueensHat.Model;
+using KingsAndQueensHat.Persistence;
 
 namespace KingsAndQueensHat.View
 {
@@ -13,11 +14,21 @@ namespace KingsAndQueensHat.View
         public MainWindow()
         {
             InitializeComponent();
-            Tournament = new Tournament();
+            IPlayerProvider playerProvider;
+            try
+            {
+                playerProvider = new PlayerFileReader(@"players.csv");
+            }
+            catch (InvalidPlayerListException e)
+            {
+                MessageBox.Show(string.Format("{0}\r\nSee README.txt to help diagnose the error", e.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Application.Current.Shutdown();
+                return;
+            }
+
+            Tournament = new Tournament(playerProvider);
             Tournament.LoadExistingData();
             DataContext = Tournament;
-
-            
         }
 
         public Tournament Tournament { get; set; }

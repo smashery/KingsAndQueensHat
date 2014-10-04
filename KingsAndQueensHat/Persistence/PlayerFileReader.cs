@@ -12,34 +12,45 @@ namespace KingsAndQueensHat.Persistence
         public PlayerFileReader(string filename)
         {
             Players = new List<Player>();
-            using (var reader = File.OpenText(filename))
+            if (!File.Exists(filename))
             {
-                while (!reader.EndOfStream)
+                throw new InvalidPlayerListException("players.csv file not found");
+            }
+            try
+            {
+                using (var reader = File.OpenText(filename))
                 {
-                    var line = reader.ReadLine();
-                    var parts = line.Split(new []{','});
-                    if (parts.Length != 3)
+                    while (!reader.EndOfStream)
                     {
-                        throw new InvalidPlayerListException(string.Format("Every line must have three entries: Name, Gender, Skill ({0})", line));
+                        var line = reader.ReadLine();
+                        var parts = line.Split(new[] { ',' });
+                        if (parts.Length != 3)
+                        {
+                            throw new InvalidPlayerListException(string.Format("Every line must have three entries: Name, Gender, Skill ({0})", line));
+                        }
+
+                        var name = parts[0];
+
+                        Gender gender;
+                        if (!Enum.TryParse(parts[1], true, out gender))
+                        {
+                            throw new InvalidPlayerListException(string.Format("Second entry on each line must be either \"Male\" or \"Female\" ({0})", parts[1]));
+                        }
+
+
+                        int skill;
+                        if (!int.TryParse(parts[2], out skill))
+                        {
+                            throw new InvalidPlayerListException(string.Format("Third entry on each line must be an integer ({0})", parts[2]));
+                        }
+
+                        Players.Add(new Player(name, skill, gender, this.IsWinning));
                     }
-
-                    var name = parts[0];
-
-                    Gender gender;
-                    if (!Enum.TryParse(parts[1], true, out gender))
-                    {
-                        throw new InvalidPlayerListException(string.Format("Second entry on each line must be either \"Male\" or \"Female\" ({0})", parts[1]));
-                    }
-
-
-                    int skill;
-                    if (!int.TryParse(parts[2], out skill))
-                    {
-                        throw new InvalidPlayerListException(string.Format("Third entry on each line must be an integer ({0})", parts[2]));
-                    }
-
-                    Players.Add(new Player(name, skill, gender, this.IsWinning));
                 }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw new InvalidPlayerListException("Cannot access players.csv file");
             }
         }
 

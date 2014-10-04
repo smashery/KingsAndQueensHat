@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KingsAndQueensHat.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace KingsAndQueensHat.View
     /// <summary>
     /// Interaction logic for CancelDialog.xaml
     /// </summary>
-    public partial class CancelDialog : Window
+    public partial class CancelDialog : Window, ICancelDialog
     {
         private Task _task;
         private System.Threading.CancellationTokenSource _source;
@@ -30,6 +31,11 @@ namespace KingsAndQueensHat.View
 
             // Close the dialog if it completes normally
             task.ContinueWith((t) => this.Dispatcher.Invoke(Close));
+        }
+
+        public void ShowUntilCompleteOrCancelled()
+        {
+            ShowDialog();
         }
 
         /// <summary>

@@ -64,6 +64,7 @@
     <Compile Include="Persistence\InvalidPlayerListException.cs" />
     <Compile Include="TeamGeneration\IPenalty.cs" />
     <Compile Include="Model\IPlayerProvider.cs" />
+    <Compile Include="Utils\ICancelDialog.cs" />
     <Compile Include="Utils\ListExtensions.cs" />
     <Compile Include="Persistence\PlayerFileReader.cs" />
     <Compile Include="TeamGeneration\PlayerPairing.cs" />
@@ -86,6 +87,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModel\TournamentViewModel.cs" />
     <Compile Include="View\CancelDialog.xaml.cs">
       <DependentUpon>CancelDialog.xaml</DependentUpon>
     </Compile>

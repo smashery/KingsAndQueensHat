@@ -26,7 +26,6 @@ namespace KingsAndQueensHat.Model
             PlayerProvider = playerProvider;
             Players = new ObservableCollection<Player>(PlayerProvider.Players.OrderByDescending(p => p.GetSkill()));
             Rounds = new ObservableCollection<TeamSet>();
-            Teams = new ObservableCollection<Team>();
         }
 
         private IPlayerProvider PlayerProvider { get; set; }
@@ -34,9 +33,6 @@ namespace KingsAndQueensHat.Model
         public ObservableCollection<Player> Players { get; private set; }
 
         public ObservableCollection<TeamSet> Rounds { get; private set; }
-        public ObservableCollection<Team> Teams { get; private set; }
-
-        public int NumRounds { get { return Rounds.Count; }}
 
         public void LoadExistingData()
         {
@@ -92,26 +88,8 @@ namespace KingsAndQueensHat.Model
 
         private void AddRound(TeamSet round)
         {
-            SetCurrentRound(round);
             Rounds.Add(round);
             round.AddRoundToPairingCount(_playerPairings);
-            OnPropertyChanged("NumRounds");
-            OnPropertyChanged("CanDeleteRound");
-        }
-
-        /// <summary>
-        /// Set the UI to the current set of teams
-        /// </summary>
-        private void SetCurrentRound(TeamSet round)
-        {
-            Teams.Clear();
-            if (round != null)
-            {
-                foreach (Team team in round.Teams)
-                {
-                    Teams.Add(team);
-                }
-            }
         }
 
         /// <summary>
@@ -160,11 +138,6 @@ namespace KingsAndQueensHat.Model
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public bool CanDeleteRound
-        {
-            get { return NumRounds > 0; }
-        }
-
         internal void DeleteLastRound()
         {
             var lastRound = Rounds.LastOrDefault();
@@ -176,9 +149,6 @@ namespace KingsAndQueensHat.Model
             lastRound.DeleteFile();
             Rounds.Remove(lastRound);
             var newTeams = Rounds.LastOrDefault();
-            SetCurrentRound(newTeams);
-            OnPropertyChanged("NumRounds");
-            OnPropertyChanged("CanDeleteRound");
         }
 
         internal void DeleteAllData()
@@ -189,15 +159,6 @@ namespace KingsAndQueensHat.Model
                 lastRound.DeleteFile();
                 Rounds.Remove(lastRound);
             }
-            SetCurrentRound(null);
-            OnPropertyChanged("NumRounds");
-            OnPropertyChanged("CanDeleteRound");
-        }
-
-        internal bool AllTeamsHaveResults()
-        {
-            return Teams == null ||
-                   Teams.All(t => t.GameResult != GameResult.NoneYet);
         }
     }
 }

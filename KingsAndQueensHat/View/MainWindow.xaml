@@ -6,15 +6,15 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
     <Grid>
-        <Label Content="© Ashley Donaldson 2014" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom"/>
+        <Label Content="© Ashley Donaldson 2014" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Foreground="Gray"/>
         <Rectangle Fill="SteelBlue" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="97"/>
         <Rectangle Fill="Black" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,97,0,0" Height="2"/>
-        <Button Content="Generate New Teams" HorizontalAlignment="Right" Margin="0,68,10,0" VerticalAlignment="Top"  Click="Button_Click"/>
+        <Button Content="Generate Next Round" HorizontalAlignment="Right" Margin="0,68,10,0" VerticalAlignment="Top"  Click="Button_Click" Width="128"/>
         <Label Content="Faster" HorizontalAlignment="Right" Margin="0,39,129,0" VerticalAlignment="Top"/>
         <Label Content="Better" HorizontalAlignment="Right" Margin="0,39,10,0" VerticalAlignment="Top"/>
         <Slider x:Name="SpeedSlider" HorizontalAlignment="Right" Margin="0,41,54,0" VerticalAlignment="Top" Width="75" Minimum="0" Maximum="100" Value="20"/>
         <Label Content="Number of Teams:" HorizontalAlignment="Right" Margin="0,10,52,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="TeamCountBox" HorizontalAlignment="Right" Height="23" Margin="0,10,10,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="37"/>
+        <TextBox x:Name="TeamCountBox" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Height="23" Margin="0,10,10,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="37"/>
         <Label Content="Festivale dü Thrusté 2014" FontFamily="Old English Text MT" FontSize="36" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top"/>
         <StackPanel Orientation="Horizontal" Margin="10,51,0,0">
             <Label Content="Round:" FontSize="20" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
@@ -22,8 +22,8 @@
             <Label Content="{Binding CurrentRoundNumber}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button Name="NextRoundButton" Content="&gt;" HorizontalAlignment="Left" VerticalAlignment="Top" Width="13" Margin="0,10,0,0" Click="NextRoundButton_Click" IsEnabled="{Binding CanNavigateForwards}"/>
         </StackPanel>
-        <Button Content="Delete" HorizontalAlignment="Left" Margin="170,63,0,0" VerticalAlignment="Top" Width="47" Name="DeleteButton" IsEnabled="{Binding CanDeleteRound}" Click="DeleteButton_Click"/>
-        <Button Content="Delete All" Name="DeleteAllButton" HorizontalAlignment="Left" Margin="232,63,0,0" VerticalAlignment="Top" Width="75" IsEnabled="{Binding CanDeleteRound}" Click="DeleteAllButton_Click"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="180,61,0,0" VerticalAlignment="Top" Width="47" Name="DeleteButton" IsEnabled="{Binding CanDeleteRound}" Click="DeleteButton_Click"/>
+        <Button Content="Delete All" Name="DeleteAllButton" HorizontalAlignment="Left" Margin="232,61,0,0" VerticalAlignment="Top" Width="75" IsEnabled="{Binding CanDeleteRound}" Click="DeleteAllButton_Click"/>
         <StackPanel Orientation="Vertical" Margin="10,100,0,0">
             <Label Content="{Binding ProblematicText}" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding ProblematicResults, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <ItemsControl ItemsSource="{Binding TeamsThisRound}" HorizontalAlignment="Left" VerticalAlignment="Top">

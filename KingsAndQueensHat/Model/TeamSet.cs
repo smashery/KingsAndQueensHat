@@ -70,13 +70,12 @@ namespace KingsAndQueensHat.Model
             }
         }
 
-        internal void Delete()
+        internal void Delete(PlayerPairings pairings)
         {
             File.Delete(_filename);
             foreach (var team in Teams)
             {
-                // Undo all the players' scores
-                team.GameDone(GameResult.NoneYet);
+                team.OnDelete(pairings);
             }
         }
 

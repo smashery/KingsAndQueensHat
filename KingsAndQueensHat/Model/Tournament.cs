@@ -13,6 +13,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using KingsAndQueensHat.Utils;
+using System.Diagnostics;
 
 namespace KingsAndQueensHat.Model
 {
@@ -155,15 +156,17 @@ namespace KingsAndQueensHat.Model
             while (Rounds.Count > 0)
             {
                 var lastRound = Rounds.Last();
-                lastRound.Delete();
+                lastRound.Delete(_playerPairings);
                 Rounds.Remove(lastRound);
             }
+            var pairings = _playerPairings.NumberOfPairings;
+            Trace.Assert(pairings == 0);
         }
 
         internal void DeleteRound(int roundNum)
         {
             var round = Rounds[roundNum];
-            round.Delete();
+            round.Delete(_playerPairings);
             Rounds.RemoveAt(roundNum);
 
         }

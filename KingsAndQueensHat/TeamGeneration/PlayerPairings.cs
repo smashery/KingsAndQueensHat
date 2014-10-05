@@ -52,8 +52,19 @@ namespace KingsAndQueensHat.TeamGeneration
             _roundsPlayedTogether[playerPairing] += 1;
         }
 
+        public void UndoPlayerPairing(PlayerPairing playerPairing)
+        {
+            _roundsPlayedTogether[playerPairing] -= 1;
+        }
+
         public double Weighting { get { return 1.0; } }
-        public int NumberOfRepairings { get { return _roundsPlayedTogether.Sum(r => r.Value - 1); } }
+
+        /// <summary>
+        /// The sum of (1 for each game that a pair play in where they have already played together once before)
+        /// </summary>
+        public int NumberOfRepairings { get { return _roundsPlayedTogether.Sum(r => Math.Max(0, r.Value - 1)); } }
+
+        public int NumberOfPairings { get { return _roundsPlayedTogether.Sum(r => r.Value); } }
 
         public void Clear()
         {

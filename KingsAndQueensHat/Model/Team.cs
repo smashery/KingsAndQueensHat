@@ -104,14 +104,21 @@ namespace KingsAndQueensHat.Model
             }
         }
 
+        public void OnDelete(PlayerPairings pairings)
+        {
+            // Undo the players' scores
+            UpdateGameScore(Model.GameResult.NoneYet);
+
+            // Undo the players' pairings
+            foreach (var playerPairing in PlayerPairings())
+            {
+                pairings.UndoPlayerPairing(playerPairing);
+            }
+        }
+
         public void GameDone(GameResult gameResult)
         {
-            var oldGameResult = GameResult;
-            GameResult = gameResult;
-            foreach (var player in Players)
-            {
-                player.GameDone(gameResult, oldGameResult);
-            }
+            UpdateGameScore(gameResult);
 
             OnPropertyChanged("GameResultStr");
             Won.RaiseCanExecuteChanged();
@@ -121,6 +128,16 @@ namespace KingsAndQueensHat.Model
             if (@event != null)
             {
                 @event(this, new EventArgs());
+            }
+        }
+
+        private void UpdateGameScore(GameResult gameResult)
+        {
+            var oldGameResult = GameResult;
+            GameResult = gameResult;
+            foreach (var player in Players)
+            {
+                player.GameDone(gameResult, oldGameResult);
             }
         }
 

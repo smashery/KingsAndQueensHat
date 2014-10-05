@@ -66,8 +66,10 @@ namespace KingsAndQueensHat.Model
             switch (result)
             {
                 case GameResult.Won:
-                    return 2;
+                    return 3;
                 case GameResult.Draw:
+                    return 2;
+                case GameResult.Lost:
                     return 1;
                 default:
                     return 0;

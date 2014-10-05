@@ -24,39 +24,41 @@
         </StackPanel>
         <Button Content="Delete" HorizontalAlignment="Left" Margin="180,61,0,0" VerticalAlignment="Top" Width="47" Name="DeleteButton" IsEnabled="{Binding CanDeleteRound}" Click="DeleteButton_Click"/>
         <Button Content="Delete All" Name="DeleteAllButton" HorizontalAlignment="Left" Margin="232,61,0,0" VerticalAlignment="Top" Width="75" IsEnabled="{Binding CanDeleteRound}" Click="DeleteAllButton_Click"/>
-        <StackPanel Orientation="Vertical" Margin="10,100,0,0">
-            <Label Content="{Binding ProblematicText}" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding ProblematicResults, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            <ItemsControl ItemsSource="{Binding TeamsThisRound}" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding Name}" FontSize="18"/>
-                                <Label Content="{Binding GameResultStr}" FontSize="18"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" ItemsSource="{Binding Players}" RowStyle="{StaticResource HighlightRow}">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Name" Width="140" Binding="{Binding Name}"/>
-                                        <DataGridTextColumn Header="Gender" Width="55" Binding="{Binding Gender}"/>
-                                        <DataGridTextColumn Header="Points" Width="72" Binding="{Binding GameScore}"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                                <StackPanel Orientation="Vertical">
-                                    <Button Content="Won!" Margin="5" Width="75" Command="{Binding Won}"/>
-                                    <Button Content="Lost!" Margin="5" Width="75" Command="{Binding Lost}"/>
-                                    <Button Content="Drew!" Margin="5" Width="75" Command="{Binding Drew}"/>
+        <ScrollViewer Margin="10,100,0,0">
+            <StackPanel Orientation="Vertical">
+                <Label Content="{Binding ProblematicText}" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding ProblematicResults, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <ItemsControl ItemsSource="{Binding TeamsThisRound}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding Name}" FontSize="18"/>
+                                    <Label Content="{Binding GameResultStr}" FontSize="18"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" ItemsSource="{Binding Players}" RowStyle="{StaticResource HighlightRow}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Name" Width="140" Binding="{Binding Name}"/>
+                                            <DataGridTextColumn Header="Gender" Width="55" Binding="{Binding Gender}"/>
+                                            <DataGridTextColumn Header="Points" Width="72" Binding="{Binding GameScore}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Content="Won!" Margin="5" Width="75" Command="{Binding Won}"/>
+                                        <Button Content="Lost!" Margin="5" Width="75" Command="{Binding Lost}"/>
+                                        <Button Content="Drew!" Margin="5" Width="75" Command="{Binding Drew}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

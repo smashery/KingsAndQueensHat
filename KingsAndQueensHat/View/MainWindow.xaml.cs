@@ -116,6 +116,7 @@ namespace KingsAndQueensHat.View
         private void ResultsButton_Click(object sender, RoutedEventArgs e)
         {
             var resultsWindow = new ResultsWindow(ViewModel);
+            resultsWindow.Owner = Window.GetWindow(this);
             resultsWindow.ShowDialog();
         }
     }

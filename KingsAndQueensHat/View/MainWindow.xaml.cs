@@ -15,6 +15,7 @@ namespace KingsAndQueensHat.View
         public MainWindow()
         {
             InitializeComponent();
+
             try
             {
                 ViewModel = new TournamentViewModel();
@@ -110,6 +111,12 @@ namespace KingsAndQueensHat.View
         private void NextRoundButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.NextRound();
+        }
+
+        private void ResultsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var resultsWindow = new ResultsWindow(ViewModel);
+            resultsWindow.ShowDialog();
         }
     }
 }

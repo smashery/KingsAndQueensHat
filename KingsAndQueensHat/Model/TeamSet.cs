@@ -7,12 +7,12 @@ using System.Xml.Serialization;
 
 namespace KingsAndQueensHat.Model
 {
-    public class TeamSet
+    public class HatRound
     {
         /// <summary>
         /// For serialisation
         /// </summary>
-        protected TeamSet()
+        protected HatRound()
         {
 
         }
@@ -26,7 +26,7 @@ namespace KingsAndQueensHat.Model
             get { return Teams.Count; }
         }
 
-        public TeamSet(List<Team> teams, string filename)
+        public HatRound(List<Team> teams, string filename)
         {
             Teams = teams;
             _filename = filename;
@@ -57,7 +57,7 @@ namespace KingsAndQueensHat.Model
         {
             using (var stream = new FileStream(_filename, FileMode.Create))
             {
-                var serialiser = new XmlSerializer(typeof (TeamSet));
+                var serialiser = new XmlSerializer(typeof (HatRound));
                 serialiser.Serialize(stream, this);
             }
         }

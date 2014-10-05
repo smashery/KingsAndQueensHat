@@ -15,20 +15,20 @@ namespace KingsAndQueensHat.TeamGeneration
             _players = players;
         }
 
-        public double ScorePenalty(List<Team> teamSet)
+        public double ScorePenalty(List<Team> teams)
         {
-            return ScorePenaltyForGender(teamSet, Gender.Male)
-                 + ScorePenaltyForGender(teamSet, Gender.Female);
+            return ScorePenaltyForGender(teams, Gender.Male)
+                 + ScorePenaltyForGender(teams, Gender.Female);
         }
 
-        public double ScorePenaltyForGender(List<Team> teamSet, Gender gender)
+        public double ScorePenaltyForGender(List<Team> teams, Gender gender)
         {
             var maxScore = _players.MaxGameScore(gender);
 
-            var winningPerTeam = teamSet.Select(t => t.Players.Count(p => p.GameScore == maxScore)).ToList();
+            var winningPerTeam = teams.Select(t => t.Players.Count(p => p.GameScore == maxScore)).ToList();
 
             var totalWinning = winningPerTeam.Sum();
-            var expectedWinnersPerTeam = totalWinning / (double)teamSet.Count;
+            var expectedWinnersPerTeam = totalWinning / (double)teams.Count;
 
             // Sum the deviations from the expected team skill
             var result = winningPerTeam.Sum(s => Math.Abs(s - expectedWinnersPerTeam));

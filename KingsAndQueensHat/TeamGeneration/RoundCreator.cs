@@ -12,9 +12,9 @@ namespace KingsAndQueensHat.TeamGeneration
         /// <summary>
         /// Temporary, "working" result for team set selection
         /// </summary>
-        private class PossibleTeamSet
+        private class PossibleSetOfTeams
         {
-            public PossibleTeamSet(List<Team> teams, List<double> scores)
+            public PossibleSetOfTeams(List<Team> teams, List<double> scores)
             {
                 Teams = teams;
                 Scores = scores;
@@ -27,7 +27,7 @@ namespace KingsAndQueensHat.TeamGeneration
 
         public async Task<List<Team>> CreateApproximatelyOptimalTeams(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider, int numTeamGens, int numTeams, CancellationToken cancel)
         {
-            List<PossibleTeamSet> teamsAndScores = await GeneratePossibleTeamSets(penaltyScorers, playerProvider, numTeamGens, numTeams, cancel);
+            List<PossibleSetOfTeams> teamsAndScores = await GeneratePossibleSetsOfTeams(penaltyScorers, playerProvider, numTeamGens, numTeams, cancel);
 
             SetNormalisedScores(teamsAndScores, penaltyScorers);
 
@@ -43,7 +43,7 @@ namespace KingsAndQueensHat.TeamGeneration
         /// <remarks>
         /// This step is a lot faster
         /// </remarks>
-        private static void SetNormalisedScores(List<PossibleTeamSet> teamsAndScores, IList<IPenalty> penaltyScorers)
+        private static void SetNormalisedScores(List<PossibleSetOfTeams> teamsAndScores, IList<IPenalty> penaltyScorers)
         {
             for (int penaltyIndex = 0; penaltyIndex < penaltyScorers.Count; penaltyIndex++)
             {
@@ -69,20 +69,20 @@ namespace KingsAndQueensHat.TeamGeneration
         /// <remarks>
         /// This step can take a while
         /// </remarks>
-        private static Task<List<PossibleTeamSet>> GeneratePossibleTeamSets(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider, int numTeamGens, int numTeams, CancellationToken cancel)
+        private static Task<List<PossibleSetOfTeams>> GeneratePossibleSetsOfTeams(IList<IPenalty> penaltyScorers, IPlayerProvider playerProvider, int numTeamGens, int numTeams, CancellationToken cancel)
         {
             return Task.Run(() =>
                 {
                     var allocator = new TeamAllocator(numTeams);
 
-                    List<PossibleTeamSet> teamsAndScores = new List<PossibleTeamSet>();
+                    List<PossibleSetOfTeams> teamsAndScores = new List<PossibleSetOfTeams>();
 
                     // Do all the heavy lifting up front
                     while (!cancel.IsCancellationRequested && teamsAndScores.Count < numTeamGens)
                     {
                         var teams = allocator.CreateTeams(playerProvider);
                         var scores = penaltyScorers.Select(pS => pS.ScorePenalty(teams)).ToList();
-                        teamsAndScores.Add(new PossibleTeamSet(teams, scores));
+                        teamsAndScores.Add(new PossibleSetOfTeams(teams, scores));
 
                     }
                     return teamsAndScores;

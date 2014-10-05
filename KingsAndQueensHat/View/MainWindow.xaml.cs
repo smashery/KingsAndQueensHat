@@ -25,6 +25,17 @@ namespace KingsAndQueensHat.View
                 Application.Current.Shutdown();
                 return;
             }
+            catch (InvalidRoundException e)
+            {
+                MessageBox.Show(string.Format("{0}\r\nDelete the file or correct it", e.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Application.Current.Shutdown();
+                return;
+            }
+
+            // Set an initial meaningful value for player count; at least 10 players per team, with even number of teams
+            var numberOfPlayers = ViewModel.Players.Count;
+            TeamCountBox.Text = ((numberOfPlayers / 20) * 2).ToString();
+
             DataContext = ViewModel;
         }
 

@@ -26,14 +26,14 @@ namespace KingsAndQueensHat.Model
         {
             PlayerProvider = playerProvider;
             Players = new ObservableCollection<Player>(PlayerProvider.Players.OrderByDescending(p => p.GetSkill()));
-            Rounds = new ObservableCollection<TeamSet>();
+            Rounds = new ObservableCollection<HatRound>();
         }
 
         private IPlayerProvider PlayerProvider { get; set; }
 
         public ObservableCollection<Player> Players { get; private set; }
 
-        public ObservableCollection<TeamSet> Rounds { get; private set; }
+        public ObservableCollection<HatRound> Rounds { get; private set; }
 
         public event EventHandler GameDone;
 
@@ -52,44 +52,57 @@ namespace KingsAndQueensHat.Model
                     {
                         doc.Load(stream);
                     }
-                    var teams = doc.SelectNodes("/TeamSet/Teams/Team");
+                    var teams = doc.SelectNodes("/HatRound/Teams/Team");
+
+                    // Basic validation
+                    if (teams.Count == 0 || teams.Count % 2 != 0)
+                    {
+                        throw new Exception();
+                    }
+
                     var teamList = new List<Team>();
                     foreach (XmlNode team in teams)
                     {
                         var teamName = team.SelectSingleNode("Name").InnerText;
                         Team t = new Team(teamName);
                         var players = team.SelectNodes("Players/Player");
+
+                        // Basic validation
+                        if (players.Count == 0)
+                        {
+                            throw new Exception();
+                        }
+
                         foreach (XmlNode player in players)
                         {
                             var name = player.SelectSingleNode("Name").InnerText;
                             Player p = PlayerProvider.PlayerWithName(name);
+
+                            // Player list may have changed throughout the day, so accept this difference
                             if (p != null)
                             {
                                 t.AddPlayer(p);
                             }
                         }
-                        GameResult gameResult;
-                        if (Enum.TryParse(team.SelectSingleNode("GameResult").InnerText, out gameResult))
+                        GameResult gameResult = (GameResult)Enum.Parse(typeof(GameResult), team.SelectSingleNode("GameResult").InnerText);
+                        if (gameResult != GameResult.NoneYet)
                         {
-                            if (gameResult != GameResult.NoneYet)
-                            {
-                                t.GameDone(gameResult);
-                            }
+                            t.GameDone(gameResult);
                         }
 
                         teamList.Add(t);
                     }
-                    var round = new TeamSet(teamList, file);
+                    var round = new HatRound(teamList, file);
                     AddRound(round);
                 }
                 catch (Exception)
                 {
-                    // Let's just be overly lenient here
+                    throw new InvalidRoundException(string.Format("Round file {0} is an invalid file", file));
                 }
             }
         }
 
-        private void AddRound(TeamSet round)
+        private void AddRound(HatRound round)
         {
             Rounds.Add(round);
             round.AddRoundToPairingCount(_playerPairings);
@@ -136,7 +149,7 @@ namespace KingsAndQueensHat.Model
                 i++;
             } while (File.Exists(filename));
 
-            var round = new TeamSet(teams, filename);
+            var round = new HatRound(teams, filename);
             round.SaveToFile();
 
             AddRound(round);

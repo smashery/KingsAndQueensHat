@@ -43,7 +43,7 @@ namespace KingsAndQueensHat.ViewModel
 
         public int CurrentRoundNumber { get; private set; }
 
-        private TeamSet CurrentRound { get { return CurrentRoundNumber == 0 ? null : Tournament.Rounds[CurrentRoundNumber - 1]; } }
+        private HatRound CurrentRound { get { return CurrentRoundNumber == 0 ? null : Tournament.Rounds[CurrentRoundNumber - 1]; } }
 
         public ObservableCollection<Team> TeamsThisRound { get; private set; }
 
@@ -104,7 +104,7 @@ namespace KingsAndQueensHat.ViewModel
 
             // roundNumber is 1-based
             var roundIndex = roundNumber - 1;
-            TeamSet round;
+            HatRound round;
             if (roundIndex == -1)
             {
                 round = null;

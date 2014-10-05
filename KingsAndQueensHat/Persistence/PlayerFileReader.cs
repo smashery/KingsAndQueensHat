@@ -23,6 +23,13 @@ namespace KingsAndQueensHat.Persistence
                     while (!reader.EndOfStream)
                     {
                         var line = reader.ReadLine();
+
+                        // Skip empty lines
+                        if (line.Trim() == string.Empty)
+                        {
+                            continue;
+                        }
+
                         var parts = line.Split(new[] { ',' });
                         if (parts.Length != 3)
                         {

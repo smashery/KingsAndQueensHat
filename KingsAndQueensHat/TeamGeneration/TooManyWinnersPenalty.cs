@@ -7,6 +7,10 @@ using System.Collections.Generic;
 
 namespace KingsAndQueensHat.TeamGeneration
 {
+    /// <summary>
+    /// Penalise team sets that have too many winners of the same gender
+    /// on the same team as each other
+    /// </summary>
     public class TooManyWinnersPenalty : IPenalty
     {
         private readonly IPlayerProvider _players;

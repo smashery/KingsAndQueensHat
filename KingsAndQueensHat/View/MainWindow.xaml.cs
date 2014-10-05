@@ -72,7 +72,12 @@ namespace KingsAndQueensHat.View
                 }
                 else
                 {
-                    ViewModel.CreateNewRound(teamCount, SpeedSlider.Value, (t, s) => new CancelDialog(t, s));
+                    ViewModel.CreateNewRound(teamCount, SpeedSlider.Value, (t, s) => 
+                        {
+                            var dialog = new CancelDialog(t, s);
+                            dialog.Owner = Window.GetWindow(this);
+                            return dialog;
+                        });
                 }
             }
             else

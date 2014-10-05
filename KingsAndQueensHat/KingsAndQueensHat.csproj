@@ -58,6 +58,7 @@
     </ApplicationDefinition>
     <Compile Include="Persistence\InvalidRoundException.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="TeamGeneration\RangeOfSkillsPenalty.cs" />
     <Compile Include="Utils\CommandHandler.cs" />
     <Compile Include="Model\GameResult.cs" />
     <Compile Include="Model\Gender.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="Model\Team.cs" />
     <Compile Include="TeamGeneration\TeamAllocator.cs" />
     <Compile Include="TeamGeneration\RoundCreator.cs" />
-    <Compile Include="Model\TeamSet.cs" />
+    <Compile Include="Model\HatRound.cs" />
     <Compile Include="TeamGeneration\TooManyWinnersPenalty.cs" />
     <Compile Include="TeamGeneration\UnevenSkillPenalty.cs" />
     <Page Include="View\CancelDialog.xaml">
@@ -88,6 +89,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils\HatMath.cs" />
     <Compile Include="ViewModel\TournamentViewModel.cs" />
     <Compile Include="View\CancelDialog.xaml.cs">
       <DependentUpon>CancelDialog.xaml</DependentUpon>

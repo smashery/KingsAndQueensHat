@@ -137,7 +137,8 @@ namespace KingsAndQueensHat.Model
             var teamCreator = new RoundCreator();
             var penalty1 = new UnevenSkillPenalty();
             var penalty3 = new TooManyWinnersPenalty(PlayerProvider);
-            var penalties = new IPenalty[] { penalty1, _playerPairings, penalty3 };
+            var penalty4 = new RangeOfSkillsPenalty();
+            var penalties = new IPenalty[] { penalty1, _playerPairings, penalty3, penalty4 };
 
             var teams = await teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, teamCount, cancel);
             

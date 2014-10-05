@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Documents;
 using KingsAndQueensHat.Model;
+using KingsAndQueensHat.Utils;
 using System.Collections.Generic;
 
 namespace KingsAndQueensHat.TeamGeneration
@@ -30,8 +31,8 @@ namespace KingsAndQueensHat.TeamGeneration
             var totalWinning = winningPerTeam.Sum();
             var expectedWinnersPerTeam = totalWinning / (double)teams.Count;
 
-            // Sum the deviations from the expected team skill
-            var result = winningPerTeam.Sum(s => Math.Abs(s - expectedWinnersPerTeam));
+            // Sum the square of the deviations from the expected number of winners
+            var result = winningPerTeam.Sum(s => HatMath.Square(s - expectedWinnersPerTeam));
             return result;
         }
 

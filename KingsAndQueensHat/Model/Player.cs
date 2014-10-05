@@ -23,7 +23,7 @@ namespace KingsAndQueensHat.Model
         }
         
         public string Name { get; set; }
-        [XmlIgnore]
+        
         public Gender Gender { get; set; }
 
         private int Skill { get; set; }

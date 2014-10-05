@@ -34,9 +34,14 @@ namespace KingsAndQueensHat.ViewModel
 
         public Tournament Tournament { get; private set; }
 
-        public ObservableCollection<Player> Players
+        public ObservableCollection<Player> ActivePlayers
         {
-            get { return Tournament.Players; }
+            get { return Tournament.ActivePlayers; }
+        }
+
+        public ObservableCollection<Player> AllPlayers
+        {
+            get { return Tournament.AllPlayers; }
         }
 
         public int NumRounds { get { return Tournament.Rounds.Count; } }
@@ -169,7 +174,7 @@ namespace KingsAndQueensHat.ViewModel
         {
             OnPropertyChanged("ProblematicResults");
             OnPropertyChanged("ProblematicText");
-            foreach (var player in Players)
+            foreach (var player in AllPlayers)
             {
                 player.ForceUpdate();
             }

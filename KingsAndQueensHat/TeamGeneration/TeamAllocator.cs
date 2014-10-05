@@ -20,8 +20,8 @@ namespace KingsAndQueensHat.TeamGeneration
         {
             var teams = Enumerable.Range(0, NumTeams).Select(i => new Team(string.Format("Team {0}", i + 1))).ToList();
 
-            var males = playerProvider.Players.Where(p => p.Gender == Gender.Male).ToList().Shuffle();
-            var females = playerProvider.Players.Where(p => p.Gender == Gender.Female).ToList().Shuffle();
+            var males = playerProvider.ActivePlayers.Where(p => p.Gender == Gender.Male).ToList().Shuffle();
+            var females = playerProvider.ActivePlayers.Where(p => p.Gender == Gender.Female).ToList().Shuffle();
 
             // Allocate all males, then all females
             var players = males.Concat(females);

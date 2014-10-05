@@ -33,7 +33,7 @@ namespace KingsAndQueensHat.View
             }
 
             // Set an initial meaningful value for player count; at least 10 players per team, with even number of teams
-            var numberOfPlayers = ViewModel.Players.Count;
+            var numberOfPlayers = ViewModel.ActivePlayers.Count;
             TeamCountBox.Text = ((numberOfPlayers / 20) * 2).ToString();
 
             DataContext = ViewModel;

@@ -1,17 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using KingsAndQueensHat.Model;
 
 namespace KingsAndQueensHat.Persistence
 {
     public class PlayerFileReader : IPlayerProvider
     {
-        public List<Player> Players { get; private set; }
+        public List<Player> AllPlayers { get; private set; }
+
+        public List<Player> PastPlayers { get; private set; }
+
+        public List<Player> ActivePlayers { get; private set; }
 
         public PlayerFileReader(string filename)
         {
-            Players = new List<Player>();
+            AllPlayers = new List<Player>();
+            PastPlayers = new List<Player>();
+            ActivePlayers = new List<Player>();
+
             if (!File.Exists(filename))
             {
                 throw new InvalidPlayerListException("players.csv file not found");
@@ -51,7 +59,9 @@ namespace KingsAndQueensHat.Persistence
                             throw new InvalidPlayerListException(string.Format("Third entry on each line must be an integer ({0})", parts[2]));
                         }
 
-                        Players.Add(new Player(name, skill, gender, this.IsWinning));
+                        var p = new Player(name, skill, gender, this.IsWinning);
+                        ActivePlayers.Add(p);
+                        AllPlayers.Add(p);
                     }
                 }
             }
@@ -59,6 +69,18 @@ namespace KingsAndQueensHat.Persistence
             {
                 throw new InvalidPlayerListException("Cannot access players.csv file");
             }
+        }
+
+        public Player GetPastPlayer(string name, Gender gender)
+        {
+            var result = PastPlayers.SingleOrDefault(p => p.Name == name && p.Gender == gender);
+            if (result == null)
+            {
+                result = new Player(name, 0, gender, this.IsWinning);
+                PastPlayers.Add(result);
+                AllPlayers.Add(result);
+            }
+            return result;
         }
 
     }

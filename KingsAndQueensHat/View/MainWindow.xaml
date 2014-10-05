@@ -6,7 +6,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
     <Grid>
-        <Label Content="© Ashley Donaldson 2014" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Foreground="Gray"/>
+        <Label Content="© Ashley Donaldson 2014" HorizontalAlignment="Right" Margin="0,0,18,10" VerticalAlignment="Bottom" Foreground="Gray"/>
         <Rectangle Fill="SteelBlue" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="97"/>
         <Rectangle Fill="Black" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,97,0,0" Height="2"/>
         <Button Content="Generate Next Round" HorizontalAlignment="Right" Margin="0,68,10,0" VerticalAlignment="Top"  Click="Button_Click" Width="128"/>

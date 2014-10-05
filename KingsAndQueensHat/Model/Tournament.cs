@@ -25,13 +25,15 @@ namespace KingsAndQueensHat.Model
         public Tournament(IPlayerProvider playerProvider)
         {
             PlayerProvider = playerProvider;
-            Players = new ObservableCollection<Player>(PlayerProvider.Players.OrderByDescending(p => p.GetSkill()));
+            ActivePlayers = new ObservableCollection<Player>(PlayerProvider.ActivePlayers);
+            AllPlayers = new ObservableCollection<Player>(PlayerProvider.AllPlayers);
             Rounds = new ObservableCollection<HatRound>();
         }
 
         private IPlayerProvider PlayerProvider { get; set; }
 
-        public ObservableCollection<Player> Players { get; private set; }
+        public ObservableCollection<Player> ActivePlayers { get; private set; }
+        public ObservableCollection<Player> AllPlayers { get; private set; }
 
         public ObservableCollection<HatRound> Rounds { get; private set; }
 
@@ -76,13 +78,16 @@ namespace KingsAndQueensHat.Model
                         foreach (XmlNode player in players)
                         {
                             var name = player.SelectSingleNode("Name").InnerText;
-                            Player p = PlayerProvider.PlayerWithName(name);
+                            var genderStr = player.SelectSingleNode("Gender").InnerText;
+                            Gender gender = (Gender)Enum.Parse(typeof(Gender), genderStr);
+                            Player p = PlayerProvider.GetActivePlayer(name, gender);
 
                             // Player list may have changed throughout the day, so accept this difference
-                            if (p != null)
+                            if (p == null)
                             {
-                                t.AddPlayer(p);
+                                p = PlayerProvider.GetPastPlayer(name, gender);
                             }
+                            t.AddPlayer(p);
                         }
                         GameResult gameResult = (GameResult)Enum.Parse(typeof(GameResult), team.SelectSingleNode("GameResult").InnerText);
                         if (gameResult != GameResult.NoneYet)
@@ -99,6 +104,13 @@ namespace KingsAndQueensHat.Model
                 {
                     throw new InvalidRoundException(string.Format("Round file {0} is an invalid file", file));
                 }
+            }
+
+            // Ensure that if any new players were discovered, we're aware of them
+            AllPlayers.Clear();
+            foreach (var p in PlayerProvider.AllPlayers)
+            {
+                AllPlayers.Add(p);
             }
         }
 

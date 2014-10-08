@@ -25,8 +25,8 @@ namespace KingsAndQueensHat.Model
         public Tournament(IPlayerProvider playerProvider)
         {
             PlayerProvider = playerProvider;
-            PlayerProvider = new PlayerFileReader(@"TestData.csv");
             AllPlayers = new ObservableCollection<Player>(PlayerProvider.AllPlayers);
+            ActivePlayers = new ObservableCollection<Player>(PlayerProvider.ActivePlayers);
             Rounds = new ObservableCollection<HatRound>();
         }
 

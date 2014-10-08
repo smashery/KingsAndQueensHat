@@ -48,6 +48,18 @@ namespace KingsAndQueensHat.ViewModel
 
         public int CurrentRoundNumber { get; private set; }
 
+        public int CurrentNumberOfTeams
+        {
+            get
+            {
+                if (CurrentRound == null)
+                {
+                    return 0;
+                }
+                return CurrentRound.TeamCount;
+            }
+        }
+
         private HatRound CurrentRound { get { return CurrentRoundNumber == 0 ? null : Tournament.Rounds[CurrentRoundNumber - 1]; } }
 
         public ObservableCollection<Team> TeamsThisRound { get; private set; }

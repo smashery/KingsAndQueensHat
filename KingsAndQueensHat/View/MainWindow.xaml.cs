@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Threading;
 using KingsAndQueensHat.Model;
@@ -22,7 +23,7 @@ namespace KingsAndQueensHat.View
             }
             catch (InvalidPlayerListException e)
             {
-                MessageBox.Show(string.Format("{0}\r\nSee README.txt to help diagnose the error", e.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(string.Format("{0}\r\nSee README.rtf to help diagnose the error", e.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Application.Current.Shutdown();
                 return;
             }
@@ -34,8 +35,18 @@ namespace KingsAndQueensHat.View
             }
 
             // Set an initial meaningful value for player count; at least 10 players per team, with even number of teams
-            var numberOfPlayers = ViewModel.ActivePlayers.Count;
-            TeamCountBox.Text = ((numberOfPlayers / 20) * 2).ToString();
+            int numberOfTeams;
+            if (ViewModel.NumRounds > 0)
+            {
+                numberOfTeams = ViewModel.CurrentNumberOfTeams;
+            }
+            else
+            {
+                var numberOfPlayers = ViewModel.ActivePlayers.Count;
+                numberOfTeams = ((numberOfPlayers/20)*2);
+            }
+            numberOfTeams = Math.Max(2, numberOfTeams);
+            TeamCountBox.Text = numberOfTeams.ToString();
 
             DataContext = ViewModel;
         }

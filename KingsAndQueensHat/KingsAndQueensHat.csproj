@@ -80,8 +80,12 @@
     <Compile Include="TeamGeneration\TooManyWinnersPenalty.cs" />
     <Compile Include="TeamGeneration\UnevenSkillPenalty.cs" />
     <Compile Include="ViewModel\ResultsViewModel.cs" />
+    <Compile Include="ViewModel\RoundViewModel.cs" />
     <Compile Include="View\ResultsWindow.xaml.cs">
       <DependentUpon>ResultsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RoundView.xaml.cs">
+      <DependentUpon>RoundView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\CancelDialog.xaml">
       <SubType>Designer</SubType>
@@ -105,6 +109,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\ResultsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RoundView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

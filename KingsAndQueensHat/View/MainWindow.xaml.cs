@@ -38,7 +38,7 @@ namespace KingsAndQueensHat.View
             int numberOfTeams;
             if (ViewModel.NumRounds > 0)
             {
-                numberOfTeams = ViewModel.CurrentNumberOfTeams;
+                numberOfTeams = ViewModel.CurrentRoundViewModel.CurrentNumberOfTeams;
             }
             else
             {
@@ -58,7 +58,7 @@ namespace KingsAndQueensHat.View
         /// </summary>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.ProblematicResults)
+            if (ViewModel.CurrentRoundViewModel.ProblematicResults)
             {
                 if (MessageBox.Show("Results recorded are invalid.\r\nAre you sure you want to generate new rounds?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.No)
                 {
@@ -67,7 +67,7 @@ namespace KingsAndQueensHat.View
             }
             // Warn the user if they're looking at the last round and haven't recorded results
             // (they will already have been warned for previous rounds)
-            else if (ViewModel.CurrentRoundNumber == ViewModel.NumRounds && !ViewModel.AllTeamsHaveResults())
+            else if (ViewModel.CurrentRoundNumber == ViewModel.NumRounds && !ViewModel.CurrentRoundViewModel.AllTeamsHaveResults())
             {
                 if (MessageBox.Show("Not all teams have results recorded.\r\nAre you sure you want to generate new rounds?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.No)
                 {

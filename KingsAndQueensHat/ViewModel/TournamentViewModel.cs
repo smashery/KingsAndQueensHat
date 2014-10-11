@@ -26,13 +26,17 @@ namespace KingsAndQueensHat.ViewModel
             Tournament = new Tournament(playerProvider);
             Tournament.LoadExistingData();
 
-            Tournament.GameDone += (sender, args) => WonLossChanged();
+            CurrentRoundViewModel = new RoundViewModel(Tournament);
 
-            TeamsThisRound = new ObservableCollection<Team>();
+            // Start looking at the last round
             SetCurrentRound(NumRounds);
         }
 
+        public RoundViewModel CurrentRoundViewModel { get; private set; }
+
         public Tournament Tournament { get; private set; }
+
+        public string Test { get { return "Hi"; } }
 
         public ObservableCollection<Player> ActivePlayers
         {
@@ -47,22 +51,6 @@ namespace KingsAndQueensHat.ViewModel
         public int NumRounds { get { return Tournament.Rounds.Count; } }
 
         public int CurrentRoundNumber { get; private set; }
-
-        public int CurrentNumberOfTeams
-        {
-            get
-            {
-                if (CurrentRound == null)
-                {
-                    return 0;
-                }
-                return CurrentRound.TeamCount;
-            }
-        }
-
-        private HatRound CurrentRound { get { return CurrentRoundNumber == 0 ? null : Tournament.Rounds[CurrentRoundNumber - 1]; } }
-
-        public ObservableCollection<Team> TeamsThisRound { get; private set; }
 
         internal void CreateNewRound(int teamCount, double speed, Func<Task, CancellationTokenSource, ICancelDialog> cancelDialogFactory)
         {
@@ -116,8 +104,6 @@ namespace KingsAndQueensHat.ViewModel
             OnPropertyChanged("CurrentRoundNumber");
             OnPropertyChanged("CanNavigateBackwards");
             OnPropertyChanged("CanNavigateForwards");
-            OnPropertyChanged("ProblematicResults");
-            OnPropertyChanged("ProblematicText");
 
             // roundNumber is 1-based
             var roundIndex = roundNumber - 1;
@@ -131,20 +117,7 @@ namespace KingsAndQueensHat.ViewModel
                 round = Tournament.Rounds[roundIndex];
             }
 
-            TeamsThisRound.Clear();
-            if (round != null)
-            {
-                foreach (Team team in round.Teams)
-                {
-                    TeamsThisRound.Add(team);
-                }
-            }
-        }
-
-        internal bool AllTeamsHaveResults()
-        {
-            return TeamsThisRound == null ||
-                   TeamsThisRound.All(t => t.GameResult != GameResult.NoneYet);
+            CurrentRoundViewModel.SetCurrentRound(round);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -180,36 +153,6 @@ namespace KingsAndQueensHat.ViewModel
         public bool CanNavigateForwards
         {
             get { return CurrentRoundNumber < NumRounds; }
-        }
-
-        internal void WonLossChanged()
-        {
-            OnPropertyChanged("ProblematicResults");
-            OnPropertyChanged("ProblematicText");
-            foreach (var player in AllPlayers)
-            {
-                player.ForceUpdate();
-            }
-        }
-
-        public bool ProblematicResults { get { return CurrentRound == null ? false : CurrentRound.ProblematicResults; } }
-
-        public string ProblematicText
-        {
-            get
-            {
-                var teamsWon = TeamsThisRound.Count(t => t.GameResult == GameResult.Won);
-                var teamsLost = TeamsThisRound.Count(t => t.GameResult == GameResult.Lost);
-                var teamsDrawn = TeamsThisRound.Count(t => t.GameResult == GameResult.Draw);
-
-                var singular = "team has";
-                var plural = "teams have";
-
-                var wonText = teamsWon == 1 ? singular : plural;
-                var lostText = teamsLost == 1 ? singular : plural;
-                var drawText = teamsDrawn == 1 ? singular : plural;
-                return string.Format("These results are invalid. {0} {1} won. {2} {3} lost. {4} {5} drawn", teamsWon, wonText, teamsLost, lostText, teamsDrawn, drawText);
-            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:k="clr-namespace:KingsAndQueensHat.View">
 
     <SolidColorBrush x:Key="MonarchBrush" Color="LawnGreen"/>
     <SolidColorBrush x:Key="BgBrushProblem" Color="Red"/>
@@ -12,7 +13,7 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-    <Style x:Key="ProblematicBackground" TargetType="{x:Type Window}">
+    <Style x:Key="ProblematicBackground" TargetType="{x:Type k:RoundView}">
         <Setter Property="Background" Value="{StaticResource BgBrush}"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding ProblematicResults}" Value="True">

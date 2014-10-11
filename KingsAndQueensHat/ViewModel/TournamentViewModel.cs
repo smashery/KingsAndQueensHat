@@ -52,14 +52,14 @@ namespace KingsAndQueensHat.ViewModel
 
         public int CurrentRoundNumber { get; private set; }
 
-        internal void CreateNewRound(int teamCount, double speed, Func<Task, CancellationTokenSource, ICancelDialog> cancelDialogFactory)
+        internal void CreateNewRound(int teamCount, Func<Task, CancellationTokenSource, ICancelDialog> cancelDialogFactory)
         {
             if (teamCount % 2 != 0)
             {
                 throw new ArgumentException("teamCount must be even");
             }
             var source = new CancellationTokenSource();
-            var task = Tournament.CreateNewRound(speed, teamCount, source.Token);
+            var task = Tournament.CreateNewRound(teamCount, source.Token);
             var cancelDialog = cancelDialogFactory(task, source);
             cancelDialog.ShowUntilCompleteOrCancelled();
 

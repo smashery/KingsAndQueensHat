@@ -138,13 +138,11 @@ namespace KingsAndQueensHat.Model
         /// <summary>
         /// Create a new set of teams
         /// </summary>
-        /// <param name="speed">Optimisation hint (0..100)</param>
         /// <param name="teamCount">The number of teams to generate</param>
-        public async Task CreateNewRound(double speed, int teamCount, CancellationToken cancel)
+        public async Task CreateNewRound(int teamCount, CancellationToken cancel)
         {
-            // Run between 5000 and ~1000000 attempts
-
-            var numTeamGens = (int)(speed * 10000 + 5000);
+            // Run up to 1000000 possible team sets
+            var numTeamGens = 1000000;
 
             var teamCreator = new RoundCreator();
             var penalty1 = new UnevenSkillPenalty();

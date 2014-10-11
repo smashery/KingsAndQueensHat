@@ -84,7 +84,7 @@ namespace KingsAndQueensHat.View
                 }
                 else
                 {
-                    ViewModel.CreateNewRound(teamCount, SpeedSlider.Value, (t, s) => 
+                    ViewModel.CreateNewRound(teamCount, (t, s) => 
                         {
                             var dialog = new CancelDialog(t, s);
                             dialog.Owner = Window.GetWindow(this);

@@ -60,7 +60,7 @@ namespace KingsAndQueensHat.Model
         [XmlIgnore]
         public int TotalSkill
         {
-            get { return Players.Sum(p => p.GetSkill()); }
+            get { return Players.Sum(p => p.Skill); }
         }
 
         [XmlIgnore]

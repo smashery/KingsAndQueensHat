@@ -21,4 +21,11 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+    <Style x:Key="Alternating" TargetType="{x:Type DataGridRow}">
+        <Style.Triggers>
+            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                <Setter Property="Background" Value="LightGray" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

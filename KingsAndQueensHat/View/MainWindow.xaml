@@ -8,6 +8,9 @@
             <TabItem Header="Rounds">
                 <k:RoundManagerView DataContext="{Binding RoundManagerViewModel}"/>
             </TabItem>
+            <TabItem Header="Players">
+                <k:PlayerView DataContext="{Binding PlayerViewModel}"/>
+            </TabItem>
             <TabItem Header="Results">
                 <k:ResultsView DataContext="{Binding ResultsViewModel}"/>
             </TabItem>

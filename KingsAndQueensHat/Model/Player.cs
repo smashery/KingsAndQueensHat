@@ -26,12 +26,8 @@ namespace KingsAndQueensHat.Model
         
         public Gender Gender { get; set; }
 
-        private int Skill { get; set; }
-
-        public int GetSkill()
-        {
-            return Skill;
-        }
+        [XmlIgnore]
+        public int Skill { get; set; }
 
         [XmlIgnore]
         public int GameScore { get; private set; }

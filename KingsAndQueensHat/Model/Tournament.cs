@@ -7,13 +7,12 @@ using System.Windows.Documents;
 using KingsAndQueensHat.Annotations;
 using KingsAndQueensHat.Persistence;
 using KingsAndQueensHat.TeamGeneration;
-using System.IO;
 using System.Xml;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using KingsAndQueensHat.Utils;
 using System.Diagnostics;
+using System.IO;
 
 namespace KingsAndQueensHat.Model
 {
@@ -22,13 +21,16 @@ namespace KingsAndQueensHat.Model
     /// </summary>
     public class Tournament : INotifyPropertyChanged
     {
-        public Tournament(IPlayerProvider playerProvider)
+        public Tournament(StorageLocator storageLocator)
         {
-            PlayerProvider = playerProvider;
+            _storage = storageLocator;
+            PlayerProvider = _storage.GetPlayerProvider();
             AllPlayers = new ObservableCollection<Player>(PlayerProvider.AllPlayers);
             ActivePlayers = new ObservableCollection<Player>(PlayerProvider.ActivePlayers);
             Rounds = new ObservableCollection<HatRound>();
         }
+
+        private StorageLocator _storage;
 
         private IPlayerProvider PlayerProvider { get; set; }
 
@@ -44,7 +46,7 @@ namespace KingsAndQueensHat.Model
             Rounds.Clear();
             _playerPairings.Clear();
 
-            var files = Directory.EnumerateFiles(".", string.Format("*{0}", Constants.DataFileExtension));
+            var files = _storage.GetHatRoundPaths();
             foreach (var file in files)
             {
                 try
@@ -151,14 +153,8 @@ namespace KingsAndQueensHat.Model
             var penalties = new IPenalty[] { penalty1, _playerPairings, penalty3, penalty4 };
 
             var teams = await teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, teamCount, cancel);
-            
-            string filename;
-            int i = 1;
-            do
-            {
-                filename = string.Format("{0}{1}", i, Constants.DataFileExtension);
-                i++;
-            } while (File.Exists(filename));
+
+            var filename = _storage.GetNextHatRoundPath();
 
             var round = new HatRound(teams, filename);
             round.SaveToFile();

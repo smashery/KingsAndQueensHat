@@ -15,9 +15,7 @@ namespace KingsAndQueensHat.ViewModel
     {
         public TournamentViewModel()
         {
-            var playerProvider = new PlayerFileReader(@"players.csv");
-
-            Tournament = new Tournament(playerProvider);
+            Tournament = new Tournament(new StorageLocator("."));
             Tournament.LoadExistingData();
 
             ResultsViewModel = new ResultsViewModel(Tournament);

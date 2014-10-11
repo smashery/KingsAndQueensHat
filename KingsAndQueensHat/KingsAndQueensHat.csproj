@@ -56,6 +56,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Persistence\StorageLocator.cs" />
     <Compile Include="ViewModel\GenderRanking.cs" />
     <Compile Include="Persistence\InvalidRoundException.cs" />
     <Compile Include="Properties\Annotations.cs" />

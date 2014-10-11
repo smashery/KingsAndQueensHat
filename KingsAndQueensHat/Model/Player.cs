@@ -8,26 +8,57 @@ namespace KingsAndQueensHat.Model
     public class Player : INotifyPropertyChanged
     {
         private Func<Player, bool> _isWinning;
-        public Player(string name, int skill, Gender gender, Func<Player, bool> isWinning)
+        public Player(string name, int skill, Gender gender, bool currentlyPresent, Func<Player, bool> isWinning)
         {
             Name = name;
             Skill = skill;
             Gender = gender;
+            CurrentlyPresent = currentlyPresent;
             GameScore = 0;
             _isWinning = isWinning;
         }
 
+        /// <summary>
+        /// For serialization
+        /// </summary>
         protected Player()
         {
 
         }
+
+        /// <summary>
+        /// For deserialization
+        /// </summary>
+        internal void RewireWinningFunction(Func<Player, bool> isWinning)
+        {
+            _isWinning = isWinning;
+        }
+
+        public event EventHandler OnCurrentlyPresentChanged;
         
         public string Name { get; set; }
         
         public Gender Gender { get; set; }
 
-        [XmlIgnore]
         public int Skill { get; set; }
+
+        private bool _currentlyPresent;
+        public bool CurrentlyPresent
+        {
+            get { return _currentlyPresent; }
+            set
+            {
+                if (value != _currentlyPresent)
+                {
+                    _currentlyPresent = value;
+                    var @event = OnCurrentlyPresentChanged;
+                    if (@event != null)
+                    {
+                        @event(this, new EventArgs());
+                    }
+                }
+            }
+        }
 
         [XmlIgnore]
         public int GameScore { get; private set; }

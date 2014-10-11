@@ -31,11 +31,6 @@ namespace KingsAndQueensHat.ViewModel
 
         public Tournament Tournament { get; private set; }
         
-        public ObservableCollection<Player> ActivePlayers
-        {
-            get { return Tournament.ActivePlayers; }
-        }
-
         public ObservableCollection<Player> AllPlayers
         {
             get { return Tournament.AllPlayers; }

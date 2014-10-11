@@ -71,7 +71,7 @@
     <Compile Include="Utils\ICancelDialog.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\ListExtensions.cs" />
-    <Compile Include="Persistence\PlayerFileReader.cs" />
+    <Compile Include="Persistence\PlayerListFile.cs" />
     <Compile Include="TeamGeneration\PlayerPairing.cs" />
     <Compile Include="TeamGeneration\PlayerPairings.cs" />
     <Compile Include="Model\Team.cs" />

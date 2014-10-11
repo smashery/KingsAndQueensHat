@@ -57,7 +57,15 @@ namespace KingsAndQueensHat.Model
         {
             using (var stream = new FileStream(_filename, FileMode.Create))
             {
-                var serialiser = new XmlSerializer(typeof (HatRound));
+                // Don't bother writing out certain properties - only need the names
+                var o = new XmlAttributeOverrides();
+                var ignore = new XmlAttributes();
+                ignore.XmlIgnore = true;
+                o.Add(typeof(Player), "Gender", ignore);
+                o.Add(typeof(Player), "Skill", ignore);
+                o.Add(typeof(Player), "CurrentlyPresent", ignore);
+
+                var serialiser = new XmlSerializer(typeof(HatRound), o);
                 serialiser.Serialize(stream, this);
             }
         }
@@ -116,6 +124,13 @@ namespace KingsAndQueensHat.Model
                 // Everything shiny, captain
                 return false;
             }
+        }
+
+        internal void AddPlayer(Player player)
+        {
+            var team = Teams.First(t => t.PlayerCount == Teams.Min(tt => tt.PlayerCount));
+            team.AddPlayer(player);
+            
         }
     }
 }

@@ -2,30 +2,20 @@
 using System.Linq;
 using KingsAndQueensHat.Model;
 using System;
+using System.Collections.ObjectModel;
 
 namespace KingsAndQueensHat
 {
     public interface IPlayerProvider
     {
         /// <summary>
-        /// Players currently available for team selection
-        /// </summary>
-        List<Player> ActivePlayers { get; }
-
-        /// <summary>
         /// Any player who has played a game in the tournament
         /// </summary>
-        List<Player> AllPlayers { get; }
+        ObservableCollection<Player> AllPlayers { get; }
 
-        /// <summary>
-        /// Players that were in previous rounds but are no longer
-        /// </summary>
-        List<Player> PastPlayers { get; }
+        void ImportFromCsv(string filename);
 
-        /// <summary>
-        /// Get or create a player who played before but is not in the current roster of players
-        /// </summary>
-        Player GetPastPlayer(string name, Gender gender);
+        Player NewPlayer(string NewPlayerName, Gender gender, int skill);
     }
 
     public static class PlayerProviderExtensions
@@ -45,9 +35,19 @@ namespace KingsAndQueensHat
             return player.GameScore > 0 && playerProvider.WinningPlayers(player.Gender).Contains(player);
         }
 
-        public static Player GetActivePlayer(this IPlayerProvider playerProvider, string name, Gender gender)
+        public static IEnumerable<Player> PresentPlayers(this IPlayerProvider playerProvider)
         {
-            return playerProvider.ActivePlayers.SingleOrDefault(p => p.Name == name && p.Gender == gender);
+            return playerProvider.AllPlayers.Where(p => p.CurrentlyPresent);
+        }
+
+        public static Player GetPlayer(this IPlayerProvider playerProvider, string name)
+        {
+            return playerProvider.AllPlayers.SingleOrDefault(p => p.Name == name);
+        }
+
+        public static bool PlayerExists(this IPlayerProvider playerProvider, string name)
+        {
+            return playerProvider.GetPlayer(name) != null;
         }
     }
 }

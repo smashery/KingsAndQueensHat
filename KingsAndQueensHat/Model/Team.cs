@@ -10,6 +10,7 @@ using KingsAndQueensHat.Annotations;
 using KingsAndQueensHat.TeamGeneration;
 using KingsAndQueensHat.Utils;
 using System.Xml.Serialization;
+using System.Collections.ObjectModel;
 
 namespace KingsAndQueensHat.Model
 {
@@ -23,7 +24,7 @@ namespace KingsAndQueensHat.Model
         public Team(string name)
         {
             Name = name;
-            Players = new List<Player>();
+            Players = new ObservableCollection<Player>();
             GameResult = GameResult.NoneYet;
         }
 
@@ -36,7 +37,7 @@ namespace KingsAndQueensHat.Model
 
         public event EventHandler OnGameDone;
 
-        public List<Player> Players { get; private set; }
+        public ObservableCollection<Player> Players { get; private set; }
 
         public GameResult GameResult { get; set; }
 

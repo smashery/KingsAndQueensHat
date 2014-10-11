@@ -24,18 +24,15 @@ namespace KingsAndQueensHat.Model
         public Tournament(StorageLocator storageLocator)
         {
             _storage = storageLocator;
-            PlayerProvider = _storage.GetPlayerProvider();
-            AllPlayers = new ObservableCollection<Player>(PlayerProvider.AllPlayers);
-            ActivePlayers = new ObservableCollection<Player>(PlayerProvider.ActivePlayers);
+            PlayerProvider = new PlayerListFile(_storage);
             Rounds = new ObservableCollection<HatRound>();
         }
 
         private StorageLocator _storage;
 
-        private IPlayerProvider PlayerProvider { get; set; }
+        internal IPlayerProvider PlayerProvider { get; set; }
 
-        public ObservableCollection<Player> ActivePlayers { get; private set; }
-        public ObservableCollection<Player> AllPlayers { get; private set; }
+        public ObservableCollection<Player> AllPlayers { get { return PlayerProvider.AllPlayers; } }
 
         public ObservableCollection<HatRound> Rounds { get; private set; }
 
@@ -80,16 +77,13 @@ namespace KingsAndQueensHat.Model
                         foreach (XmlNode player in players)
                         {
                             var name = player.SelectSingleNode("Name").InnerText;
-                            var genderStr = player.SelectSingleNode("Gender").InnerText;
-                            Gender gender = (Gender)Enum.Parse(typeof(Gender), genderStr);
-                            Player p = PlayerProvider.GetActivePlayer(name, gender);
+                            Player p = PlayerProvider.GetPlayer(name);
 
                             // Player list may have changed throughout the day, so accept this difference
-                            if (p == null)
+                            if (p != null)
                             {
-                                p = PlayerProvider.GetPastPlayer(name, gender);
+                                t.AddPlayer(p);
                             }
-                            t.AddPlayer(p);
                         }
                         GameResult gameResult = (GameResult)Enum.Parse(typeof(GameResult), team.SelectSingleNode("GameResult").InnerText);
                         if (gameResult != GameResult.NoneYet)
@@ -106,13 +100,6 @@ namespace KingsAndQueensHat.Model
                 {
                     throw new InvalidRoundException(string.Format("Round file {0} is an invalid file", file));
                 }
-            }
-
-            // Ensure that if any new players were discovered, we're aware of them
-            AllPlayers.Clear();
-            foreach (var p in PlayerProvider.AllPlayers)
-            {
-                AllPlayers.Add(p);
             }
         }
 
@@ -189,6 +176,12 @@ namespace KingsAndQueensHat.Model
             round.Delete(_playerPairings);
             Rounds.RemoveAt(roundNum);
 
+        }
+
+        internal void AddPlayerToLastRound(Player player)
+        {
+            var round = Rounds.Last();
+            round.AddPlayer(player);
         }
     }
 }

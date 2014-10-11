@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KingsAndQueensHat.ViewModel;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,31 @@ namespace KingsAndQueensHat.View
         public PlayerView()
         {
             InitializeComponent();
+        }
+
+        private PlayerViewModel ViewModel { get { return DataContext as PlayerViewModel; } }
+
+        private void ImportButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            var result = dlg.ShowDialog();
+            if (result.HasValue && result.Value)
+            {
+                ViewModel.ImportFrom(dlg.FileName);
+            }
+
+        }
+
+        private void AddPlayerButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.AddPlayer(() =>
+                {
+                    return MessageBox.Show("Add player to current round?", "New Player", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+                },
+                (errorStr) =>
+                {
+                    MessageBox.Show(errorStr, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                });
         }
     }
 }

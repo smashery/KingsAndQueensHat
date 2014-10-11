@@ -33,6 +33,12 @@ namespace KingsAndQueensHat.View
                 Application.Current.Shutdown();
                 return;
             }
+            catch (Exception e)
+            {
+                // For better diagnostics
+                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
+            }
 
             DataContext = ViewModel;
         }

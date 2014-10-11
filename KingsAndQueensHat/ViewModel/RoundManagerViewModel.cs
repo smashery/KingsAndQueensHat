@@ -36,7 +36,7 @@ namespace KingsAndQueensHat.ViewModel
             }
             else
             {
-                var numberOfPlayers = ActivePlayers.Count;
+                var numberOfPlayers = Tournament.PlayerProvider.PresentPlayers().Count();
                 numberOfTeams = ((numberOfPlayers / 20) * 2);
             }
             numberOfTeams = Math.Max(2, numberOfTeams);
@@ -46,11 +46,6 @@ namespace KingsAndQueensHat.ViewModel
 
         public Tournament Tournament { get; private set; }
         public RoundViewModel CurrentRoundViewModel { get; private set; }
-
-        public ObservableCollection<Player> ActivePlayers
-        {
-            get { return Tournament.ActivePlayers; }
-        }
 
         public ObservableCollection<Player> AllPlayers
         {

@@ -15,6 +15,10 @@ namespace KingsAndQueensHat.Persistence
         public StorageLocator(string path)
         {
             _path = path;
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
         }
 
         public IEnumerable<string> GetHatRoundPaths()
@@ -23,9 +27,9 @@ namespace KingsAndQueensHat.Persistence
 
         }
 
-        internal IPlayerProvider GetPlayerProvider()
+        internal string PlayerListFilename
         {
-            return new PlayerFileReader(Path.Combine(_path, "players.csv"));
+            get { return Path.Combine(_path, "players.xml"); }
         }
 
         internal string GetNextHatRoundPath()

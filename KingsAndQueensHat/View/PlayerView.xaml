@@ -13,7 +13,7 @@
                     <DataGridTextColumn Header="Name" Width="140" Binding="{Binding Name}"/>
                     <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
                     <DataGridTextColumn Header="Skill" Binding="{Binding Skill}"/>
-                    <DataGridTemplateColumn Header="Present">
+                    <DataGridTemplateColumn Header="Include">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Path=CurrentlyPresent, UpdateSourceTrigger=PropertyChanged}" />

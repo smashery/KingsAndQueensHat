@@ -81,10 +81,12 @@
     <Compile Include="Model\HatRound.cs" />
     <Compile Include="TeamGeneration\TooManyWinnersPenalty.cs" />
     <Compile Include="TeamGeneration\UnevenSkillPenalty.cs" />
+    <Compile Include="ViewModel\PersistedTournament.cs" />
     <Compile Include="ViewModel\PlayerViewModel.cs" />
     <Compile Include="ViewModel\ResultsViewModel.cs" />
     <Compile Include="ViewModel\RoundManagerViewModel.cs" />
     <Compile Include="ViewModel\RoundViewModel.cs" />
+    <Compile Include="ViewModel\TournamentSelectionViewModel.cs" />
     <Compile Include="View\PlayerView.xaml.cs">
       <DependentUpon>PlayerView.xaml</DependentUpon>
     </Compile>
@@ -96,6 +98,9 @@
     </Compile>
     <Compile Include="View\RoundView.xaml.cs">
       <DependentUpon>RoundView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TournamentSelectionWindow.xaml.cs">
+      <DependentUpon>TournamentSelectionWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="View\CancelDialog.xaml">
       <SubType>Designer</SubType>
@@ -135,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TournamentSelectionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

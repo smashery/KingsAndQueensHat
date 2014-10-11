@@ -16,10 +16,15 @@ namespace KingsAndQueensHat.View
         public MainWindow()
         {
             InitializeComponent();
+        }
 
+        public TournamentViewModel ViewModel { get; private set; }
+
+        internal void SetStorageLocator(StorageLocator storageLocator)
+        {
             try
             {
-                ViewModel = new TournamentViewModel();
+                ViewModel = new TournamentViewModel(storageLocator);
             }
             catch (InvalidPlayerListException e)
             {
@@ -42,7 +47,5 @@ namespace KingsAndQueensHat.View
 
             DataContext = ViewModel;
         }
-
-        public TournamentViewModel ViewModel { get; private set; }
     }
 }

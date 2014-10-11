@@ -13,7 +13,7 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-    <Style x:Key="ProblematicBackground" TargetType="{x:Type k:RoundView}">
+    <Style x:Key="ProblematicBackground" TargetType="{x:Type UserControl}">
         <Setter Property="Background" Value="{StaticResource BgBrush}"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding ProblematicResults}" Value="True">

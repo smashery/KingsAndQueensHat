@@ -21,6 +21,8 @@ namespace KingsAndQueensHat.Persistence
             Load();
         }
 
+        public event EventHandler<PlayerEventArgs> PlayerDeleted;
+
         public void Load()
         {
             var filename = _storage.PlayerListFilename;
@@ -42,7 +44,24 @@ namespace KingsAndQueensHat.Persistence
             foreach (var player in AllPlayers)
             {
                 player.RewireWinningFunction(this.IsWinning);
-                player.OnCurrentlyPresentChanged += playerPresenceChanged;
+                WireEvents(player);
+            }
+        }
+
+        private void WireEvents(Player player)
+        {
+            player.OnCurrentlyPresentChanged += playerPresenceChanged;
+            player.OnDelete += playerDelete;
+        }
+
+        void playerDelete(object sender, PlayerEventArgs e)
+        {
+            AllPlayers.Remove(e.Player);
+            SaveToFile();
+            var @event = PlayerDeleted;
+            if (@event != null)
+            {
+                @event(sender, e);
             }
         }
 
@@ -65,6 +84,7 @@ namespace KingsAndQueensHat.Persistence
         {
             var player = new Player(name, skill, gender, true, this.IsWinning);
             AllPlayers.Add(player);
+            WireEvents(player);
             SaveToFile();
             return player;
         }
@@ -114,6 +134,7 @@ namespace KingsAndQueensHat.Persistence
                         if (!AllPlayers.Any(p => p.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && p.Gender == gender))
                         {
                             var p = new Player(name, skill, gender, true, this.IsWinning);
+                            WireEvents(p);
                             AllPlayers.Add(p);
                         }
                     }

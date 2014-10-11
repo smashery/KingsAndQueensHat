@@ -41,6 +41,9 @@ namespace KingsAndQueensHat.Model
 
         public GameResult GameResult { get; set; }
 
+        /// <summary>
+        /// The game result as a string
+        /// </summary>
         public string GameResultStr
         {
             get 
@@ -53,9 +56,26 @@ namespace KingsAndQueensHat.Model
             }
         }
 
+        /// <summary>
+        /// Add a player to this team
+        /// </summary>
+        /// <param name="player"></param>
         public void AddPlayer(Player player)
         {
             Players.Add(player);
+        }
+
+        /// <summary>
+        /// Add a player to the team after pairings have already been generated
+        /// </summary>
+        public void AddPlayerLate(Player player, PlayerPairings pairings)
+        {
+            AddPlayer(player);
+
+            foreach (var pairing in PlayerPairings(player))
+            {
+                pairings.PlayedTogether(pairing);
+            }
         }
 
         [XmlIgnore]
@@ -82,7 +102,9 @@ namespace KingsAndQueensHat.Model
             get { return Players.Count(p => p.Gender == Gender.Female); }
         }
 
-
+        /// <summary>
+        /// The full set of pairings between all players
+        /// </summary>
         public IEnumerable<PlayerPairing> PlayerPairings()
         {
             for (int i = 0; i < PlayerCount; ++i)
@@ -91,6 +113,17 @@ namespace KingsAndQueensHat.Model
                 {
                     yield return new PlayerPairing(Players[i], Players[j]);
                 }
+            }
+        }
+
+        /// <summary>
+        /// The player pairings for a given player
+        /// </summary>
+        public IEnumerable<PlayerPairing> PlayerPairings(Player player)
+        {
+            foreach (var player2 in Players.Where(p => p != player))
+            {
+                yield return new PlayerPairing(player, player2);
             }
         }
 
@@ -178,6 +211,20 @@ namespace KingsAndQueensHat.Model
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// Permanently delete a player from the team
+        /// </summary>
+        internal void RemovePlayer(Player player, PlayerPairings pairings)
+        {
+            Players.Remove(player);
+
+            // Undo the players' pairings
+            foreach (var playerPairing in PlayerPairings(player))
+            {
+                pairings.UndoPlayerPairing(playerPairing);
+            }
         }
     }
 }

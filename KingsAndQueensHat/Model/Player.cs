@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using KingsAndQueensHat.Annotations;
 using System;
 using System.Xml.Serialization;
+using KingsAndQueensHat.Utils;
 namespace KingsAndQueensHat.Model
 {
     public class Player : INotifyPropertyChanged
@@ -35,6 +36,7 @@ namespace KingsAndQueensHat.Model
         }
 
         public event EventHandler OnCurrentlyPresentChanged;
+        public event EventHandler<PlayerEventArgs> OnDelete;
         
         public string Name { get; set; }
         
@@ -100,6 +102,24 @@ namespace KingsAndQueensHat.Model
                     return 1;
                 default:
                     return 0;
+            }
+        }
+
+        private CommandHandler _deleteCommand;
+        public CommandHandler Delete
+        {
+            get
+            {
+                return _deleteCommand ?? (_deleteCommand = new CommandHandler(FireDelete, () => true));
+            }
+        }
+
+        private void FireDelete()
+        {
+            var @event = OnDelete;
+            if (@event != null)
+            {
+                @event(this, new PlayerEventArgs(this));
             }
         }
 

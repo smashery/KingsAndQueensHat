@@ -24,8 +24,15 @@ namespace KingsAndQueensHat.Model
         public Tournament(StorageLocator storageLocator)
         {
             _storage = storageLocator;
-            PlayerProvider = new PlayerListFile(_storage);
+            var provider = new PlayerListFile(_storage);
+            PlayerProvider = provider;
+            provider.PlayerDeleted += PlayerDeleted;
             Rounds = new ObservableCollection<HatRound>();
+        }
+
+        void PlayerDeleted(object sender, PlayerEventArgs e)
+        {
+            DeletePlayerFromTournament(e.Player);
         }
 
         private StorageLocator _storage;
@@ -37,6 +44,8 @@ namespace KingsAndQueensHat.Model
         public ObservableCollection<HatRound> Rounds { get; private set; }
 
         public event EventHandler GameDone;
+
+        public event EventHandler PlayerDataChanged;
 
         public void LoadExistingData()
         {
@@ -181,7 +190,26 @@ namespace KingsAndQueensHat.Model
         internal void AddPlayerToLastRound(Player player)
         {
             var round = Rounds.Last();
-            round.AddPlayer(player);
+            round.AddPlayer(player, _playerPairings);
+            var @event = PlayerDataChanged;
+            if (@event != null)
+            {
+                @event(this, new EventArgs());
+            }
+        }
+
+        internal void DeletePlayerFromTournament(Player player)
+        {
+            foreach (var round in Rounds)
+            {
+                round.DeletePlayer(player, _playerPairings);
+            }
+
+            var @event = PlayerDataChanged;
+            if (@event != null)
+            {
+                @event(this, new EventArgs());
+            }
         }
     }
 }

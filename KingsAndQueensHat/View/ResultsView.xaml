@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Background="Silver">
-    <Grid>
+             d:DesignHeight="300" d:DesignWidth="300" Style="{DynamicResource ResourceKey=ProblematicBackground}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
         <ScrollViewer>
+        <StackPanel Orientation="Vertical">
+            <Label Content="Some rounds have invalid results" FontSize="16" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="{Binding ProblematicResults, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <ItemsControl ItemsSource="{Binding Results}" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -27,6 +31,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </ScrollViewer>
-    </Grid>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

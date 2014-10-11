@@ -126,11 +126,23 @@ namespace KingsAndQueensHat.Model
             }
         }
 
-        internal void AddPlayer(Player player)
+        internal void AddPlayer(Player player, PlayerPairings pairings)
         {
             var team = Teams.First(t => t.PlayerCount == Teams.Min(tt => tt.PlayerCount));
-            team.AddPlayer(player);
-            
+            team.AddPlayerLate(player, pairings);
+            SaveToFile();
+        }
+
+        internal void DeletePlayer(Player player, PlayerPairings pairings)
+        {
+            foreach (var team in Teams)
+            {
+                if (team.Players.Contains(player))
+                {
+                    team.RemovePlayer(player, pairings);
+                }
+            }
+            SaveToFile();
         }
     }
 }

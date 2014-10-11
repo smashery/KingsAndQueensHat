@@ -27,10 +27,14 @@ namespace KingsAndQueensHat.ViewModel
             Tournament.LoadExistingData();
 
             CurrentRoundViewModel = new RoundViewModel(Tournament);
+            ResultsViewModel = new ResultsViewModel(Tournament);
+
 
             // Start looking at the last round
             SetCurrentRound(NumRounds);
         }
+
+        public ResultsViewModel ResultsViewModel { get; private set; }
 
         public RoundViewModel CurrentRoundViewModel { get; private set; }
 

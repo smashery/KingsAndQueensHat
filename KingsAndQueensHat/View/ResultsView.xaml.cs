@@ -18,17 +18,11 @@ namespace KingsAndQueensHat.View
     /// <summary>
     /// Interaction logic for ResultsWindow.xaml
     /// </summary>
-    public partial class ResultsWindow : Window
+    public partial class ResultsView : UserControl
     {
-        private ViewModel.ResultsViewModel ViewModel;
-
-        public ResultsWindow(ViewModel.TournamentViewModel viewModel)
+        public ResultsView()
         {
-            ViewModel = new ResultsViewModel(viewModel);
-
             InitializeComponent();
-
-            DataContext = ViewModel;
         }
     }
 }

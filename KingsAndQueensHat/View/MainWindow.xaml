@@ -19,8 +19,11 @@
         <Button Content="Delete" HorizontalAlignment="Left" Margin="180,61,0,0" VerticalAlignment="Top" Width="47" Name="DeleteButton" IsEnabled="{Binding CanDeleteRound}" Click="DeleteButton_Click"/>
         <Button Content="Delete All" Name="DeleteAllButton" HorizontalAlignment="Left" Margin="232,61,0,0" VerticalAlignment="Top" Width="75" IsEnabled="{Binding CanDeleteRound}" Click="DeleteAllButton_Click"/>
         <ScrollViewer Margin="0,98,0,0">
-            <k:RoundView DataContext="{Binding CurrentRoundViewModel}"/>
+            <!--<k:RoundView DataContext="{Binding CurrentRoundViewModel}"/>-->
+            <k:ResultsView DataContext="{Binding ResultsViewModel}"/>
+            
         </ScrollViewer>
+
         <Rectangle Fill="Black" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,97,0,0" Height="2"/>
     </Grid>
 </Window>

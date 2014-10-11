@@ -33,7 +33,7 @@ namespace KingsAndQueensHat.View
                 Application.Current.Shutdown();
                 return;
             }
-
+            
             // Set an initial meaningful value for player count; at least 10 players per team, with even number of teams
             int numberOfTeams;
             if (ViewModel.NumRounds > 0)
@@ -126,9 +126,9 @@ namespace KingsAndQueensHat.View
 
         private void ResultsButton_Click(object sender, RoutedEventArgs e)
         {
-            var resultsWindow = new ResultsWindow(ViewModel);
-            resultsWindow.Owner = Window.GetWindow(this);
-            resultsWindow.ShowDialog();
+            //var resultsWindow = new ResultsWindow(ViewModel);
+            //resultsWindow.Owner = Window.GetWindow(this);
+            //resultsWindow.ShowDialog();
         }
     }
 }

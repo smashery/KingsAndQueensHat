@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" Background="Silver">
     <Grid>
-            <ItemsControl ItemsSource="{Binding Results}" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding Results}" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel />
@@ -26,5 +27,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>

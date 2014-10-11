@@ -4,7 +4,14 @@
         xmlns:k="clr-namespace:KingsAndQueensHat.View"
         Title="Hat Team Generator 0.5" Height="724" Width="800" MinWidth="650" MinHeight="500">
     <Grid>
-        <k:RoundManagerView DataContext="{Binding RoundManagerViewModel}"/>
+        <TabControl>
+            <TabItem Header="Rounds">
+                <k:RoundManagerView DataContext="{Binding RoundManagerViewModel}"/>
+            </TabItem>
+            <TabItem Header="Results">
+                <k:ResultsView DataContext="{Binding ResultsViewModel}"/>
+            </TabItem>
+        </TabControl>
         <Label Content="© Ashley Donaldson 2014" HorizontalAlignment="Right" Margin="0,0,18,10" VerticalAlignment="Bottom" Foreground="Gray"/>
     </Grid>
 </Window>

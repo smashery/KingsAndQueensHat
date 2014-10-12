@@ -8,27 +8,36 @@
              d:DesignHeight="300" d:DesignWidth="600" Background="Silver">
     <Grid>
         <StackPanel Orientation="Horizontal" Margin="10">
-            <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" ItemsSource="{Binding AllPlayers}" RowStyle="{StaticResource Alternating}" AlternationCount="2">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Width="140" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
-                    <DataGridTextColumn Header="Skill" Binding="{Binding Skill}"/>
-                    <DataGridTemplateColumn Header="Include">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Path=CurrentlyPresent, UpdateSourceTrigger=PropertyChanged}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Delete">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button HorizontalAlignment="Center" Width="22"  Content="X" Command="{Binding Delete}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="28"/>
+                </Grid.RowDefinitions>
+                <ScrollViewer Grid.Row="0">
+                    <DataGrid AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" ItemsSource="{Binding AllPlayers}" RowStyle="{StaticResource Alternating}" AlternationCount="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Width="140" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
+                            <DataGridTextColumn Header="Skill" Binding="{Binding Skill}"/>
+                            <DataGridTemplateColumn Header="Include">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox HorizontalAlignment="Center" IsChecked="{Binding Path=CurrentlyPresent, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Delete">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button HorizontalAlignment="Center" Width="22"  Content="X" Command="{Binding Delete}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+                <Label Grid.Row="1" Margin="10,0,0,0" Content="{Binding NumPlayerText}"/>
+            </Grid>
             <StackPanel Margin="10" Orientation="Vertical">
                 <Button Name="ImportButton" Content="Import Players" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Click="ImportButton_Click"/>
                 <GroupBox Header="New Player" Width="220" Height="168" Margin="0,10,0,0">

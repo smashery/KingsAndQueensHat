@@ -19,12 +19,29 @@ namespace KingsAndQueensHat.ViewModel
             NewPlayerSkill = "50";
             NewPlayerGender = Gender.Male;
 
+            Players.AllPlayers.CollectionChanged += AllPlayers_CollectionChanged;
+
             ResetNewPlayerSection();
+        }
+
+        void AllPlayers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged("NumPlayerText");
         }
 
         public Tournament Tournament { get; private set; }
 
         private IPlayerProvider Players { get { return Tournament.PlayerProvider; } }
+
+        public string NumPlayerText
+        {
+            get
+            {
+                var count = Players.AllPlayers.Count;
+                var plural = count == 1 ? "" : "s";
+                return string.Format("{0} player{1}", count, plural);
+            }
+        }
 
         public ObservableCollection<Player> AllPlayers
         {

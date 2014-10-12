@@ -35,7 +35,7 @@ namespace KingsAndQueensHat.Persistence
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
                 var players = serializer.Deserialize(stream) as List<Player>;
-                foreach (var p in players)
+                foreach (var p in players.OrderBy(p => p.Name))
                 {
                     AllPlayers.Add(p);
                 }
@@ -83,7 +83,11 @@ namespace KingsAndQueensHat.Persistence
         public Player NewPlayer(string name, Gender gender, int skill)
         {
             var player = new Player(name, skill, gender, true, this.IsWinning);
-            AllPlayers.Add(player);
+
+            // Find the place to insert them
+            var index = AllPlayers.Concat(new[] { player }).OrderBy(p => p.Name).ToList().IndexOf(player);
+
+            AllPlayers.Insert(index, player);
             WireEvents(player);
             SaveToFile();
             return player;

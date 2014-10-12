@@ -75,7 +75,7 @@ namespace KingsAndQueensHat.ViewModel
         {
             if (TeamCount > 0 && TeamCount % 2 != 0)
             {
-                throw new ArgumentException("teamCount must be even");
+                throw new ArgumentException("Number of teams must be even");
             }
             var source = new CancellationTokenSource();
             var task = Tournament.CreateNewRound(TeamCount, source.Token);

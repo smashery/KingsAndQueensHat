@@ -76,6 +76,7 @@ namespace KingsAndQueensHat.Model
             {
                 pairings.PlayedTogether(pairing);
             }
+            player.GameDone(GameResult, Model.GameResult.NoneYet);
         }
 
         [XmlIgnore]

@@ -33,6 +33,12 @@ namespace KingsAndQueensHat.View
         /// </summary>
         private void GenerateTeamsButton_Click(object sender, RoutedEventArgs e)
         {
+            if (ViewModel.AllPlayers.Count < ViewModel.TeamCount)
+            {
+                MessageBox.Show("Add more players", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             if (ViewModel.CurrentRoundViewModel.ProblematicResults)
             {
                 if (MessageBox.Show("Results recorded are invalid.\r\nAre you sure you want to generate new rounds?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.No)

@@ -39,9 +39,15 @@ namespace KingsAndQueensHat.View
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
+            CreateTournament();
+        }
+
+        private void CreateTournament()
+        {
             if (!ViewModel.CanCreateTournament())
             {
-
+                MessageBox.Show("Unable to create tournament: already exists.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
             OpenTournament(ViewModel.GetStorageLocator(ViewModel.TournamentName));
         }
@@ -52,6 +58,14 @@ namespace KingsAndQueensHat.View
             window.SetStorageLocator(storageLocator);
             window.Show();
             Close();
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                CreateTournament();
+            }
         }
     }
 }

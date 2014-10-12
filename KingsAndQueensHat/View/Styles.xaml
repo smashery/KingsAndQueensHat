@@ -28,4 +28,15 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    
+    <Style x:Key="AlternatingItemsControl" TargetType="{x:Type ItemsControl}">
+        <Style.Triggers>
+            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                <Setter Property="Background" Value="LightGray" />
+            </Trigger>
+            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                <Setter Property="Background" Value="Gray" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

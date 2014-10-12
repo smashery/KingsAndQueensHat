@@ -27,7 +27,12 @@ namespace KingsAndQueensHat
 
         public static int MaxGameScore(this IPlayerProvider playerProvider, Gender gender)
         {
-            return playerProvider.AllPlayers.Where(p => p.Gender == gender).Max(p => p.GameScore);
+            var genderPlayers = playerProvider.AllPlayers.Where(p => p.Gender == gender).ToList();
+            if (genderPlayers.Any())
+            {
+                return genderPlayers.Max(p => p.GameScore);
+            }
+            return 0;
         }
 
         public static bool IsWinning(this IPlayerProvider playerProvider, Player player)

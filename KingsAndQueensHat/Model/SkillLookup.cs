@@ -23,13 +23,12 @@ namespace KingsAndQueensHat.Model
                 if (value != _name)
                 {
                     _name = value;
-                    OnPropertyChanged("Tabe");
+                    OnPropertyChanged("Name");
                 }
             }
         }
 
         private int _skill;
-        [XmlIgnore]
         public int Skill 
         {
             get

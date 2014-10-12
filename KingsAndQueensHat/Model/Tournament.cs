@@ -24,12 +24,17 @@ namespace KingsAndQueensHat.Model
         public Tournament(TournamentPersistence storageLocator)
         {
             _storage = storageLocator;
-            Settings = new TournamentSettings();
+            LoadSettings();
 
             var provider = new PlayerListFile(_storage, Settings);
             PlayerProvider = provider;
             provider.PlayerDeleted += PlayerDeleted;
             Rounds = new ObservableCollection<HatRound>();
+        }
+
+        private void LoadSettings()
+        {
+            Settings = TournamentSettings.Load(_storage);
         }
 
         void PlayerDeleted(object sender, PlayerEventArgs e)

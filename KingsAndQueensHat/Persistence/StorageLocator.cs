@@ -40,6 +40,11 @@ namespace KingsAndQueensHat.Persistence
             get { return System.IO.Path.Combine(Path, "players.xml"); }
         }
 
+        internal string SettingsPath
+        {
+            get { return System.IO.Path.Combine(Path, "settings.xml"); }
+        }
+
         internal string GetNextHatRoundPath()
         {
             string filename;

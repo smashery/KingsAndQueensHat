@@ -62,7 +62,7 @@ namespace KingsAndQueensHat.Model
                 var ignore = new XmlAttributes();
                 ignore.XmlIgnore = true;
                 o.Add(typeof(Player), "Gender", ignore);
-                o.Add(typeof(Player), "Skill", ignore);
+                o.Add(typeof(Player), "SkillLookup", ignore);
                 o.Add(typeof(Player), "CurrentlyPresent", ignore);
 
                 var serialiser = new XmlSerializer(typeof(HatRound), o);

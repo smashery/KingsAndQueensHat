@@ -87,6 +87,8 @@
     <Compile Include="ViewModel\ResultsViewModel.cs" />
     <Compile Include="ViewModel\RoundManagerViewModel.cs" />
     <Compile Include="ViewModel\RoundViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="Model\SkillLookup.cs" />
     <Compile Include="ViewModel\TournamentSelectionViewModel.cs" />
     <Compile Include="View\PlayerView.xaml.cs">
       <DependentUpon>PlayerView.xaml</DependentUpon>
@@ -99,6 +101,9 @@
     </Compile>
     <Compile Include="View\RoundView.xaml.cs">
       <DependentUpon>RoundView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TournamentSelectionWindow.xaml.cs">
       <DependentUpon>TournamentSelectionWindow.xaml</DependentUpon>
@@ -137,6 +142,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\RoundView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -21,6 +21,7 @@ namespace KingsAndQueensHat.ViewModel
             ResultsViewModel = new ResultsViewModel(Tournament);
             RoundManagerViewModel = new RoundManagerViewModel(Tournament);
             PlayerViewModel = new PlayerViewModel(Tournament);
+            SettingsViewModel = new SettingsViewModel(Tournament.Settings);
         }
 
         public RoundManagerViewModel RoundManagerViewModel { get; private set; }
@@ -28,6 +29,8 @@ namespace KingsAndQueensHat.ViewModel
         public ResultsViewModel ResultsViewModel { get; private set; }
 
         public PlayerViewModel PlayerViewModel { get; private set; }
+
+        public SettingsViewModel SettingsViewModel { get; private set; }
 
         public Tournament Tournament { get; private set; }
         

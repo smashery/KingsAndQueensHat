@@ -32,8 +32,9 @@ namespace KingsAndQueensHat.Model
         /// <summary>
         /// For deserialization
         /// </summary>
-        internal void RewireWinningFunction(Func<Player, bool> isWinning)
+        internal void Rewire(TournamentSettings settings, Func<Player, bool> isWinning)
         {
+            _settings = settings;
             _isWinning = isWinning;
         }
 

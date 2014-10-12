@@ -14,6 +14,9 @@
             <TabItem Header="Results">
                 <k:ResultsView DataContext="{Binding ResultsViewModel}"/>
             </TabItem>
+            <TabItem Header="Settings">
+                <k:SettingsView DataContext="{Binding SettingsViewModel}"/>
+            </TabItem>
         </TabControl>
         <Label Content="© Ashley Donaldson 2014" HorizontalAlignment="Right" Margin="0,0,18,10" VerticalAlignment="Bottom" Foreground="Gray"/>
     </Grid>

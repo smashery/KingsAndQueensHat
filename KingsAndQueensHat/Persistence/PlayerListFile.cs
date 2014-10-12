@@ -46,7 +46,7 @@ namespace KingsAndQueensHat.Persistence
 
             foreach (var player in AllPlayers)
             {
-                player.RewireWinningFunction(this.IsWinning);
+                player.Rewire(_settings, this.IsWinning);
                 WireEvents(player);
             }
         }

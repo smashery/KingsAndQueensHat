@@ -15,7 +15,7 @@ namespace KingsAndQueensHat
 
         void ImportFromCsv(string filename);
 
-        Player NewPlayer(string NewPlayerName, Gender gender, int skill);
+        Player NewPlayer(string NewPlayerName, Gender gender, string skill);
     }
 
     public static class PlayerProviderExtensions

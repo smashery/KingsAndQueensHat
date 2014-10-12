@@ -1,4 +1,5 @@
-﻿using KingsAndQueensHat.ViewModel;
+﻿using KingsAndQueensHat.Persistence;
+using KingsAndQueensHat.ViewModel;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,14 @@ namespace KingsAndQueensHat.View
             var result = dlg.ShowDialog();
             if (result.HasValue && result.Value)
             {
-                ViewModel.ImportFrom(dlg.FileName);
+                try
+                {
+                    ViewModel.ImportFrom(dlg.FileName);
+                }
+                catch (InvalidPlayerListException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error loading", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
 
         }

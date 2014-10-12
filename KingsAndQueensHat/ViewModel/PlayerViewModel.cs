@@ -16,7 +16,7 @@ namespace KingsAndQueensHat.ViewModel
         public PlayerViewModel(Tournament tournament)
         {
             Tournament = tournament;
-            NewPlayerSkill = "50";
+            NewPlayerSkill = AvailableSkills.FirstOrDefault() ?? "";
             NewPlayerGender = Gender.Male;
 
             Players.AllPlayers.CollectionChanged += AllPlayers_CollectionChanged;
@@ -55,6 +55,14 @@ namespace KingsAndQueensHat.ViewModel
             Players.ImportFromCsv(filename);
         }
 
+        public IEnumerable<string> AvailableSkills
+        {
+            get
+            {
+                return Tournament.Settings.SkillLevels.OrderBy(s => Tournament.Settings.SkillValueOf(s));
+            }
+        }
+
 
         public string NewPlayerName { get; set; }
         public Gender NewPlayerGender { get; set; }
@@ -72,14 +80,13 @@ namespace KingsAndQueensHat.ViewModel
                 ErrorAction("Player already exists");
                 return;
             }
-            int skill;
-            if (!int.TryParse(NewPlayerSkill, out skill))
-            {
-                ErrorAction("Skill must be a whole number");
-                return;
-            }
 
-            var player = Players.NewPlayer(NewPlayerName, NewPlayerGender, skill);
+            if (!Tournament.Settings.SkillLevelExists(NewPlayerSkill))
+            {
+                ErrorAction(string.Format("Unknown skill level: {0}", NewPlayerSkill));
+            }
+            
+            var player = Players.NewPlayer(NewPlayerName, NewPlayerGender, NewPlayerSkill);
 
             if (Tournament.Rounds.Count > 0 && AddToCurrentRound())
             {

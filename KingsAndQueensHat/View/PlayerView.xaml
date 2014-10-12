@@ -55,7 +55,7 @@
                             <ComboBoxItem Content="Female"/>
                         </ComboBox>
                         <Label Content="Skill:" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top"/>
-                        <TextBox Grid.Column="1" Height="23" Margin="0,68,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding NewPlayerSkill}"/>
+                        <ComboBox Grid.Column="1" Height="23" Margin="0,68,10,0" ItemsSource="{Binding AvailableSkills}" VerticalAlignment="Top" SelectedValue="{Binding Path=NewPlayerSkill, Mode=TwoWay}"/>
                     </Grid>
                 </GroupBox>
             </StackPanel>

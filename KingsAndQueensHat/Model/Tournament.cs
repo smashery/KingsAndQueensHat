@@ -24,7 +24,9 @@ namespace KingsAndQueensHat.Model
         public Tournament(TournamentPersistence storageLocator)
         {
             _storage = storageLocator;
-            var provider = new PlayerListFile(_storage);
+            Settings = new TournamentSettings();
+
+            var provider = new PlayerListFile(_storage, Settings);
             PlayerProvider = provider;
             provider.PlayerDeleted += PlayerDeleted;
             Rounds = new ObservableCollection<HatRound>();
@@ -34,6 +36,8 @@ namespace KingsAndQueensHat.Model
         {
             DeletePlayerFromTournament(e.Player);
         }
+
+        public TournamentSettings Settings { get; private set; }
 
         private TournamentPersistence _storage;
 
@@ -139,8 +143,7 @@ namespace KingsAndQueensHat.Model
         /// <param name="teamCount">The number of teams to generate</param>
         public async Task CreateNewRound(int teamCount, CancellationToken cancel)
         {
-            // Run up to 1000000 possible team sets
-            var numTeamGens = 1000000;
+            var numTeamGens = Settings.NumberOfGenerations;
 
             var teamCreator = new RoundCreator();
             var penalty1 = new UnevenSkillPenalty();

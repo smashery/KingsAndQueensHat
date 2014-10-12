@@ -14,9 +14,12 @@ namespace KingsAndQueensHat.Persistence
 
         private TournamentPersistence _storage;
 
-        public PlayerListFile(TournamentPersistence storage)
+        private TournamentSettings _settings;
+
+        public PlayerListFile(TournamentPersistence storage, TournamentSettings settings)
         {
             _storage = storage;
+            _settings = settings;
             AllPlayers = new ObservableCollection<Player>();
             Load();
         }
@@ -80,17 +83,21 @@ namespace KingsAndQueensHat.Persistence
             }
         }
 
-        public Player NewPlayer(string name, Gender gender, int skill)
+        public Player NewPlayer(string name, Gender gender, string skill)
         {
-            var player = new Player(name, skill, gender, true, this.IsWinning);
+            var player = new Player(name, skill, gender, true, _settings, this.IsWinning);
 
-            // Find the place to insert them
-            var index = AllPlayers.Concat(new[] { player }).OrderBy(p => p.Name).ToList().IndexOf(player);
-
-            AllPlayers.Insert(index, player);
+            AddPlayerAtCorrectPosition(player);
             WireEvents(player);
             SaveToFile();
             return player;
+        }
+
+        private void AddPlayerAtCorrectPosition(Player player)
+        {
+            // Find the place to insert them
+            var index = AllPlayers.Concat(new[] { player }).OrderBy(p => p.Name).ToList().IndexOf(player);
+            AllPlayers.Insert(index, player);
         }
 
         public void ImportFromCsv(string filename)
@@ -99,6 +106,7 @@ namespace KingsAndQueensHat.Persistence
             {
                 throw new InvalidPlayerListException(string.Format("{0}: File not found", filename));
             }
+            var newPlayers = new List<Player>();
             try
             {
                 using (var reader = File.OpenText(filename))
@@ -128,19 +136,13 @@ namespace KingsAndQueensHat.Persistence
                         }
 
 
-                        int skill;
-                        if (!int.TryParse(parts[2], out skill))
+                        string skill = parts[2];
+                        if (!_settings.SkillLevelExists(skill))
                         {
-                            throw new InvalidPlayerListException(string.Format("Third entry on each line must be an integer ({0})", parts[2]));
+                            throw new InvalidPlayerListException(string.Format("Unknown skill: {0}", skill));
                         }
 
-                        // Skip any duplicates
-                        if (!AllPlayers.Any(p => p.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) && p.Gender == gender))
-                        {
-                            var p = new Player(name, skill, gender, true, this.IsWinning);
-                            WireEvents(p);
-                            AllPlayers.Add(p);
-                        }
+                        newPlayers.Add(new Player(name, skill, gender, true, _settings, this.IsWinning));
                     }
                 }
             }
@@ -148,6 +150,17 @@ namespace KingsAndQueensHat.Persistence
             {
                 throw new InvalidPlayerListException(string.Format("Cannot access file: {0}", filename));
             }
+
+            foreach (var player in newPlayers)
+            {
+                // Skip any duplicates
+                if (!AllPlayers.Any(p => p.Name.Equals(player.Name, StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    WireEvents(player);
+                    AddPlayerAtCorrectPosition(player);
+                }
+            }
+
             SaveToFile();
         }
     }

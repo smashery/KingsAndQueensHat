@@ -57,6 +57,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\PlayerEventArgs.cs" />
+    <Compile Include="Model\TournamentSettings.cs" />
     <Compile Include="Persistence\StorageLocator.cs" />
     <Compile Include="ViewModel\GenderRanking.cs" />
     <Compile Include="Persistence\InvalidRoundException.cs" />

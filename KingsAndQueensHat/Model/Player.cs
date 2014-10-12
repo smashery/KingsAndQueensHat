@@ -9,13 +9,15 @@ namespace KingsAndQueensHat.Model
     public class Player : INotifyPropertyChanged
     {
         private Func<Player, bool> _isWinning;
-        public Player(string name, int skill, Gender gender, bool currentlyPresent, Func<Player, bool> isWinning)
+        private TournamentSettings _settings;
+        public Player(string name, string skill, Gender gender, bool currentlyPresent, TournamentSettings settings, Func<Player, bool> isWinning)
         {
             Name = name;
             Skill = skill;
             Gender = gender;
             CurrentlyPresent = currentlyPresent;
             GameScore = 0;
+            _settings = settings;
             _isWinning = isWinning;
         }
 
@@ -39,10 +41,19 @@ namespace KingsAndQueensHat.Model
         public event EventHandler<PlayerEventArgs> OnDelete;
         
         public string Name { get; set; }
-        
+
         public Gender Gender { get; set; }
 
-        public int Skill { get; set; }
+        public string Skill { get; set; }
+
+        [XmlIgnore]
+        public int SkillValue
+        {
+            get
+            {
+                return _settings.SkillValueOf(Skill);
+            }
+        }
 
         private bool _currentlyPresent;
         public bool CurrentlyPresent

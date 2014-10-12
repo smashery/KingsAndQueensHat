@@ -22,7 +22,7 @@ namespace KingsAndQueensHat.TeamGeneration
         /// </summary>
         public double ScorePenalty(List<Team> teams)
         {
-            var standardDeviations = teams.Select(t => HatMath.StdDeviation(t.Players.Select(p => (double)p.Skill).ToList())).ToList();
+            var standardDeviations = teams.Select(t => HatMath.StdDeviation(t.Players.Select(p => (double)p.SkillValue).ToList())).ToList();
             var x = teams.Select(t => t.Players.Select(p => p.Skill)).ToList();
             // Yo dawg
             var result = HatMath.StdDeviation(standardDeviations);

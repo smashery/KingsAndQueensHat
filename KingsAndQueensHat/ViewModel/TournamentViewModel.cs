@@ -13,7 +13,7 @@ namespace KingsAndQueensHat.ViewModel
     /// </summary>
     public class TournamentViewModel : INotifyPropertyChanged
     {
-        public TournamentViewModel(StorageLocator storageLocator)
+        public TournamentViewModel(TournamentPersistence storageLocator)
         {
             Tournament = new Tournament(storageLocator);
             Tournament.LoadExistingData();

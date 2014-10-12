@@ -16,6 +16,13 @@ namespace KingsAndQueensHat.ViewModel
         public event EventHandler Delete;
         public event EventHandler Open;
 
+        public string Path
+        {
+            get
+            {
+                return System.IO.Path.Combine(Constants.StorageDirectory(), Name);
+            }
+        }
 
         private CommandHandler _deleteCommand;
         public CommandHandler Deleted

@@ -1,4 +1,5 @@
 ﻿using KingsAndQueensHat.Persistence;
+using KingsAndQueensHat.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,13 +14,11 @@ namespace KingsAndQueensHat.ViewModel
     {
         public ObservableCollection<PersistedTournament> Tournaments { get; private set; }
 
-        public string BaseDir;
-
         public TournamentSelectionViewModel()
         {
-            BaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "KingAndQueenHat", "Tournaments");
-            Directory.CreateDirectory(BaseDir);
-            var directories = Directory.EnumerateDirectories(BaseDir);
+            var baseDir = Constants.StorageDirectory();
+            Directory.CreateDirectory(baseDir);
+            var directories = Directory.EnumerateDirectories(baseDir);
             Tournaments = new ObservableCollection<PersistedTournament>(directories.Select(d => new PersistedTournament(Path.GetFileName(d))));
             foreach (var tourney in Tournaments)
             {
@@ -40,7 +39,7 @@ namespace KingsAndQueensHat.ViewModel
         {
             var tourney = sender as PersistedTournament;
             Tournaments.Remove(tourney);
-            Directory.Delete(Path.Combine(BaseDir, tourney.Name));
+            Directory.Delete(tourney.Path);
         }
 
         public string TournamentName { get; set; }
@@ -50,9 +49,9 @@ namespace KingsAndQueensHat.ViewModel
             return !Tournaments.Any(t => t.Name.Equals(TournamentName, StringComparison.CurrentCultureIgnoreCase));
         }
 
-        public StorageLocator GetStorageLocator(string name)
+        public TournamentPersistence GetStorageLocator(string name)
         {
-            return new StorageLocator(Path.Combine(BaseDir, name));
+            return new TournamentPersistence(name);
         }
     }
 }

@@ -46,7 +46,7 @@ namespace KingsAndQueensHat.View
             OpenTournament(ViewModel.GetStorageLocator(ViewModel.TournamentName));
         }
 
-        private void OpenTournament(Persistence.StorageLocator storageLocator)
+        private void OpenTournament(Persistence.TournamentPersistence storageLocator)
         {
             var window = new MainWindow();
             window.SetStorageLocator(storageLocator);

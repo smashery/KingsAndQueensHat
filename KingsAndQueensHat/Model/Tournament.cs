@@ -21,7 +21,7 @@ namespace KingsAndQueensHat.Model
     /// </summary>
     public class Tournament : INotifyPropertyChanged
     {
-        public Tournament(StorageLocator storageLocator)
+        public Tournament(TournamentPersistence storageLocator)
         {
             _storage = storageLocator;
             var provider = new PlayerListFile(_storage);
@@ -35,7 +35,7 @@ namespace KingsAndQueensHat.Model
             DeletePlayerFromTournament(e.Player);
         }
 
-        private StorageLocator _storage;
+        private TournamentPersistence _storage;
 
         internal IPlayerProvider PlayerProvider { get; set; }
 

@@ -8,28 +8,36 @@ using System.Threading.Tasks;
 
 namespace KingsAndQueensHat.Persistence
 {
-    public class StorageLocator
+    public class TournamentPersistence
     {
-        private string _path;
-
-        public StorageLocator(string path)
+        public TournamentPersistence(string name)
         {
-            _path = path;
-            if (!Directory.Exists(path))
+            Name = name;
+            if (!Directory.Exists(Path))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(Path);
+            }
+        }
+
+        public string Name { get; private set; }
+
+        private string Path
+        {
+            get
+            {
+                return System.IO.Path.Combine(Constants.StorageDirectory(), Name);
             }
         }
 
         public IEnumerable<string> GetHatRoundPaths()
         {
-            return Directory.EnumerateFiles(_path, string.Format("*{0}", Constants.DataFileExtension));
+            return Directory.EnumerateFiles(Path, string.Format("*{0}", Constants.DataFileExtension));
 
         }
 
         internal string PlayerListFilename
         {
-            get { return Path.Combine(_path, "players.xml"); }
+            get { return System.IO.Path.Combine(Path, "players.xml"); }
         }
 
         internal string GetNextHatRoundPath()

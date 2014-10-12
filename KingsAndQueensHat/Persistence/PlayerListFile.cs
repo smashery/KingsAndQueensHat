@@ -12,9 +12,9 @@ namespace KingsAndQueensHat.Persistence
     {
         public ObservableCollection<Player> AllPlayers { get; private set; }
 
-        private StorageLocator _storage;
+        private TournamentPersistence _storage;
 
-        public PlayerListFile(StorageLocator storage)
+        public PlayerListFile(TournamentPersistence storage)
         {
             _storage = storage;
             AllPlayers = new ObservableCollection<Player>();

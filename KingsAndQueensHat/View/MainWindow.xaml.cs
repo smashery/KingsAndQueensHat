@@ -5,6 +5,7 @@ using System.Threading;
 using KingsAndQueensHat.Model;
 using KingsAndQueensHat.Persistence;
 using KingsAndQueensHat.ViewModel;
+using KingsAndQueensHat.Utils;
 
 namespace KingsAndQueensHat.View
 {
@@ -20,7 +21,7 @@ namespace KingsAndQueensHat.View
 
         public TournamentViewModel ViewModel { get; private set; }
 
-        internal void SetStorageLocator(StorageLocator storageLocator)
+        internal void SetStorageLocator(TournamentPersistence storageLocator)
         {
             try
             {
@@ -44,7 +45,7 @@ namespace KingsAndQueensHat.View
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw;
             }
-
+            Title = string.Format("{0} - {1} {2}", storageLocator.Name, Constants.TitleBarText, Constants.VersionText());
             DataContext = ViewModel;
         }
     }

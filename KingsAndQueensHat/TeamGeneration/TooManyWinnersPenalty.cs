@@ -35,8 +35,10 @@ namespace KingsAndQueensHat.TeamGeneration
             var totalWinning = winningPerTeam.Sum();
             var expectedWinnersPerTeam = totalWinning / (double)teams.Count;
 
-            // Sum the square of the deviations from the expected number of winners
-            var result = winningPerTeam.Sum(s => HatMath.Square(s - expectedWinnersPerTeam));
+            // Sum the square root of the deviations from the expected number of winners
+            // Square root shrinks the dynamic range, so as to make the better options
+            // more standout after normalisation
+            var result = winningPerTeam.Sum(s => Math.Sqrt(Math.Abs(s - expectedWinnersPerTeam)));
             return result;
         }
 

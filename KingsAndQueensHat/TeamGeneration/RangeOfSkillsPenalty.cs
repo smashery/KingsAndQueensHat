@@ -18,14 +18,17 @@ namespace KingsAndQueensHat.TeamGeneration
     public class RangeOfSkillsPenalty : IPenalty
     {
         /// <summary>
-        /// All teams having similar standard deviation of player skills makes for a good result
+        /// All teams having similar standard deviation of player skills per gender makes for a good result
         /// </summary>
         public double ScorePenalty(List<Team> teams)
         {
-            var standardDeviations = teams.Select(t => HatMath.StdDeviation(t.Players.Select(p => (double)p.SkillValue).ToList())).ToList();
-            var x = teams.Select(t => t.Players.Select(p => p.Skill)).ToList();
-            // Yo dawg
-            var result = HatMath.StdDeviation(standardDeviations);
+            double result = 0;
+            foreach (var gender in new[] { Gender.Male, Gender.Female })
+            {
+                var standardDeviations = teams.Select(t => HatMath.StdDeviation(t.Players.Where(p => p.Gender == gender).Select(p => (double)p.SkillValue).ToList())).ToList();
+                // Yo dawg
+                result += HatMath.StdDeviation(standardDeviations);
+            }
             return result;
         }
 

@@ -86,6 +86,15 @@ namespace KingsAndQueensHat.Model
         }
 
         [XmlIgnore]
+        public Dictionary<Gender, int> GenderSkills
+        {
+            get 
+            { 
+                return Players.GroupBy(p => p.Gender).Select(g => new {g.Key, Skill = g.Sum(p => p.SkillValue)}).ToDictionary(x => x.Key, x => x.Skill); 
+            }
+        }
+
+        [XmlIgnore]
         public int PlayerCount
         {
             get { return Players.Count; }

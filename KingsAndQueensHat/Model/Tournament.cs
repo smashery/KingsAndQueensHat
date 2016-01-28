@@ -196,6 +196,11 @@ namespace KingsAndQueensHat.Model
 
         }
 
+        internal void ExportRoundToCsv(int roundNum, string filename)
+        {
+            Rounds[roundNum].ExportToCsv(filename);
+        }
+
         internal void AddPlayerToLastRound(Player player)
         {
             var round = Rounds.Last();

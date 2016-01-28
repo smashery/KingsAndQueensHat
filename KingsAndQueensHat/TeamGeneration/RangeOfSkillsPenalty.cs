@@ -23,7 +23,8 @@ namespace KingsAndQueensHat.TeamGeneration
         public double ScorePenalty(List<Team> teams)
         {
             double result = 0;
-            foreach (var gender in new[] { Gender.Male, Gender.Female })
+            var genders = teams.SelectMany(t => t.GenderSkills.Keys).Distinct();
+            foreach (var gender in genders)
             {
                 var standardDeviations = teams.Select(t => HatMath.StdDeviation(t.Players.Where(p => p.Gender == gender).Select(p => (double)p.SkillValue).ToList())).ToList();
                 // Yo dawg

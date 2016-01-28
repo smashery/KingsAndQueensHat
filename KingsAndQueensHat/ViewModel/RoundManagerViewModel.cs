@@ -99,6 +99,11 @@ namespace KingsAndQueensHat.ViewModel
             OnPropertyChanged("CanDeleteRound");
         }
 
+        internal void ExportThisRound(string filename)
+        {
+            Tournament.ExportRoundToCsv(CurrentRoundNumber - 1, filename);
+        }
+
         internal void DeleteAllData()
         {
             Tournament.DeleteAllData();

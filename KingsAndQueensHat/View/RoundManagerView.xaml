@@ -18,8 +18,9 @@
             <Label Content="{Binding CurrentRoundNumber}" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Button Name="NextRoundButton" Content="&gt;" HorizontalAlignment="Left" VerticalAlignment="Top" Width="13" Margin="0,10,0,0" Click="NextRoundButton_Click" IsEnabled="{Binding CanNavigateForwards}"/>
         </StackPanel>
-        <Button Content="Delete" HorizontalAlignment="Left" Margin="176,10,0,0" VerticalAlignment="Top" Width="47" Name="DeleteButton" IsEnabled="{Binding CanDeleteRound}" Click="DeleteButton_Click"/>
-        <Button Content="Delete All" Name="DeleteAllButton" HorizontalAlignment="Left" Margin="228,10,0,0" VerticalAlignment="Top" Width="75" IsEnabled="{Binding CanDeleteRound}" Click="DeleteAllButton_Click"/>
+        <Button Content="Export" HorizontalAlignment="Left" Margin="158,10,0,0" VerticalAlignment="Top" Width="47" Name="ExportButton" IsEnabled="{Binding CanDeleteRound}" Click="ExportButton_Click"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="209,10,0,0" VerticalAlignment="Top" Width="47" Name="DeleteButton" IsEnabled="{Binding CanDeleteRound}" Click="DeleteButton_Click"/>
+        <Button Content="Delete All" Name="DeleteAllButton" HorizontalAlignment="Left" Margin="261,10,0,0" VerticalAlignment="Top" Width="75" IsEnabled="{Binding CanDeleteRound}" Click="DeleteAllButton_Click"/>
         <ScrollViewer Margin="0,47,0,0">
             <k:RoundView DataContext="{Binding CurrentRoundViewModel}"/>
         </ScrollViewer>

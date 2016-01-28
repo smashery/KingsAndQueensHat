@@ -1,4 +1,5 @@
 ﻿using KingsAndQueensHat.ViewModel;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,6 +77,20 @@ namespace KingsAndQueensHat.View
             if (MessageBox.Show("Are you sure you want to permanently delete\r\nthese teams and their results?", "Confirm", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
             {
                 ViewModel.DeleteThisRound();
+            }
+        }
+
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog
+            {
+                DefaultExt = "*.csv",
+                Filter = "CSV File (*.csv)|*.csv"
+            };
+            var ok = dialog.ShowDialog();
+            if (ok.HasValue && ok.Value)
+            {
+                ViewModel.ExportThisRound(dialog.FileName);
             }
         }
 

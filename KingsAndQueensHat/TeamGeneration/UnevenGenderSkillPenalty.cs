@@ -17,7 +17,8 @@ namespace KingsAndQueensHat.TeamGeneration
         {
             var scores = teams.Select(team => team.GenderSkills).ToList();
             int result = 0;
-            foreach (var gender in new[] { Gender.Male, Gender.Female })
+            var genders = teams.SelectMany(t => t.GenderSkills.Keys).Distinct();
+            foreach (var gender in genders)
             {
                 var total = scores.Sum(s => s[gender]);
                 var teamCount = teams.Count;

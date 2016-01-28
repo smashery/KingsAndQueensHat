@@ -70,6 +70,22 @@ namespace KingsAndQueensHat.Model
             }
         }
 
+        public void ExportToCsv(string filename)
+        {
+            using (var stream = new StreamWriter(filename))
+            {
+                foreach (var team in Teams)
+                {
+                    stream.WriteLine(team.Name);
+                    foreach (var player in team.Players)
+                    {
+                        stream.WriteLine(player.Name);
+                    }
+                    stream.WriteLine();
+                }
+            }
+        }
+
         public void AddRoundToPairingCount(PlayerPairings pairings)
         {
             foreach (var team in Teams)

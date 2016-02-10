@@ -71,7 +71,7 @@ namespace KingsAndQueensHat.ViewModel
             }
         }
 
-        internal void CreateNewRound(Func<Task, CancellationTokenSource, ICancelDialog> cancelDialogFactory)
+        internal void CreateNewRound(Func<Task, CancellationTokenSource, ICancelDialog> cancelDialogFactory, Action<string> errorAction)
         {
             if (TeamCount > 0 && TeamCount % 2 != 0)
             {
@@ -81,7 +81,10 @@ namespace KingsAndQueensHat.ViewModel
             var task = Tournament.CreateNewRound(TeamCount, source.Token);
             var cancelDialog = cancelDialogFactory(task, source);
             cancelDialog.ShowUntilCompleteOrCancelled();
-
+            if (task.IsFaulted)
+            {
+                errorAction(task.Exception.InnerException.Message);
+            }
             OnPropertyChanged("NumRounds");
             OnPropertyChanged("CanDeleteRound");
 

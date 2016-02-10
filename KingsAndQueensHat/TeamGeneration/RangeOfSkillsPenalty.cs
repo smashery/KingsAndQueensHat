@@ -26,7 +26,7 @@ namespace KingsAndQueensHat.TeamGeneration
             var genders = teams.SelectMany(t => t.GenderSkills.Keys).Distinct();
             foreach (var gender in genders)
             {
-                var standardDeviations = teams.Select(t => HatMath.StdDeviation(t.Players.Where(p => p.Gender == gender).Select(p => (double)p.SkillValue).ToList())).ToList();
+                var standardDeviations = teams.Select(t => HatMath.StdDeviation(t.Players.Where(p => p.Gender == gender).Select(p => (double)p.SkillLevel.Value).ToList())).ToList();
                 // Yo dawg
                 result += HatMath.StdDeviation(standardDeviations);
             }

@@ -28,7 +28,7 @@ namespace KingsAndQueensHat.ViewModel
             }
         }
 
-        public IEnumerable<SkillLookup> SkillLevels
+        public IEnumerable<SkillLevel> SkillLevels
         {
             get
             {

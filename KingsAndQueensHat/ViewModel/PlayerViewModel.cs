@@ -55,7 +55,7 @@ namespace KingsAndQueensHat.ViewModel
             Players.ImportFromCsv(filename);
         }
 
-        public ObservableCollection<SkillLookup> AvailableSkills
+        public ObservableCollection<SkillLevel> AvailableSkills
         {
             get
             {
@@ -66,7 +66,7 @@ namespace KingsAndQueensHat.ViewModel
 
         public string NewPlayerName { get; set; }
         public Gender NewPlayerGender { get; set; }
-        public SkillLookup NewPlayerSkill { get; set; }
+        public SkillLevel NewPlayerSkill { get; set; }
 
         public void AddPlayer(Func<bool> AddToCurrentRound, Action<string> ErrorAction)
         {

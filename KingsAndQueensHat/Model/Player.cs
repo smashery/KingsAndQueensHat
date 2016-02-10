@@ -4,16 +4,17 @@ using KingsAndQueensHat.Annotations;
 using System;
 using System.Xml.Serialization;
 using KingsAndQueensHat.Utils;
+using System.Collections.ObjectModel;
 namespace KingsAndQueensHat.Model
 {
     public class Player : INotifyPropertyChanged
     {
         private Func<Player, bool> _isWinning;
         private TournamentSettings _settings;
-        public Player(string name, string skill, Gender gender, bool currentlyPresent, TournamentSettings settings, Func<Player, bool> isWinning)
+        public Player(string name, SkillLevel skill, Gender gender, bool currentlyPresent, TournamentSettings settings, Func<Player, bool> isWinning)
         {
             Name = name;
-            Skill = skill;
+            SkillLevel = skill;
             Gender = gender;
             CurrentlyPresent = currentlyPresent;
             GameScore = 0;
@@ -38,21 +39,42 @@ namespace KingsAndQueensHat.Model
             _isWinning = isWinning;
         }
 
-        public event EventHandler OnCurrentlyPresentChanged;
+        public event EventHandler OnChange;
+        public event EventHandler<PlayerEventArgs> OnRemoveFromRound;
         public event EventHandler<PlayerEventArgs> OnDelete;
         
         public string Name { get; set; }
 
         public Gender Gender { get; set; }
 
-        public string Skill { get; set; }
-
         [XmlIgnore]
-        public int SkillValue
+        public SkillLevel SkillLevel 
+        {
+            get { return _settings.SkillLevel(Skill); }
+            set
+            {
+                Skill = value.Name;
+            }
+        }
+        
+        private string _skill;
+        public string Skill
         {
             get
             {
-                return _settings.SkillValueOf(Skill);
+                return _skill;
+            }
+            set
+            {
+                if (value != _skill)
+                {
+                    _skill = value;
+                    var @event = OnChange;
+                    if (@event != null)
+                    {
+                        @event(this, new EventArgs());
+                    }
+                }
             }
         }
 
@@ -65,7 +87,7 @@ namespace KingsAndQueensHat.Model
                 if (value != _currentlyPresent)
                 {
                     _currentlyPresent = value;
-                    var @event = OnCurrentlyPresentChanged;
+                    var @event = OnChange;
                     if (@event != null)
                     {
                         @event(this, new EventArgs());
@@ -150,6 +172,24 @@ namespace KingsAndQueensHat.Model
         internal void ForceUpdate()
         {
             OnPropertyChanged("PotentialMonarch");
+        }
+
+        private CommandHandler _removeSelfCommand;
+        public CommandHandler RemoveSelfFromCurrentRound
+        {
+            get
+            {
+                return _removeSelfCommand ?? (_removeSelfCommand = new CommandHandler(() => HandleRemovePlayer(), () => true));
+            }
+        }
+
+        public void HandleRemovePlayer()
+        {
+            var @event = OnRemoveFromRound;
+            if (@event != null)
+            {
+                @event(this, new PlayerEventArgs(this));
+            }
         }
     }
 }

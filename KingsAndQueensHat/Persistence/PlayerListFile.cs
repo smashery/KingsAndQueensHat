@@ -25,6 +25,7 @@ namespace KingsAndQueensHat.Persistence
         }
 
         public event EventHandler<PlayerEventArgs> PlayerDeleted;
+        public event EventHandler<PlayerEventArgs> RemovePlayerFromRound;
 
         public void Load()
         {
@@ -53,8 +54,18 @@ namespace KingsAndQueensHat.Persistence
 
         private void WireEvents(Player player)
         {
-            player.OnCurrentlyPresentChanged += playerPresenceChanged;
+            player.OnChange += playerPresenceChanged;
             player.OnDelete += playerDelete;
+            player.OnRemoveFromRound += playerRemoveFromRound;
+        }
+
+        void playerRemoveFromRound(object sender, PlayerEventArgs e)
+        {
+            var @event = RemovePlayerFromRound;
+            if (@event != null)
+            {
+                @event(sender, e);
+            }
         }
 
         void playerDelete(object sender, PlayerEventArgs e)
@@ -85,7 +96,7 @@ namespace KingsAndQueensHat.Persistence
 
         public Player NewPlayer(string name, Gender gender, string skill)
         {
-            var player = new Player(name, skill, gender, true, _settings, this.IsWinning);
+            var player = new Player(name, _settings.SkillLevel(skill), gender, true, _settings, this.IsWinning);
 
             AddPlayerAtCorrectPosition(player);
             WireEvents(player);
@@ -142,7 +153,7 @@ namespace KingsAndQueensHat.Persistence
                             throw new InvalidPlayerListException(string.Format("Unknown skill: {0}", skill));
                         }
 
-                        newPlayers.Add(new Player(name, skill, gender, true, _settings, this.IsWinning));
+                        newPlayers.Add(new Player(name, _settings.SkillLevel(skill), gender, true, _settings, this.IsWinning));
                     }
                 }
             }

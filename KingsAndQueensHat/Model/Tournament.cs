@@ -28,6 +28,7 @@ namespace KingsAndQueensHat.Model
 
             var provider = new PlayerListFile(_storage, Settings);
             PlayerProvider = provider;
+            PlayerPairings = new PlayerPairings();
             provider.PlayerDeleted += PlayerDeleted;
             Rounds = new ObservableCollection<HatRound>();
         }
@@ -59,7 +60,7 @@ namespace KingsAndQueensHat.Model
         public void LoadExistingData()
         {
             Rounds.Clear();
-            _playerPairings.Clear();
+            PlayerPairings.Clear();
 
             var files = _storage.GetHatRoundPaths();
             foreach (var file in files)
@@ -124,7 +125,7 @@ namespace KingsAndQueensHat.Model
         private void AddRound(HatRound round)
         {
             Rounds.Add(round);
-            round.AddRoundToPairingCount(_playerPairings);
+            round.AddRoundToPairingCount(PlayerPairings);
 
             round.GameDone += (sender, args) =>
                 {
@@ -140,7 +141,7 @@ namespace KingsAndQueensHat.Model
         /// <summary>
         /// A record of who has played with whom
         /// </summary>
-        private PlayerPairings _playerPairings = new PlayerPairings();
+        public PlayerPairings PlayerPairings;
 		
         /// <summary>
         /// Create a new set of teams
@@ -155,7 +156,7 @@ namespace KingsAndQueensHat.Model
             var penalty3 = new TooManyWinnersPenalty(PlayerProvider);
             var penalty4 = new RangeOfSkillsPenalty();
             var penalty5 = new UnevenGenderSkillPenalty();
-            var penalties = new IPenalty[] { penalty1, _playerPairings, penalty3, penalty4, penalty5 };
+            var penalties = new IPenalty[] { penalty1, PlayerPairings, penalty3, penalty4, penalty5 };
 
             var teams = await teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, teamCount, cancel);
 
@@ -181,19 +182,18 @@ namespace KingsAndQueensHat.Model
             while (Rounds.Count > 0)
             {
                 var lastRound = Rounds.Last();
-                lastRound.Delete(_playerPairings);
+                lastRound.Delete(PlayerPairings);
                 Rounds.Remove(lastRound);
             }
-            var pairings = _playerPairings.NumberOfPairings;
+            var pairings = PlayerPairings.NumberOfPairings;
             Trace.Assert(pairings == 0);
         }
 
         internal void DeleteRound(int roundNum)
         {
             var round = Rounds[roundNum];
-            round.Delete(_playerPairings);
+            round.Delete(PlayerPairings);
             Rounds.RemoveAt(roundNum);
-
         }
 
         internal void ExportRoundToCsv(int roundNum, string filename)
@@ -204,7 +204,7 @@ namespace KingsAndQueensHat.Model
         internal void AddPlayerToLastRound(Player player)
         {
             var round = Rounds.Last();
-            round.AddPlayer(player, _playerPairings);
+            round.AddPlayer(player, PlayerPairings);
             var @event = PlayerDataChanged;
             if (@event != null)
             {
@@ -216,7 +216,7 @@ namespace KingsAndQueensHat.Model
         {
             foreach (var round in Rounds)
             {
-                round.DeletePlayer(player, _playerPairings);
+                round.DeletePlayer(player, PlayerPairings);
             }
 
             var @event = PlayerDataChanged;

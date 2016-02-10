@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using KingsAndQueensHat.TeamGeneration;
 using System.IO;
 using System.Xml.Serialization;
+using System.Collections.ObjectModel;
 
 namespace KingsAndQueensHat.Model
 {
@@ -33,10 +34,21 @@ namespace KingsAndQueensHat.Model
             foreach (var team in teams)
             {
                 team.OnGameDone += OnGameDone;
+                team.OnPlayerAdd += team_OnPlayerAdd;
+            }
+        }
+
+        void team_OnPlayerAdd(object sender, PlayerEventArgs e)
+        {
+            var @event = AddPlayerEvent;
+            if (@event != null)
+            {
+                @event(sender, e);
             }
         }
 
         public event EventHandler GameDone;
+        public event EventHandler<PlayerEventArgs> AddPlayerEvent;
 
         /// <summary>
         /// When any team score is recorded
@@ -51,6 +63,11 @@ namespace KingsAndQueensHat.Model
             {
                 gameDone(sender, eventArgs);
             }
+        }
+
+        private void OnPlayerAddClicked(object sender, PlayerEventArgs eventArgs)
+        {
+            
         }
 
         public void SaveToFile()

@@ -16,6 +16,8 @@ namespace KingsAndQueensHat
         void ImportFromCsv(string filename);
 
         Player NewPlayer(string NewPlayerName, Gender gender, string skill);
+
+        event EventHandler<PlayerEventArgs> RemovePlayerFromRound;
     }
 
     public static class PlayerProviderExtensions

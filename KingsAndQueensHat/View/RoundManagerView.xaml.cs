@@ -64,7 +64,7 @@ namespace KingsAndQueensHat.View
                     var dialog = new CancelDialog(t, s);
                     dialog.Owner = Window.GetWindow(this);
                     return dialog;
-                });
+                }, (message) => MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error));
             }
             catch (ArgumentException ex)
             {

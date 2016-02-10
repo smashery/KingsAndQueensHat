@@ -19,8 +19,17 @@ namespace KingsAndQueensHat.ViewModel
         {
             Tournament = tournament;
             Tournament.GameDone += (sender, args) => WonLossChanged();
+            Tournament.PlayerProvider.RemovePlayerFromRound += PlayerProvider_RemovePlayerFromRound;
 
             TeamsThisRound = new ObservableCollection<Team>();
+        }
+
+        void PlayerProvider_RemovePlayerFromRound(object sender, PlayerEventArgs e)
+        {
+            var team = CurrentRound.Teams.Single(t => t.Players.Contains(e.Player));
+            team.RemovePlayer(e.Player, Tournament.PlayerPairings);
+            CurrentRound.SaveToFile();
+            OnPropertyChanged("NonplayingPlayers");
         }
 
         public int CurrentNumberOfTeams
@@ -35,7 +44,21 @@ namespace KingsAndQueensHat.ViewModel
             }
         }
 
-        private HatRound CurrentRound { get; set; }
+        private HatRound CurrentRound
+        {
+            get;
+            set;
+        }
+
+        public IEnumerable<Player> NonplayingPlayers
+        {
+            get
+            {
+                var playingPlayers = CurrentRound.Teams.SelectMany(t => t.Players);
+                var list = Tournament.AllPlayers.Except(playingPlayers).ToList();
+                return list;
+            }
+        }
 
         public ObservableCollection<Team> TeamsThisRound { get; private set; }
 
@@ -44,11 +67,24 @@ namespace KingsAndQueensHat.ViewModel
             get { return Tournament.AllPlayers; }
         }
 
+        private void AddPlayer(object sender, PlayerEventArgs eventArgs)
+        {
+            var team = sender as Team;
+            team.AddPlayerLate(eventArgs.Player, Tournament.PlayerPairings);
+            OnPropertyChanged("NonplayingPlayers");
+        }
+
         public void SetCurrentRound(HatRound round)
         {
+            if (round != null)
+            {
+                round.AddPlayerEvent -= AddPlayer;
+            }
             CurrentRound = round;
+            round.AddPlayerEvent += AddPlayer;
             OnPropertyChanged("ProblematicResults");
             OnPropertyChanged("ProblematicText");
+            OnPropertyChanged("NonplayingPlayers");
 
             TeamsThisRound.Clear();
             if (round != null)

@@ -28,12 +28,12 @@ namespace KingsAndQueensHat.Model
 
         private void Initialise()
         {
-            SkillLevels = new ObservableCollection<SkillLookup>();
-            SkillLevels.Add(new SkillLookup { Name = "Novice", Skill = 10 });
-            SkillLevels.Add(new SkillLookup { Name = "Beginner", Skill = 30 });
-            SkillLevels.Add(new SkillLookup { Name = "Intermediate", Skill = 50 });
-            SkillLevels.Add(new SkillLookup { Name = "Experienced", Skill = 80 });
-            SkillLevels.Add(new SkillLookup { Name = "Guru", Skill = 100 });
+            SkillLevels = new ObservableCollection<SkillLevel>();
+            SkillLevels.Add(new SkillLevel { Name = "Novice", Value = 10 });
+            SkillLevels.Add(new SkillLevel { Name = "Beginner", Value = 30 });
+            SkillLevels.Add(new SkillLevel { Name = "Intermediate", Value = 50 });
+            SkillLevels.Add(new SkillLevel { Name = "Experienced", Value = 80 });
+            SkillLevels.Add(new SkillLevel { Name = "Guru", Value = 100 });
 
             foreach (var sl in SkillLevels)
             {
@@ -58,7 +58,7 @@ namespace KingsAndQueensHat.Model
             }
         }
 
-        public ObservableCollection<SkillLookup> SkillLevels
+        public ObservableCollection<SkillLevel> SkillLevels
         {
             get; set;
         }
@@ -70,12 +70,12 @@ namespace KingsAndQueensHat.Model
 
         public int SkillValueOf(string skillLevel)
         {
-            return SkillLevel(skillLevel).Skill;
+            return SkillLevel(skillLevel).Value;
         }
 
-        internal SkillLookup SkillLevel(string skill)
+        internal SkillLevel SkillLevel(string skill)
         {
-            return SkillLevels.Single(sl => sl.Name == skill);
+            return SkillLevels.SingleOrDefault(sl => sl.Name == skill);
         }
 
         private void Save()

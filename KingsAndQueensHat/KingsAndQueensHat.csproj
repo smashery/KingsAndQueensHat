@@ -61,6 +61,7 @@
     <Compile Include="Model\TournamentSettings.cs" />
     <Compile Include="Persistence\StorageLocator.cs" />
     <Compile Include="TeamGeneration\UnevenGenderSkillPenalty.cs" />
+    <Compile Include="Utils\InvalidDataException.cs" />
     <Compile Include="ViewModel\GenderRanking.cs" />
     <Compile Include="Persistence\InvalidRoundException.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -90,7 +91,7 @@
     <Compile Include="ViewModel\RoundManagerViewModel.cs" />
     <Compile Include="ViewModel\RoundViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
-    <Compile Include="Model\SkillLookup.cs" />
+    <Compile Include="Model\SkillLevel.cs" />
     <Compile Include="ViewModel\TournamentSelectionViewModel.cs" />
     <Compile Include="View\PlayerView.xaml.cs">
       <DependentUpon>PlayerView.xaml</DependentUpon>

@@ -30,7 +30,14 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Name" Width="140" Binding="{Binding Name}"/>
                                     <DataGridTextColumn Header="Gender" Width="55" Binding="{Binding Gender}"/>
-                                    <DataGridTextColumn Header="Points" Width="72" Binding="{Binding GameScore}"/>
+                                    <DataGridTextColumn Header="Points" Width="54" Binding="{Binding GameScore}"/>
+                                    <DataGridTemplateColumn Header="Delete">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button HorizontalAlignment="Center" Width="22"  Content="X" Command="{Binding RemoveSelfFromCurrentRound}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <StackPanel Orientation="Vertical">
@@ -38,6 +45,10 @@
                                 <Button Content="Lost!" Margin="5" Width="75" Command="{Binding Lost}"/>
                                 <Button Content="Drew!" Margin="5" Width="75" Command="{Binding Drew}"/>
                             </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox Width="160" Margin="5" SelectedValue="{Binding PlayerToAdd, Mode=TwoWay}" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}, Path=DataContext.NonplayingPlayers}"/>
+                            <Button Content="Add player" Margin="5" Width="75" HorizontalAlignment="Right" Command="{Binding AddPlayerCommand}"/>
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>

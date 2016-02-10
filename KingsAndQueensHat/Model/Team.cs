@@ -17,6 +17,7 @@ namespace KingsAndQueensHat.Model
     public class Team : INotifyPropertyChanged
     {
         public string Name { get; set; }
+        private CommandHandler _addPlayerCommand;
         private CommandHandler _wonCommand;
         private CommandHandler _lostCommand;
         private CommandHandler _drewCommand;
@@ -36,6 +37,7 @@ namespace KingsAndQueensHat.Model
         }
 
         public event EventHandler OnGameDone;
+        public event EventHandler<PlayerEventArgs> OnPlayerAdd;
 
         public ObservableCollection<Player> Players { get; private set; }
 
@@ -53,6 +55,27 @@ namespace KingsAndQueensHat.Model
                     return string.Empty;
                 }
                 return GameResult.ToString();
+            }
+        }
+
+        public Player _playerToAdd;
+
+        /// <summary>
+        /// The currently-selected item in the combo box
+        /// </summary>
+        public Player PlayerToAdd
+        {
+            get
+            {
+                return _playerToAdd;
+            }
+            set
+            {
+                if (_playerToAdd != value)
+                {
+                    _playerToAdd = value;
+                    AddPlayerCommand.RaiseCanExecuteChanged();
+                }
             }
         }
 
@@ -82,7 +105,14 @@ namespace KingsAndQueensHat.Model
         [XmlIgnore]
         public int TotalSkill
         {
-            get { return Players.Sum(p => p.SkillValue); }
+            get { return Players.Sum(p => 
+                {
+                    if (p.SkillLevel == null)
+                    {
+                        throw new InvalidDataException(string.Format("{0}: unknown skill", p.Skill));
+                    }
+                    return p.SkillLevel.Value;
+                }); }
         }
 
         [XmlIgnore]
@@ -90,7 +120,7 @@ namespace KingsAndQueensHat.Model
         {
             get 
             { 
-                return Players.GroupBy(p => p.Gender).Select(g => new {g.Key, Skill = g.Sum(p => p.SkillValue)}).ToDictionary(x => x.Key, x => x.Skill); 
+                return Players.GroupBy(p => p.Gender).Select(g => new {g.Key, Skill = g.Sum(p => p.SkillLevel.Value)}).ToDictionary(x => x.Key, x => x.Skill); 
             }
         }
 
@@ -182,6 +212,23 @@ namespace KingsAndQueensHat.Model
             foreach (var player in Players)
             {
                 player.GameDone(gameResult, oldGameResult);
+            }
+        }
+
+        private void HandleAddPlayer()
+        {
+            var @event = OnPlayerAdd;
+            if (@event != null)
+            {
+                @event(this, new PlayerEventArgs(PlayerToAdd));
+            }
+        }
+
+        public CommandHandler AddPlayerCommand
+        {
+            get
+            {
+                return _addPlayerCommand ?? (_addPlayerCommand = new CommandHandler(() => HandleAddPlayer(), () => PlayerToAdd != null));
             }
         }
 

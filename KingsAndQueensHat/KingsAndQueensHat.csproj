@@ -60,12 +60,10 @@
     <Compile Include="Model\PlayerEventArgs.cs" />
     <Compile Include="Model\TournamentSettings.cs" />
     <Compile Include="Persistence\StorageLocator.cs" />
-    <Compile Include="TeamGeneration\UnevenGenderSkillPenalty.cs" />
     <Compile Include="Utils\InvalidDataException.cs" />
     <Compile Include="ViewModel\GenderRanking.cs" />
     <Compile Include="Persistence\InvalidRoundException.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="TeamGeneration\RangeOfSkillsPenalty.cs" />
     <Compile Include="Utils\CommandHandler.cs" />
     <Compile Include="Model\GameResult.cs" />
     <Compile Include="Model\Gender.cs" />
@@ -84,7 +82,6 @@
     <Compile Include="TeamGeneration\RoundCreator.cs" />
     <Compile Include="Model\HatRound.cs" />
     <Compile Include="TeamGeneration\TooManyWinnersPenalty.cs" />
-    <Compile Include="TeamGeneration\UnevenSkillPenalty.cs" />
     <Compile Include="ViewModel\PersistedTournament.cs" />
     <Compile Include="ViewModel\PlayerViewModel.cs" />
     <Compile Include="ViewModel\ResultsViewModel.cs" />

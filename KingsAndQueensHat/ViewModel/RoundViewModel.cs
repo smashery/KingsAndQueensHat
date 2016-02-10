@@ -81,7 +81,10 @@ namespace KingsAndQueensHat.ViewModel
                 round.AddPlayerEvent -= AddPlayer;
             }
             CurrentRound = round;
-            round.AddPlayerEvent += AddPlayer;
+            if (round != null)
+            {
+                round.AddPlayerEvent += AddPlayer;
+            }
             OnPropertyChanged("ProblematicResults");
             OnPropertyChanged("ProblematicText");
             OnPropertyChanged("NonplayingPlayers");

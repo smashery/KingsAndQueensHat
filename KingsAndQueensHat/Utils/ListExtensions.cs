@@ -42,5 +42,23 @@ namespace KingsAndQueensHat.Utils
                 }
             }
         }
+
+        /// <summary>
+        /// Provide a never-ending loop going forwards then backwards through this list
+        /// </summary>
+        public static IEnumerable<T> Snake<T>(this IList<T> input)
+        {
+            while (true)
+            {
+                for (int i = 0; i < input.Count; ++i)
+                {
+                    yield return input[i];
+                }
+                for (int i = input.Count - 1; i >= 0; --i)
+                {
+                    yield return input[i];
+                }
+            }
+        }
     }
 }

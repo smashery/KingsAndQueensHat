@@ -45,6 +45,7 @@ namespace KingsAndQueensHat.Model
             {
                 @event(sender, e);
             }
+            SaveToFile();
         }
 
         public event EventHandler GameDone;

@@ -125,6 +125,21 @@ namespace KingsAndQueensHat.Model
         }
 
         [XmlIgnore]
+        public int TotalAdjustedScore
+        {
+            get { return Players.Sum(x=>x.AdjustedScore); }
+        }
+        
+		/// <summary>
+		/// person on the team with the highest score (potential current monarch - needs to be taken down!)
+		/// </summary>
+		[XmlIgnore]
+        public Player Captain
+        {
+			get { return Players.OrderByDescending(x => x.AdjustedScore).First(); }
+		}
+
+        [XmlIgnore]
         public int PlayerCount
         {
             get { return Players.Count; }

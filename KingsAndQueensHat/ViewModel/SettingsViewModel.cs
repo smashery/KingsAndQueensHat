@@ -28,6 +28,18 @@ namespace KingsAndQueensHat.ViewModel
             }
         }
 
+        public bool Algorithm2
+        {
+            get
+            {
+                return _settings.Algorithm2;
+            }
+            set
+            {
+                _settings.Algorithm2 = value;
+            }
+        }
+
         public IEnumerable<SkillLevel> SkillLevels
         {
             get

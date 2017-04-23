@@ -147,15 +147,22 @@ namespace KingsAndQueensHat.Model
         /// Create a new set of teams
         /// </summary>
         /// <param name="teamCount">The number of teams to generate</param>
-        public async Task CreateNewRound(int teamCount, CancellationToken cancel)
-        {
-            var numTeamGens = Settings.NumberOfGenerations;
+        public async Task CreateNewRound(int teamCount, CancellationToken cancel) {
+	        var teams = new List<Team>();
+			
+			if (Settings.Algorithm2) {
+				var algo2 = new Algorithm2();
+				teams = algo2.Generate(PlayerProvider, teamCount, Rounds.ToList());
+			}
+			else {
+				var numTeamGens = Settings.NumberOfGenerations;
 
-            var teamCreator = new RoundCreator();
-            var winnersPenalty = new TooManyWinnersPenalty(PlayerProvider);
-            var penalties = new IPenalty[] { PlayerPairings, winnersPenalty };
+				var teamCreator = new RoundCreator();
+				var winnersPenalty = new TooManyWinnersPenalty(PlayerProvider);
+				var penalties = new IPenalty[] { PlayerPairings, winnersPenalty };
 
-            var teams = await teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, teamCount, cancel);
+				teams = await teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, teamCount, cancel);
+			}
 
             var filename = _storage.GetNextHatRoundPath();
 

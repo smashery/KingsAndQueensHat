@@ -107,6 +107,16 @@ namespace KingsAndQueensHat.Model
                 return _isWinning(this);
             }
         }
+		
+		// Algo2 extra properties
+		[XmlIgnore]
+		public decimal GamesPlayed { get; set; }
+		[XmlIgnore]
+		public int NumberOfWins { get; set; }
+		[XmlIgnore]
+		public decimal WinPercent { get { return GamesPlayed == 0 ? 0 : NumberOfWins/GamesPlayed*100; } }
+		[XmlIgnore]
+		public int AdjustedScore { get; set; }
 
         public override string ToString()
         {

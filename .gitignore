@@ -3,3 +3,4 @@ obj/
 *.suo
 TestData/
 TestData.csv
+/KingsAndQueensHat/*.user

@@ -61,31 +61,39 @@ namespace KingsAndQueensHat.Model
             }
         }
 
-		private bool _algorithm2;
-		public bool Algorithm2 {
-			get {
-				return _algorithm2;
-			}
-			set {
-				if (value != _algorithm2) {
-					_algorithm2 = value;
-					Save();
-				}
-			}
-		}
-		
-		private bool _loggingOn;
-		public bool LoggingOn {
-			get {
-				return _loggingOn;
-			}
-			set {
-				if (value != _loggingOn) {
-					_loggingOn = value;
-					Save();
-				}
-			}
-		}
+        private bool _algorithm2;
+        public bool Algorithm2
+        {
+            get
+            {
+                return _algorithm2;
+            }
+            set
+            {
+                if (value != _algorithm2)
+                {
+                    _algorithm2 = value;
+                    Save();
+                }
+            }
+        }
+
+        private bool _loggingOn;
+        public bool LoggingOn
+        {
+            get
+            {
+                return _loggingOn;
+            }
+            set
+            {
+                if (value != _loggingOn)
+                {
+                    _loggingOn = value;
+                    Save();
+                }
+            }
+        }
 
         
         public ObservableCollection<SkillLevel> SkillLevels

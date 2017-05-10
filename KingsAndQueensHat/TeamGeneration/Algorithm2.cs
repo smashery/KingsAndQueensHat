@@ -4,15 +4,18 @@ using System.IO;
 using System.Linq;
 using KingsAndQueensHat.Model;
 
-namespace KingsAndQueensHat.TeamGeneration {
-    class Algorithm2 {
+namespace KingsAndQueensHat.TeamGeneration
+{
+    class Algorithm2
+    {
 
         private List<Player> _presentPlayers;
         private List<Team> _teams;
         public bool LoggingOn { get; set; }
         public string LoggingPath { get; set; }
 
-        public List<Team> Generate(IPlayerProvider playerProvider, int numTeams, List<HatRound> rounds) {
+        public List<Team> Generate(IPlayerProvider playerProvider, int numTeams, List<HatRound> rounds)
+        {
 
             PopulateRoundResults(rounds, playerProvider);
 
@@ -21,20 +24,25 @@ namespace KingsAndQueensHat.TeamGeneration {
             return DistributePlayers();
         }
 
-        private void PopulateRoundResults(IEnumerable<HatRound> rounds, IPlayerProvider playerProvider) {
+        private void PopulateRoundResults(IEnumerable<HatRound> rounds, IPlayerProvider playerProvider)
+        {
 
             Log(String.Format("\nLog time: {0}", DateTime.Now.ToString("dd MMM yyyy HH:mm:ss")));
 
             // reset the values
-            foreach (var player in playerProvider.AllPlayers) {
+            foreach (var player in playerProvider.AllPlayers)
+            {
                 player.GamesPlayed = 0;
                 player.NumberOfWins = 0;
             }
 
             // calculate win percentages
-            foreach (var hatRound in rounds) {
-                foreach (var team in hatRound.Teams) {
-                    foreach (var player in team.Players) {
+            foreach (var hatRound in rounds)
+            {
+                foreach (var team in hatRound.Teams)
+                {
+                    foreach (var player in team.Players)
+                    {
                         var p = playerProvider.AllPlayers.First(x => x == player);
                         if (p == null) continue;
                         p.GamesPlayed++;
@@ -46,7 +54,8 @@ namespace KingsAndQueensHat.TeamGeneration {
             // calculate adjusted scores
 
             var averageScore = Convert.ToDecimal(playerProvider.AllPlayers.Where(x => x.GamesPlayed > 0).Average(x => x.GameScore));
-            foreach (var player in playerProvider.AllPlayers) {
+            foreach (var player in playerProvider.AllPlayers)
+            {
                 // adjusted score is so that players who have missed games, but are good (high win%) don't get treated like bad players
                 // start with the average of the whole field
                 // based on win percent factor adjust the score up or down
@@ -59,7 +68,8 @@ namespace KingsAndQueensHat.TeamGeneration {
 
             _presentPlayers = Sort(playerProvider.PresentPlayers().ToList());
             Log("Games played so far: " + rounds.Count() + "\n");
-            foreach (var player in _presentPlayers) {
+            foreach (var player in _presentPlayers)
+            {
                 Log(String.Format("{0}\t{4}\tPlayed:{6}\tPoints/Adj:{5}/{1}\tWin:{2}%\tXP:{3}"
                     , player.Name.PadRight(15)
                     , player.AdjustedScore.ToString("0.00").PadLeft(5)
@@ -72,12 +82,15 @@ namespace KingsAndQueensHat.TeamGeneration {
             }
         }
 
-        private void Log(string lineToWrite) {
+        private void Log(string lineToWrite)
+        {
             if (LoggingOn) File.AppendAllText(LoggingPath, lineToWrite + Environment.NewLine);
         }
 
-        private List<Team> DistributePlayers() {
-            do {
+        private List<Team> DistributePlayers()
+        {
+            do
+            {
                 // take top x men and distribute
                 AssignTeam(Sort(_presentPlayers.Where(x => x.Gender == Gender.Male).ToList()));
                 // take top x women and distribute
@@ -92,16 +105,19 @@ namespace KingsAndQueensHat.TeamGeneration {
             return _teams;
         }
 
-        private static List<Player> Sort(List<Player> availablePlayers, bool topFirst = true) {
+        private static List<Player> Sort(List<Player> availablePlayers, bool topFirst = true)
+        {
             var r = new Random();
-            if (topFirst) {
+            if (topFirst)
+            {
                 availablePlayers = availablePlayers
                     .OrderByDescending(x => x.AdjustedScore)
                     .ThenByDescending(x => x.WinPercent)
                     .ThenByDescending(x => x.SkillLevel.Value)
                     .ThenByDescending(x => r.Next()) // not easily testable, but this is so it isn't just alphabetic with all other things being equal
                     .ToList();
-            } else {
+            } else
+            {
                 availablePlayers = availablePlayers
                     .OrderBy(x => x.AdjustedScore)
                     .ThenBy(x => x.WinPercent)
@@ -113,8 +129,10 @@ namespace KingsAndQueensHat.TeamGeneration {
             return availablePlayers;
         }
 
-        private void AssignTeam(List<Player> players, bool isTopWomen = false) {
-            for (var i = 0; i < _teams.Count; i++) { // do once for each team
+        private void AssignTeam(List<Player> players, bool isTopWomen = false)
+        {
+            for (var i = 0; i < _teams.Count; i++)
+            { // do once for each team
                 if (!players.Any()) return;
                 var thisPlayer = players.First();
                 GetNextTeam(isTopWomen).AddPlayer(thisPlayer);
@@ -123,13 +141,15 @@ namespace KingsAndQueensHat.TeamGeneration {
             }
         }
 
-        private Team GetNextTeam(bool isTopWomen) {
+        private Team GetNextTeam(bool isTopWomen)
+        {
             // the main idea is to get top ranked players always facing off against each other
             // TODO: put more players in first teams so that people can fill in if no-shows for later games
 
             // make a copy of teams and whittle down to best suited team
             var whittledTeams = _teams.ToList();
-            if (isTopWomen) {
+            if (isTopWomen)
+            {
                 // TODO: if teams.Count isn't even skip the last team? Need the two top women on even teams
                 whittledTeams.Reverse(); // flip the sort order - so top women aren't on same team as top men
             }
@@ -145,7 +165,8 @@ namespace KingsAndQueensHat.TeamGeneration {
             if (whittledTeams.Count == 1) return whittledTeams.First();
 
             // knock out higher ranked FirstPlayers - only works if at least one person has been assigned
-            if (whittledTeams.Any(x => x.PlayerCount > 0)) {
+            if (whittledTeams.Any(x => x.PlayerCount > 0))
+            {
                 whittledTeams.RemoveAll(x => x.FirstPlayer != null && x.FirstPlayer.AdjustedScore > whittledTeams.Min(y => y.FirstPlayer.AdjustedScore));
             }
 

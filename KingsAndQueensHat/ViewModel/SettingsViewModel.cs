@@ -5,43 +5,57 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KingsAndQueensHat.ViewModel {
-    public class SettingsViewModel {
+namespace KingsAndQueensHat.ViewModel
+{
+    public class SettingsViewModel
+    {
         private TournamentSettings _settings;
 
-        public SettingsViewModel(TournamentSettings settings) {
+        public SettingsViewModel(TournamentSettings settings)
+        {
             _settings = settings;
         }
 
-        public int NumberOfGenerations {
-            get {
+        public int NumberOfGenerations
+        {
+            get
+            {
                 return _settings.NumberOfGenerations;
             }
-            set {
+            set
+            {
                 _settings.NumberOfGenerations = value;
             }
         }
 
-        public bool Algorithm2 {
-            get {
+        public bool Algorithm2
+        {
+            get
+            {
                 return _settings.Algorithm2;
             }
-            set {
+            set
+            {
                 _settings.Algorithm2 = value;
             }
         }
 
-        public bool LoggingOn {
-            get {
+        public bool LoggingOn
+        {
+            get
+            {
                 return _settings.LoggingOn;
             }
-            set {
+            set
+            {
                 _settings.LoggingOn = value;
             }
         }
 
-        public IEnumerable<SkillLevel> SkillLevels {
-            get {
+        public IEnumerable<SkillLevel> SkillLevels
+        {
+            get
+            {
                 return _settings.SkillLevels;
             }
         }

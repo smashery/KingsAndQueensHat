@@ -116,7 +116,7 @@ namespace KingsAndQueensHat.Model
 		[XmlIgnore]
 		public decimal WinPercent { get { return GamesPlayed == 0 ? 0 : NumberOfWins/GamesPlayed*100; } }
 		[XmlIgnore]
-		public int AdjustedScore { get; set; }
+		public decimal AdjustedScore { get; set; }
 
         public override string ToString()
         {

@@ -44,6 +44,11 @@ namespace KingsAndQueensHat.Persistence
         {
             get { return System.IO.Path.Combine(Path, "settings.xml"); }
         }
+        
+		internal string LoggingPath
+        {
+            get { return System.IO.Path.Combine(Path, "log.txt"); }
+        }
 
         internal string GetNextHatRoundPath()
         {

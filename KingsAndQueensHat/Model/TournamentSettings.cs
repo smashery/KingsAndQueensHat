@@ -16,26 +16,28 @@ namespace KingsAndQueensHat.Model
         public TournamentSettings(TournamentPersistence storage)
         {
             _storage = storage;
+            
+            // default values
             NumberOfGenerations = 1000000;
 	        Algorithm2 = true; // use Algo2 by default now
-            Initialise();
-            Save();
-        }
-
-        protected TournamentSettings()
-        {
-
-        }
-
-        private void Initialise()
-        {
+	        LoggingOn = false;
             SkillLevels = new ObservableCollection<SkillLevel>();
             SkillLevels.Add(new SkillLevel { Name = "Novice", Value = 10 });
             SkillLevels.Add(new SkillLevel { Name = "Beginner", Value = 30 });
             SkillLevels.Add(new SkillLevel { Name = "Intermediate", Value = 50 });
             SkillLevels.Add(new SkillLevel { Name = "Experienced", Value = 80 });
             SkillLevels.Add(new SkillLevel { Name = "Guru", Value = 100 });
+            
+            Initialise();
+            Save();
+        }
 
+        protected TournamentSettings()
+        {
+            // need this for serialization
+        }
+
+        private void Initialise() {
             foreach (var sl in SkillLevels)
             {
                 sl.PropertyChanged += (sender, args) => Save();
@@ -71,7 +73,21 @@ namespace KingsAndQueensHat.Model
 				}
 			}
 		}
+		
+		private bool _loggingOn;
+		public bool LoggingOn {
+			get {
+				return _loggingOn;
+			}
+			set {
+				if (value != _loggingOn) {
+					_loggingOn = value;
+					Save();
+				}
+			}
+		}
 
+        
         public ObservableCollection<SkillLevel> SkillLevels
         {
             get; set;
@@ -117,7 +133,9 @@ namespace KingsAndQueensHat.Model
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(TournamentSettings));
                 var result = serializer.Deserialize(stream) as TournamentSettings;
+                if(result == null) return null;
                 result._storage = storage;
+                result.Initialise();
                 return result;
             }
         }

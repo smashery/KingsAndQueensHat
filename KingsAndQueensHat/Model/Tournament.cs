@@ -127,35 +127,47 @@ namespace KingsAndQueensHat.Model
             Rounds.Add(round);
             round.AddRoundToPairingCount(PlayerPairings);
 
-            round.GameDone += (sender, args) =>
+            round.GameDone += (sender, args) => {
+                // Guard against race conditions
+                var gameDone = GameDone;
+                if (gameDone != null)
                 {
-                    // Guard against race conditions
-                    var gameDone = GameDone;
-                    if (gameDone != null)
-                    {
-                        gameDone(sender, args);
-                    }
-                };
+                    gameDone(sender, args);
+                }
+            };
         }
 
         /// <summary>
         /// A record of who has played with whom
         /// </summary>
         public PlayerPairings PlayerPairings;
-		
+
         /// <summary>
         /// Create a new set of teams
         /// </summary>
         /// <param name="teamCount">The number of teams to generate</param>
         public async Task CreateNewRound(int teamCount, CancellationToken cancel)
         {
-            var numTeamGens = Settings.NumberOfGenerations;
+            var teams = new List<Team>();
 
-            var teamCreator = new RoundCreator();
-            var winnersPenalty = new TooManyWinnersPenalty(PlayerProvider);
-            var penalties = new IPenalty[] { PlayerPairings, winnersPenalty };
+            if (Settings.Algorithm2)
+            {
+                var algo2 = new Algorithm2() {
+                    LoggingOn = Settings.LoggingOn,
+                    LoggingPath = _storage.LoggingPath
+                };
 
-            var teams = await teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, teamCount, cancel);
+                teams = algo2.Generate(PlayerProvider, teamCount, Rounds.ToList());
+            } else
+            {
+                var numTeamGens = Settings.NumberOfGenerations;
+
+                var teamCreator = new RoundCreator();
+                var winnersPenalty = new TooManyWinnersPenalty(PlayerProvider);
+                var penalties = new IPenalty[] { PlayerPairings, winnersPenalty };
+
+                teams = await teamCreator.CreateApproximatelyOptimalTeams(penalties, PlayerProvider, numTeamGens, teamCount, cancel);
+            }
 
             var filename = _storage.GetNextHatRoundPath();
 

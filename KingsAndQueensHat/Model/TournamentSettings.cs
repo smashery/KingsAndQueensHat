@@ -16,25 +16,28 @@ namespace KingsAndQueensHat.Model
         public TournamentSettings(TournamentPersistence storage)
         {
             _storage = storage;
+            
+            // default values
             NumberOfGenerations = 1000000;
-            Initialise();
-            Save();
-        }
-
-        protected TournamentSettings()
-        {
-
-        }
-
-        private void Initialise()
-        {
+	        Algorithm2 = true; // use Algo2 by default now
+	        LoggingOn = false;
             SkillLevels = new ObservableCollection<SkillLevel>();
             SkillLevels.Add(new SkillLevel { Name = "Novice", Value = 10 });
             SkillLevels.Add(new SkillLevel { Name = "Beginner", Value = 30 });
             SkillLevels.Add(new SkillLevel { Name = "Intermediate", Value = 50 });
             SkillLevels.Add(new SkillLevel { Name = "Experienced", Value = 80 });
             SkillLevels.Add(new SkillLevel { Name = "Guru", Value = 100 });
+            
+            Initialise();
+            Save();
+        }
 
+        protected TournamentSettings()
+        {
+            // need this for serialization
+        }
+
+        private void Initialise() {
             foreach (var sl in SkillLevels)
             {
                 sl.PropertyChanged += (sender, args) => Save();
@@ -58,6 +61,41 @@ namespace KingsAndQueensHat.Model
             }
         }
 
+        private bool _algorithm2;
+        public bool Algorithm2
+        {
+            get
+            {
+                return _algorithm2;
+            }
+            set
+            {
+                if (value != _algorithm2)
+                {
+                    _algorithm2 = value;
+                    Save();
+                }
+            }
+        }
+
+        private bool _loggingOn;
+        public bool LoggingOn
+        {
+            get
+            {
+                return _loggingOn;
+            }
+            set
+            {
+                if (value != _loggingOn)
+                {
+                    _loggingOn = value;
+                    Save();
+                }
+            }
+        }
+
+        
         public ObservableCollection<SkillLevel> SkillLevels
         {
             get; set;
@@ -103,7 +141,9 @@ namespace KingsAndQueensHat.Model
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(TournamentSettings));
                 var result = serializer.Deserialize(stream) as TournamentSettings;
+                if(result == null) return null;
                 result._storage = storage;
+                result.Initialise();
                 return result;
             }
         }

@@ -31,13 +31,10 @@ namespace KingsAndQueensHat.Model
         {
             Teams = teams;
             _filename = filename;
-			var i = 0;
             foreach (var team in teams)
             {
-                team.Name += " " + (i%2==0 ? "(light)" : "(dark)");
                 team.OnGameDone += OnGameDone;
                 team.OnPlayerAdd += team_OnPlayerAdd;
-				i++;
             }
         }
 

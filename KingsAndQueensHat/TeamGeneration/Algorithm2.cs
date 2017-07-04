@@ -20,7 +20,9 @@ namespace KingsAndQueensHat.TeamGeneration
             PopulateRoundResults(rounds, playerProvider);
 
             // create teams and distribute players
-            _teams = Enumerable.Range(0, numTeams).Select(i => new Team(string.Format("Team {0}", i + 1))).ToList();
+            _teams = Enumerable.Range(0, numTeams)
+                .Select(i => new Team(string.Format("Team {0} ({1})", i + 1, i % 2 == 0 ? "light" : "dark")))
+                .ToList();
             return DistributePlayers();
         }
 
@@ -52,8 +54,9 @@ namespace KingsAndQueensHat.TeamGeneration
             }
 
             // calculate adjusted scores
-
-            var averageScore = Convert.ToDecimal(playerProvider.AllPlayers.Where(x => x.GamesPlayed > 0).Average(x => x.GameScore));
+            var averageScore =0M;
+            var playersWithMoreThanOneGame = playerProvider.AllPlayers.Where(x => x.GamesPlayed > 0).ToList();
+            if(playersWithMoreThanOneGame.Count > 0) averageScore = Convert.ToDecimal(playersWithMoreThanOneGame.Average(x => x.GameScore));
             foreach (var player in playerProvider.AllPlayers)
             {
                 // adjusted score is so that players who have missed games, but are good (high win%) don't get treated like bad players
@@ -92,13 +95,13 @@ namespace KingsAndQueensHat.TeamGeneration
             do
             {
                 // take top x men and distribute
-                AssignTeam(Sort(_presentPlayers.Where(x => x.Gender == Gender.Male).ToList()));
+                AssignTeam(Sort(_presentPlayers.Where(x => x.Gender == Gender.Male).ToList()), false, true);
                 // take top x women and distribute
-                AssignTeam(Sort(_presentPlayers.Where(x => x.Gender == Gender.Female).ToList()), true); // true=isTopWomen on this line
+                AssignTeam(Sort(_presentPlayers.Where(x => x.Gender == Gender.Female).ToList()), true, true);
                 // take bottom x men and distribute
-                AssignTeam(Sort(_presentPlayers.Where(x => x.Gender == Gender.Male).ToList(), false));
+                AssignTeam(Sort(_presentPlayers.Where(x => x.Gender == Gender.Male).ToList(), false), false, false);
                 // take bottom x women and distribute
-                AssignTeam(Sort(_presentPlayers.Where(x => x.Gender == Gender.Female).ToList(), false));
+                AssignTeam(Sort(_presentPlayers.Where(x => x.Gender == Gender.Female).ToList(), false), false, false);
 
             } while (_presentPlayers.Any());
 
@@ -129,19 +132,19 @@ namespace KingsAndQueensHat.TeamGeneration
             return availablePlayers;
         }
 
-        private void AssignTeam(List<Player> players, bool isTopWomen = false)
+        private void AssignTeam(List<Player> players, bool isTopWomen, bool topFirst) // no defaults on these params to make it more obvious
         {
             for (var i = 0; i < _teams.Count; i++)
             { // do once for each team
                 if (!players.Any()) return;
                 var thisPlayer = players.First();
-                GetNextTeam(isTopWomen).AddPlayer(thisPlayer);
+                GetNextTeam(isTopWomen, topFirst).AddPlayer(thisPlayer);
                 players.Remove(thisPlayer); // remove from the temp list we are working with now
                 _presentPlayers.Remove(thisPlayer); // remove from the master player list
             }
         }
 
-        private Team GetNextTeam(bool isTopWomen)
+        private Team GetNextTeam(bool isTopWomen, bool topFirst = true)
         {
             // the main idea is to get top ranked players always facing off against each other
             // TODO: put more players in first teams so that people can fill in if no-shows for later games
@@ -160,14 +163,29 @@ namespace KingsAndQueensHat.TeamGeneration
             whittledTeams.RemoveAll(x => x.PlayerCount > whittledTeams.Min(y => y.PlayerCount));
             if (whittledTeams.Count == 1) return whittledTeams.First();
 
-            // knock out teams with more adjusted points
-            whittledTeams.RemoveAll(x => x.TotalAdjustedScore > whittledTeams.Min(y => y.TotalAdjustedScore));
-            if (whittledTeams.Count == 1) return whittledTeams.First();
-
-            // knock out higher ranked FirstPlayers - only works if at least one person has been assigned
-            if (whittledTeams.Any(x => x.PlayerCount > 0))
+            if (topFirst)
             {
-                whittledTeams.RemoveAll(x => x.FirstPlayer != null && x.FirstPlayer.AdjustedScore > whittledTeams.Min(y => y.FirstPlayer.AdjustedScore));
+                // assigning top players - knock out teams with MORE adjusted points, because we need to help lowest team
+                whittledTeams.RemoveAll(x => x.TotalAdjustedScore > whittledTeams.Min(y => y.TotalAdjustedScore));
+                if (whittledTeams.Count == 1) return whittledTeams.First();
+
+                // knock out higher ranked FirstPlayers - only works if at least one person has been assigned
+                if (whittledTeams.Any(x => x.PlayerCount > 0))
+                {
+                    whittledTeams.RemoveAll(x => x.FirstPlayer != null && x.FirstPlayer.AdjustedScore > whittledTeams.Min(y => y.FirstPlayer.AdjustedScore));
+                }
+            }
+            else
+            {
+                // assigning bottom players - knock out teams with LESS adjusted points, because we need to hinder(!) highest team
+                whittledTeams.RemoveAll(x => x.TotalAdjustedScore < whittledTeams.Max(y => y.TotalAdjustedScore));
+                if (whittledTeams.Count == 1) return whittledTeams.First();
+
+                // knock out lowest ranked FirstPlayers - only works if at least one person has been assigned
+                if (whittledTeams.Any(x => x.PlayerCount > 0))
+                {
+                    whittledTeams.RemoveAll(x => x.FirstPlayer != null && x.FirstPlayer.AdjustedScore < whittledTeams.Max(y => y.FirstPlayer.AdjustedScore));
+                }
             }
 
             return whittledTeams.First();

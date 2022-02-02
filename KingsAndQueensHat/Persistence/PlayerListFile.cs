@@ -161,6 +161,10 @@ namespace KingsAndQueensHat.Persistence
             {
                 throw new InvalidPlayerListException(string.Format("Cannot access file: {0}", filename));
             }
+            catch (IOException)
+            {
+                throw new InvalidPlayerListException("Unable to open player list. Is it open in Excel?");
+            }
 
             foreach (var player in newPlayers)
             {
